@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md items-start q-gutter-md">
+  <div class="q-pa-md">
     <q-card class="my-card" flat bordered v-for="(product, index) in products" :key="index">
       <q-card-section class="q-pt-xs">
         <div class="text-overline">{{ product.brand }}</div>
@@ -10,7 +10,7 @@
         <q-card-section horizontal class="q-mt-md">
           <q-img class="flex flex-center col-4 q-mr-md" src="https://cdn.quasar.dev/img/parallax2.jpg" />
           <div>
-            <div class="text-caption text-grey">Toko A: {{ product.stocks[0].stock }}</div>
+            <!-- <div class="text-caption text-grey">Toko A: {{ product.stocks[0].stock }}</div> -->
             <div class="text-caption text-grey">{{ product.description }}</div>
           </div>
         </q-card-section>
@@ -23,7 +23,7 @@
     </q-card>
   </div>
 
-  <pre>{{ products }}</pre>
+  <!-- <pre>{{ products }}</pre> -->
 </template>
 
 <script setup>
@@ -34,7 +34,7 @@ const route = useRoute()
 const params = ref(route.params)
 const products = reactive([])
 try {
-  const response = await apiTokened.get(`products/${params.value.filter1}/${params.value.filter2}`);
+  const response = await apiTokened.get(`products/categories/${params.value.category}`);
   Object.assign(products, response.data.data.products);
 } catch (error) {
   console.log("Not Found: product -> list", error.response);
