@@ -8,7 +8,7 @@
           Rp{{ product.selling_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") }}
         </div>
         <q-card-section horizontal class="q-mt-md">
-          <q-img class="flex flex-center col-4 q-mr-md" src="https://cdn.quasar.dev/img/parallax2.jpg" />
+          <q-img class="flex flex-center col-4 q-mr-md img" src="https://cdn.quasar.dev/img/parallax2.jpg" />
           <div>
             <!-- <div class="text-caption text-grey">Toko A: {{ product.stocks[0].stock }}</div> -->
             <div class="text-caption text-grey">{{ product.description }}</div>
@@ -16,7 +16,9 @@
         </q-card-section>
       </q-card-section>
       <q-separator />
-      <q-card-actions align="right" class="bg-teal-1">
+      <q-card-actions class="bg-teal-1">
+        <q-btn flat disable class="q-btn--no-uppercase">Stok: {{ product.total_stock }}</q-btn>
+        <q-space />
         <q-btn flat :to="/products/ + product.id">Detail</q-btn>
         <q-btn flat color="primary">Reserve</q-btn>
       </q-card-actions>
@@ -41,7 +43,12 @@ try {
 }
 
 </script>
-<style lang="sass" scoped>
-.my-card
-  width: 100%
+<style lang="scss" scoped>
+.my-card {
+  width: 100%;
+}
+
+.img {
+  max-height: 150px;
+}
 </style>
