@@ -5,7 +5,7 @@
         <div class="text-overline">{{ product.brand }}</div>
         <div class="text-h6 q-mt-xs q-mb-xs">{{ product.name }}</div>
         <div class="text-subtitle q-mt-xs q-mb-xs">
-          Rp{{ product.selling_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") }}
+          Rp{{ digitSeparator(product.selling_price) }}
         </div>
         <q-card-section horizontal class="q-mt-md">
           <q-img class="flex flex-center col-4 q-mr-md img" src="https://cdn.quasar.dev/img/parallax2.jpg" />
@@ -17,10 +17,10 @@
       </q-card-section>
       <q-separator />
       <q-card-actions class="bg-teal-1">
-        <q-btn flat disable class="q-btn--no-uppercase">Stok: {{ product.total_stock }}</q-btn>
+        <div class="text-caption q-ml-sm">Tersisa: {{ product.total_stock ? product.total_stock : 0 }} item</div>
         <q-space />
-        <q-btn flat :to="/products/ + product.id">Detail</q-btn>
-        <q-btn flat color="primary">Reserve</q-btn>
+        <q-btn color="teal-10" flat icon-right="info" label="Detail" :to="/products/ + product.id" />
+        <q-btn color="teal-10" flat icon-right="add_shopping_cart" label="Order" />
       </q-card-actions>
     </q-card>
   </div>
@@ -32,6 +32,8 @@
 import { apiTokened } from "../../config/api";
 import { reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import digitSeparator from "src/utils/digit-separator";
+
 const route = useRoute()
 const params = ref(route.params)
 const products = reactive([])
