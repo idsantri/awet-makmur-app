@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-ma-md">
+  <q-card class="q-ma-sm">
     <q-card-section class="no-padding">
       <q-img style="max-height: 50vh; object-fit: cover;" src="https://cdn.quasar.dev/img/mountains.jpg">
         <q-btn push round color="teal" icon="edit" class="absolute all-pointer-events" style="bottom: 8px; right: 8px" />
@@ -24,7 +24,7 @@
       <div class="row items-center">
         <div class="text-body1">Deskripsi:</div>
         <q-space />
-        <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="modalDescription = true" />
+        <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalDescription = true" />
       </div>
       <span v-html="product.description"></span>
     </q-card-section>
@@ -102,21 +102,8 @@
     </q-card-section>
   </q-card>
 
-  <q-dialog v-model="modalDescription">
-    <q-card style="width: 700px; max-width: 80vw;">
-      <q-card-section>
-        <div class="text-h6 text-teal-10">Deskripsi Produk</div>
-      </q-card-section>
-
-      <q-card-section class="q-pt-none">
-        <q-editor v-model="textDescription" min-height="5rem" />
-      </q-card-section>
-
-      <q-card-actions align="right" class="bg-white text-teal">
-        <q-btn flat color="teal-10" label="Simpan" @click="saveDescription" />
-        <q-btn flat color="teal-10" label="Gagal" v-close-popup />
-      </q-card-actions>
-    </q-card>
+  <q-dialog v-model="showModalDescription">
+    <modal-description :product-description="product.description" :product-id="parseInt(product.id)" />
   </q-dialog>
 </template>
 
@@ -126,7 +113,7 @@ import { apiTokened } from "../../config/api";
 import { reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import toArray from '../../utils/to-array';
-import { notifySuccess, notifyError } from '../../utils/notify';
+import ModalDescription from './ModalDescription.vue';
 
 const route = useRoute()
 const params = ref(route.params)
@@ -134,7 +121,7 @@ const product = reactive({})
 const stocks = reactive([])
 const images = reactive([])
 const margin = ref(0);
-const modalDescription = ref(false);
+const showModalDescription = ref(false);
 
 try {
   const response = await apiTokened.get(`products/${params.value.id}`);
@@ -147,23 +134,6 @@ try {
   })
 }
 margin.value = product.selling_price - product.cost - product.base_price
-
-const textDescription = ref(product.description)
-const saveDescription = async () => {
-  try {
-    const response = await apiTokened.put(`products/${params.value.id}`, {
-      description: textDescription.value
-    });
-    notifySuccess(response.data.message)
-  } catch (error) {
-    toArray(error.response.data.message).forEach((message) => {
-      notifyError(message)
-    })
-  } finally {
-    modalDescription.value = false
-  }
-}
-
 </script>
 <style lang="scss" scoped>
 .data {

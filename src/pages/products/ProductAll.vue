@@ -1,25 +1,31 @@
 <template>
   <div class="q-pa-md">
-    <q-card class="my-card" flat bordered v-for="(product, index) in products" :key="index">
+    <q-card class="my-card q-mb-md" flat bordered v-for="(product, index) in products" :key="index">
       <q-card-section class="q-pt-xs">
-        <div class="text-overline">{{ product.brand }}</div>
-        <div class="text-h6 q-mt-xs q-mb-xs">{{ product.name }}</div>
-        <div class="text-subtitle q-mt-xs q-mb-xs">
-          Rp{{ digitSeparator(product.selling_price) }}
-        </div>
+        <q-item clickable v-ripple :to="/products/ + product.id" class="no-padding">
+          <q-item-section>
+            <div class="text-subtitle q-mt-sm">{{ product.brand }}</div>
+            <div class="text-h6">{{ product.name }}</div>
+            <div class="text-subtitle">
+              Rp{{ digitSeparator(product.selling_price) }}
+            </div>
+          </q-item-section>
+        </q-item>
         <q-card-section horizontal class="q-mt-md">
           <q-img class="flex flex-center col-4 q-mr-md img" src="https://cdn.quasar.dev/img/parallax2.jpg" />
           <div>
             <!-- <div class="text-caption text-grey">Toko A: {{ product.stocks[0].stock }}</div> -->
-            <div class="text-caption text-grey">{{ product.description }}</div>
+            <div class="text-caption text-grey">
+              <span v-html="product.description"></span>
+            </div>
           </div>
         </q-card-section>
       </q-card-section>
       <q-separator />
-      <q-card-actions class="bg-teal-1">
+      <q-card-actions class="bg-teal-2">
         <div class="text-caption q-ml-sm">Tersisa: {{ product.total_stock ? product.total_stock : 0 }} item</div>
         <q-space />
-        <q-btn color="teal-10" flat icon-right="info" label="Detail" :to="/products/ + product.id" />
+        <!-- <q-btn color="teal-10" flat icon-right="info" label="Detail" :to="/products/ + product.id" /> -->
         <q-btn color="teal-10" flat icon-right="add_shopping_cart" label="Order" />
       </q-card-actions>
     </q-card>

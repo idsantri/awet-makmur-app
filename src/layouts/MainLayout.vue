@@ -16,8 +16,7 @@
       <side-bar />
     </q-drawer>
 
-    <q-page-container>
-
+    <q-page-container :key="componentKey">
       <suspense>
         <template #default>
           <router-view :key="$route.fullPath" />
@@ -28,9 +27,17 @@
           </div>
         </template>
       </suspense>
-
-
     </q-page-container>
+
+    <!-- hidden elements -->
+    <div style="display: none;">
+      <button @click="forceRerender" id="btn-force-rerender">rerender</button>
+    </div>
+
+    <q-footer bordered class="bg-teal-5 text-teal-1">
+      <p class="text-center no-margin q-pa-xs">by idsantri</p>
+    </q-footer>
+
   </q-layout>
 </template>
 
@@ -41,4 +48,13 @@ import SideBar from 'src/components/SideBar.vue'
 const leftDrawerOpen = ref(false)
 const toggleLeftDrawer = () => leftDrawerOpen.value = !leftDrawerOpen.value
 
+const componentKey = ref(0);
+const forceRerender = () => componentKey.value++;
+
 </script>
+<style lang="scss">
+.spinner {
+  text-align: center;
+  margin: 30px auto;
+}
+</style>
