@@ -36,7 +36,7 @@
               <div class="text-h6">DATA</div>
             </th>
             <th class="text-right">
-              <q-btn color="teal-10" flat icon-right="edit" label="Edit" />
+              <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalProduct = true" />
             </th>
           </tr>
         </thead>
@@ -105,6 +105,10 @@
   <q-dialog v-model="showModalDescription">
     <modal-description :product-description="product.description" :product-id="parseInt(product.id)" />
   </q-dialog>
+
+  <q-dialog v-model="showModalProduct">
+    <modal-product :is-new="false" :product="product" />
+  </q-dialog>
 </template>
 
 <script setup>
@@ -114,6 +118,7 @@ import { reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import toArray from '../../utils/to-array';
 import ModalDescription from './ModalDescription.vue';
+import ModalProduct from './ModalProduct.vue';
 
 const route = useRoute()
 const params = ref(route.params)
@@ -122,6 +127,7 @@ const stocks = reactive([])
 const images = reactive([])
 const margin = ref(0);
 const showModalDescription = ref(false);
+const showModalProduct = ref(false);
 
 try {
   const response = await apiTokened.get(`products/${params.value.id}`);
