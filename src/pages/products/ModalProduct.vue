@@ -11,13 +11,9 @@
         <q-input outlined v-model="name" label="Nama" />
         <q-input outlined v-model="brand" label="Merek" />
         <q-input outlined v-model="supplier" label="Pemasok/Supplier" />
-        <q-select outlined v-model="category_id" :options="listCategories" label="Kategori" />
+        <q-select outlined v-model="category_id" :options="listCategories" option-value="id" option-label="name"
+          label="Kategori" emit-value map-options />
       </q-card-section>
-
-      <pre>
-                                                          {{ category_id }}
-                                                      </pre>
-
       <q-card-actions align="right" class="bg-white text-teal">
         <q-btn flat color="teal-10" label="Simpan" type="submit" />
         <q-btn flat color="teal-10" label="Gagal" v-close-popup />
@@ -40,35 +36,35 @@ const copyProduct = reactive({ id: null, code: '', name: '', brand: '', supplier
 Object.assign(copyProduct, props.product)
 const { id, code, name, brand, supplier, category_id } = toRefs(copyProduct)
 
-const listCategories = [
-  { label: 'Kasur', value: '1', },
-  { label: 'Lemar', value: '2', },
-]
-
-const categories = ref()
-
 const title = ref('Produk');
-if (props.isNew) {
-  title.value = "Tambah Produk";
-} else {
-  title.value = "Edit Produk";
+if (props.isNew) { title.value = "Tambah Produk"; }
+else { title.value = "Edit Produk"; }
+
+const listCategories = reactive([])
+try {
+  const response = await apiTokened.get(`categories`);
+  Object.assign(listCategories, response.data.data.categories);
+} catch (error) {
+  console.log("Not Found: categories -> list", error.response);
 }
 
-// const id = ref(props.productId)
 const onSubmit = async () => {
-  try {
-    const response = await apiTokened.put(`products/${id.value}`, {
-      description: textDescription.value
-    });
-    // console.log(response);
-    notifySuccess(response.data.message)
-  } catch (error) {
-    // console.log(error);
-    toArray(error.response.data.message).forEach((message) => {
-      notifyError(message)
-    })
-  } finally {
-    forceRerender()
+  const data = {
+    code: code.value, name: name.value, brand: brand.value, supplier: supplier.value, category_id: category_id.value
+  }
+  if (!props.isNew) {
+    try {
+      const response = await apiTokened.put(`products/${id.value}`, data);
+      // console.log(response);
+      notifySuccess(response.data.message)
+    } catch (error) {
+      // console.log(error);
+      toArray(error.response.data.message).forEach((message) => {
+        notifyError(message)
+      })
+    } finally {
+      forceRerender()
+    }
   }
 }
 
