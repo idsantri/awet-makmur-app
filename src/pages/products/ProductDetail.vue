@@ -26,7 +26,7 @@
         <q-space />
         <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalDescription = true" />
       </div>
-      <span class="text-teal-10" v-html="product.description"></span>
+      <span class="text-teal-10 text-caption" v-html="product.description"></span>
     </q-card-section>
     <q-card-section class="q-pt-none data">
       <q-markup-table class="text-teal-10">
@@ -82,6 +82,8 @@
             <td class="text-right">Rp{{ digitSeparator(margin) }}</td>
           </tr>
         </tbody>
+      </q-markup-table>
+      <q-markup-table class="text-teal-10 q-mt-md">
         <thead>
           <tr class="bg-teal-1">
             <th class="text-left">

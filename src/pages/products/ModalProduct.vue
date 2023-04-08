@@ -6,11 +6,14 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none q-gutter-md">
-        <q-input outlined v-model="id" label="ID" class="disabled" />
+        <q-input outlined v-model="id" label="ID" readonly dense />
         <q-input outlined v-model="code" label="Kode" />
         <q-input outlined v-model="name" label="Nama" />
         <q-input outlined v-model="brand" label="Merek" />
         <q-input outlined v-model="supplier" label="Pemasok/Supplier" />
+        <q-input outlined v-model="base_price" label="Harga Dasar" type="number" />
+        <q-input outlined v-model="cost" label="Biaya Tambahan" type="number" />
+        <q-input outlined v-model="selling_price" label="Harga Jual" type="number" />
         <q-select outlined v-model="category_id" :options="listCategories" option-value="id" option-label="name"
           label="Kategori" emit-value map-options />
       </q-card-section>
@@ -32,9 +35,9 @@ const props = defineProps({
   isNew: { type: Boolean, default: false },
   product: { type: Object }
 })
-const copyProduct = reactive({ id: null, code: '', name: '', brand: '', supplier: '', category_id: null });
+const copyProduct = reactive({ id: null, code: '', name: '', brand: '', supplier: '', base_price: null, cost: null, selling_price: null, category_id: null, });
 Object.assign(copyProduct, props.product)
-const { id, code, name, brand, supplier, category_id } = toRefs(copyProduct)
+const { id, code, name, brand, supplier, base_price, cost, selling_price, category_id } = toRefs(copyProduct)
 
 const title = ref('Produk');
 if (props.isNew) { title.value = "Tambah Produk"; }
@@ -50,20 +53,26 @@ try {
 
 const onSubmit = async () => {
   const data = {
-    code: code.value, name: name.value, brand: brand.value, supplier: supplier.value, category_id: category_id.value
+    code: code.value,
+    name: name.value,
+    brand: brand.value,
+    supplier: supplier.value,
+    base_price: base_price.value,
+    cost: cost.value,
+    selling_price: selling_price.value,
+    category_id: category_id.value
   }
   if (!props.isNew) {
     try {
       const response = await apiTokened.put(`products/${id.value}`, data);
       // console.log(response);
       notifySuccess(response.data.message)
+      forceRerender()
     } catch (error) {
       // console.log(error);
       toArray(error.response.data.message).forEach((message) => {
         notifyError(message)
       })
-    } finally {
-      forceRerender()
     }
   }
 }

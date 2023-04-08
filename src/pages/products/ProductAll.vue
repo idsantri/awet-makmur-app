@@ -1,31 +1,31 @@
 <template>
-  <div class="q-pa-md">
-    <q-card class="my-card q-mb-md" flat bordered v-for="(product, index) in products" :key="index">
-      <q-card-section class="q-pt-xs">
-        <q-item clickable v-ripple :to="/products/ + product.id" class="no-padding">
-          <q-item-section>
-            <div class="text-subtitle q-mt-sm">{{ product.brand }}</div>
+  <div class="q-pa-sm">
+    <q-card class="my-card q-mb-sm" flat bordered v-for="(product, index) in products" :key="index">
+      <q-card-section class="q-pt-xs no-padding">
+        <q-item clickable v-ripple :to="/products/ + product.id" class="q-pa-sm bg-teal-3 text-teal-10">
+          <q-item-section class="">
             <div class="text-h6">{{ product.name }}</div>
-            <div class="text-subtitle">
+            <div class="text-subtitle text-teal-9">
               Rp{{ digitSeparator(product.selling_price) }}
+              ({{ product.brand }} &mdash;
+              {{ product.supplier }})
             </div>
           </q-item-section>
         </q-item>
-        <q-card-section horizontal class="q-mt-md">
-          <q-img class="flex flex-center col-4 q-mr-md img" src="https://cdn.quasar.dev/img/parallax2.jpg" />
+        <q-card-section horizontal class="q-ma-sm">
+          <q-img class="flex flex-center col-4 q-mr-sm img" src="https://cdn.quasar.dev/img/parallax2.jpg" />
           <div>
-            <!-- <div class="text-caption text-grey">Toko A: {{ product.stocks[0].stock }}</div> -->
-            <div class="text-caption text-grey">
-              <span v-html="product.description"></span>
+            <div class="text-caption text-teal-9">
+              <span v-html="product.description" id="description"></span>
             </div>
           </div>
         </q-card-section>
       </q-card-section>
       <q-separator />
-      <q-card-actions class="bg-teal-2">
-        <div class="text-caption q-ml-sm">Tersisa: {{ product.total_stock ? product.total_stock : 0 }} item</div>
+      <q-card-actions class="bg-teal-2 q-pa-xs">
+        <div class="text-caption q-ml-xs text-teal-10">Tersisa: {{ product.total_stock ? product.total_stock : 0 }} item
+        </div>
         <q-space />
-        <!-- <q-btn color="teal-10" flat icon-right="info" label="Detail" :to="/products/ + product.id" /> -->
         <q-btn color="teal-10" flat icon-right="add_shopping_cart" label="Order" />
       </q-card-actions>
     </q-card>
@@ -57,6 +57,16 @@ try {
 }
 
 .img {
-  max-height: 150px;
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  object-position: center;
+}
+
+#description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
 }
 </style>
