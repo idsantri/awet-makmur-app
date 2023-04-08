@@ -26,14 +26,14 @@
         <q-space />
         <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalDescription = true" />
       </div>
-      <span v-html="product.description"></span>
+      <span class="text-teal-10" v-html="product.description"></span>
     </q-card-section>
     <q-card-section class="q-pt-none data">
-      <q-markup-table>
+      <q-markup-table class="text-teal-10">
         <thead>
           <tr class="bg-teal-1">
             <th class="text-left">
-              <div class="text-h6">DATA</div>
+              <div class="text-body1">Data Produk</div>
             </th>
             <th class="text-right">
               <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalProduct = true" />
@@ -70,7 +70,7 @@
             <td class="text-right">Rp{{ digitSeparator(product.base_price) }}</td>
           </tr>
           <tr>
-            <td class="text-left">Biaya</td>
+            <td class="text-left">Biaya Tambahan</td>
             <td class="text-right">Rp{{ digitSeparator(product.cost) }}</td>
           </tr>
           <tr>
@@ -88,7 +88,7 @@
               <div class="text-body1">Stock</div>
             </th>
             <th class="text-right">
-              <q-btn color="teal-10" flat icon-right="edit" label="Edit" />
+              <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalStock = true" />
             </th>
           </tr>
         </thead>
@@ -106,6 +106,10 @@
     <modal-description :product-description="product.description" :product-id="parseInt(product.id)" />
   </q-dialog>
 
+  <q-dialog v-model="showModalStock">
+    <modal-stock :product-id="parseInt(product.id)" />
+  </q-dialog>
+
   <q-dialog v-model="showModalProduct">
     <modal-product :is-new="false" :product="product" />
   </q-dialog>
@@ -119,6 +123,7 @@ import { useRoute } from 'vue-router';
 import toArray from '../../utils/to-array';
 import ModalDescription from './ModalDescription.vue';
 import ModalProduct from './ModalProduct.vue';
+import ModalStock from './ModalStock.vue';
 
 const route = useRoute()
 const params = ref(route.params)
@@ -128,6 +133,7 @@ const images = reactive([])
 const margin = ref(0);
 const showModalDescription = ref(false);
 const showModalProduct = ref(false);
+const showModalStock = ref(false);
 
 try {
   const response = await apiTokened.get(`products/${params.value.id}`);

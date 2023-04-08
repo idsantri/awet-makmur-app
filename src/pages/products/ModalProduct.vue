@@ -1,6 +1,6 @@
 <template>
-  <q-card style="width: 700px; max-width: 80vw;">
-    <q-form action="https://some-url.com" method="post" @submit.prevent="onSubmit">
+  <q-card style="width: 700px; max-width: 90vw;">
+    <q-form method="post" @submit.prevent="onSubmit">
       <q-card-section>
         <div class="text-h6 text-teal-10">{{ title }}</div>
       </q-card-section>
