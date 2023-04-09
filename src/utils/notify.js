@@ -5,13 +5,13 @@ const notifySuccess = (message) => {
     color: "green-6",
     textColor: "green-1",
     icon: "cloud_done",
-    message: message
+    message: message,
   });
 };
 const notifyError = (message) => {
   Notify.create({
     type: "negative",
-    message: message
+    message: message,
   });
 };
 export { notifySuccess, notifyError };

@@ -1,5 +1,5 @@
 <template>
-  <q-card style="width: 700px; max-width: 90vw;">
+  <q-card style="width: 700px; max-width: 90vw">
     <q-card-section>
       <div class="text-h6 text-teal-10">Deskripsi Produk</div>
     </q-card-section>
@@ -15,34 +15,33 @@
   </q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
-import { notifySuccess, notifyError } from '../../utils/notify';
-import { forceRerender } from '../../utils/buttons-click'
+import { ref } from "vue";
+import { notifySuccess, notifyError } from "../../utils/notify";
+import { forceRerender } from "../../utils/buttons-click";
 import { apiTokened } from "../../config/api";
-import toArray from '../../utils/to-array';
+import toArray from "../../utils/to-array";
 
 const props = defineProps({
   productDescription: { type: String, default: "" },
-  productId: { type: Number, default: 0 }
-})
+  productId: { type: Number, default: 0 },
+});
 
 const textDescription = ref(props.productDescription);
-const id = ref(props.productId)
+const id = ref(props.productId);
 const saveDescription = async () => {
   try {
     const response = await apiTokened.put(`products/${id.value}`, {
-      description: textDescription.value
+      description: textDescription.value,
     });
     // console.log(response);
-    notifySuccess(response.data.message)
+    notifySuccess(response.data.message);
   } catch (error) {
     // console.log(error);
     toArray(error.response.data.message).forEach((message) => {
-      notifyError(message)
-    })
+      notifyError(message);
+    });
   } finally {
-    forceRerender()
+    forceRerender();
   }
-}
-
+};
 </script>

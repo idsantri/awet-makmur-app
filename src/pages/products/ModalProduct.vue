@@ -1,5 +1,5 @@
 <template>
-  <q-card style="width: 700px; max-width: 90vw;">
+  <q-card style="width: 700px; max-width: 90vw">
     <q-form method="post" @submit.prevent="onSubmit">
       <q-card-section>
         <div class="text-h6 text-teal-10">{{ title }}</div>
@@ -11,11 +11,29 @@
         <q-input outlined v-model="name" label="Nama" />
         <q-input outlined v-model="brand" label="Merek" />
         <q-input outlined v-model="supplier" label="Pemasok/Supplier" />
-        <q-input outlined v-model="base_price" label="Harga Dasar" type="number" />
+        <q-input
+          outlined
+          v-model="base_price"
+          label="Harga Dasar"
+          type="number"
+        />
         <q-input outlined v-model="cost" label="Biaya Tambahan" type="number" />
-        <q-input outlined v-model="selling_price" label="Harga Jual" type="number" />
-        <q-select outlined v-model="category_id" :options="listCategories" option-value="id" option-label="name"
-          label="Kategori" emit-value map-options />
+        <q-input
+          outlined
+          v-model="selling_price"
+          label="Harga Jual"
+          type="number"
+        />
+        <q-select
+          outlined
+          v-model="category_id"
+          :options="listCategories"
+          option-value="id"
+          option-label="name"
+          label="Kategori"
+          emit-value
+          map-options
+        />
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
         <q-btn flat color="teal-10" label="Simpan" type="submit" />
@@ -25,25 +43,48 @@
   </q-card>
 </template>
 <script setup>
-import { ref, toRefs, reactive } from 'vue';
-import { notifySuccess, notifyError } from '../../utils/notify';
-import { forceRerender } from '../../utils/buttons-click'
+import { ref, toRefs, reactive } from "vue";
+import { notifySuccess, notifyError } from "../../utils/notify";
+import { forceRerender } from "../../utils/buttons-click";
 import { apiTokened } from "../../config/api";
-import toArray from '../../utils/to-array';
+import toArray from "../../utils/to-array";
 
 const props = defineProps({
   isNew: { type: Boolean, default: false },
-  product: { type: Object }
-})
-const copyProduct = reactive({ id: null, code: '', name: '', brand: '', supplier: '', base_price: null, cost: null, selling_price: null, category_id: null, });
-Object.assign(copyProduct, props.product)
-const { id, code, name, brand, supplier, base_price, cost, selling_price, category_id } = toRefs(copyProduct)
+  product: { type: Object },
+});
+const copyProduct = reactive({
+  id: null,
+  code: "",
+  name: "",
+  brand: "",
+  supplier: "",
+  base_price: null,
+  cost: null,
+  selling_price: null,
+  category_id: null,
+});
+Object.assign(copyProduct, props.product);
+const {
+  id,
+  code,
+  name,
+  brand,
+  supplier,
+  base_price,
+  cost,
+  selling_price,
+  category_id,
+} = toRefs(copyProduct);
 
-const title = ref('Produk');
-if (props.isNew) { title.value = "Tambah Produk"; }
-else { title.value = "Edit Produk"; }
+const title = ref("Produk");
+if (props.isNew) {
+  title.value = "Tambah Produk";
+} else {
+  title.value = "Edit Produk";
+}
 
-const listCategories = reactive([])
+const listCategories = reactive([]);
 try {
   const response = await apiTokened.get(`categories`);
   Object.assign(listCategories, response.data.data.categories);
@@ -60,21 +101,20 @@ const onSubmit = async () => {
     base_price: base_price.value,
     cost: cost.value,
     selling_price: selling_price.value,
-    category_id: category_id.value
-  }
+    category_id: category_id.value,
+  };
   if (!props.isNew) {
     try {
       const response = await apiTokened.put(`products/${id.value}`, data);
       // console.log(response);
-      notifySuccess(response.data.message)
-      forceRerender()
+      notifySuccess(response.data.message);
+      forceRerender();
     } catch (error) {
       // console.log(error);
       toArray(error.response.data.message).forEach((message) => {
-        notifyError(message)
-      })
+        notifyError(message);
+      });
     }
   }
-}
-
+};
 </script>
