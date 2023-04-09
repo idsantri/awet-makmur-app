@@ -1,9 +1,18 @@
 <template>
   <q-card class="q-ma-sm">
     <q-card-section class="no-padding">
-      <q-img style="max-height: 50vh; object-fit: cover;" src="https://cdn.quasar.dev/img/mountains.jpg">
-        <q-btn push round color="teal" icon="edit" class="absolute all-pointer-events" style="bottom: 8px; right: 8px" />
-      </q-img>
+      <div v-if="product.image_last">
+        <q-img style="height: 30vh;" :src="product.image_url + product.image_last">
+          <q-btn push round color="teal" icon="edit" class="absolute all-pointer-events" style="bottom: 8px; right: 8px"
+            @click="showUploader = true" />
+        </q-img>
+      </div>
+      <div v-else>
+        <q-img style="max-height: 30vh" src="https://cdn.quasar.dev/img/mountains.jpg">
+          <q-btn push round color="teal" icon="edit" class="absolute all-pointer-events" style="bottom: 8px; right: 8px"
+            @click="showUploader = true" />
+        </q-img>
+      </div>
     </q-card-section>
     <q-card-section>
       <div class="text-caption">
@@ -115,6 +124,11 @@
   <q-dialog v-model="showModalProduct">
     <modal-product :is-new="false" :product="product" />
   </q-dialog>
+
+  <my-upload field="image" langType="en" :langExt="translate" no-circle @crop-success="cropSuccess"
+    @crop-upload-success="cropUploadSuccess" @crop-upload-fail="cropUploadFail" v-model="showUploader" :width="500"
+    :height="500" :url="urlUpload" :params="paramsImage" :headers="headers" withCredentials img-format="png"></my-upload>
+  <!-- <img :src="imgDataUrl"> -->
 </template>
 
 <script setup>
@@ -126,6 +140,9 @@ import toArray from '../../utils/to-array';
 import ModalDescription from './ModalDescription.vue';
 import ModalProduct from './ModalProduct.vue';
 import ModalStock from './ModalStock.vue';
+import { notifyError, notifySuccess } from 'src/utils/notify';
+import { forceRerender } from 'src/utils/buttons-click';
+import myUpload from 'vue-image-crop-upload';
 
 const route = useRoute()
 const params = ref(route.params)
@@ -137,11 +154,60 @@ const showModalDescription = ref(false);
 const showModalProduct = ref(false);
 const showModalStock = ref(false);
 
+const translate = {
+  hint: 'Klik atau tarik file gambar ke sini untuk upload',
+  loading: 'Uploading…',
+  noSupported: 'Browser is not supported, please use IE10+ or other browsers',
+  success: 'Upload berhasil',
+  fail: 'Upload gagal',
+  preview: 'Preview',
+  btn: {
+    off: 'Gagal',
+    close: 'Tutup',
+    back: 'Kembali',
+    save: 'Simpan'
+  },
+  error: {
+    onlyImg: 'Hanya gambar',
+    outOfSize: 'Gambar melebihi batas ukuran: ',
+    lowestPx: 'Ukuran gambar terlalu rendah. Setidaknya diharapkan: '
+  }
+}
+const showUploader = ref(false);
+const imgDataUrl = ref('')
+const urlUpload = `http://localhost:8080/products/${params.value.id}/image`
+const headers = {}
+const paramsImage = {}
+const cropSuccess = (imgData, field) => {
+  imgDataUrl.value = imgData;
+  console.log(imgData);
+  console.log(field);
+}
+
+const cropUploadSuccess = (jsonData, field) => {
+  // console.log(jsonData);
+  // console.log('field: ' + field);
+  notifySuccess(jsonData.message)
+  forceRerender()
+}
+
+/**
+ * upload fail
+ *
+ * [param] status    server api return error status, like 500
+ * [param] field
+ */
+const cropUploadFail = (status, field) => {
+  console.log(status);
+  console.log('field: ' + field);
+}
+
 try {
   const response = await apiTokened.get(`products/${params.value.id}`);
   Object.assign(product, response.data.data.product);
   Object.assign(stocks, response.data.data.stocks);
   Object.assign(images, response.data.data.images);
+  // console.log(product);
 } catch (error) {
   toArray(error.response.data.message).forEach((message) => {
     notifyError(message)

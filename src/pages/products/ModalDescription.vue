@@ -1,5 +1,5 @@
 <template>
-  <q-card style="width: 700px; max-width: 80vw;">
+  <q-card style="width: 700px; max-width: 90vw;">
     <q-card-section>
       <div class="text-h6 text-teal-10">Deskripsi Produk</div>
     </q-card-section>

@@ -13,7 +13,12 @@
           </q-item-section>
         </q-item>
         <q-card-section horizontal class="q-ma-sm">
-          <q-img class="flex flex-center col-4 q-mr-sm img" src="https://cdn.quasar.dev/img/parallax2.jpg" />
+          <div v-if="product.image_last">
+            <q-img class="flex flex-center col-4 q-mr-sm img" :src="product.image_url + product.image_last" />
+          </div>
+          <div v-else>
+            <q-img class="flex flex-center col-4 q-mr-sm img" src="https://cdn.quasar.dev/img/parallax2.jpg" />
+          </div>
           <div>
             <div class="text-caption text-teal-9">
               <span v-html="product.description" id="description"></span>
