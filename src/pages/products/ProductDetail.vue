@@ -2,35 +2,15 @@
   <q-card class="q-ma-sm">
     <q-card-section class="no-padding">
       <div v-if="product.image_last">
-        <q-img
-          style="height: 30vh"
-          :src="product.image_url + product.image_last"
-        >
-          <q-btn
-            push
-            round
-            color="teal"
-            icon="edit"
-            class="absolute all-pointer-events"
-            style="bottom: 8px; right: 8px"
-            @click="showUploader = true"
-          />
+        <q-img style="height: 30vh" :src="product.image_url + product.image_last">
+          <q-btn push round color="teal" icon="edit" class="absolute all-pointer-events" style="bottom: 8px; right: 8px"
+            @click="showUploader = true" />
         </q-img>
       </div>
       <div v-else>
-        <q-img
-          style="max-height: 30vh"
-          src="https://cdn.quasar.dev/img/mountains.jpg"
-        >
-          <q-btn
-            push
-            round
-            color="teal"
-            icon="edit"
-            class="absolute all-pointer-events"
-            style="bottom: 8px; right: 8px"
-            @click="showUploader = true"
-          />
+        <q-img style="max-height: 30vh" src="https://cdn.quasar.dev/img/mountains.jpg">
+          <q-btn push round color="teal" icon="edit" class="absolute all-pointer-events" style="bottom: 8px; right: 8px"
+            @click="showUploader = true" />
         </q-img>
       </div>
     </q-card-section>
@@ -43,12 +23,7 @@
       <div class="row">
         <div class="text-h6">{{ product.name }}</div>
         <q-space />
-        <q-btn
-          color="teal-10"
-          flat
-          icon-right="add_shopping_cart"
-          label="Order"
-        />
+        <q-btn color="teal-10" flat icon-right="add_shopping_cart" label="Order" />
       </div>
       <div class="text-subtitle2">
         Rp{{ digitSeparator(product.selling_price) }}
@@ -59,18 +34,9 @@
       <div class="row items-center">
         <div class="text-body1">Deskripsi:</div>
         <q-space />
-        <q-btn
-          color="teal-10"
-          flat
-          icon-right="edit"
-          label="Edit"
-          @click="showModalDescription = true"
-        />
+        <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalDescription = true" />
       </div>
-      <span
-        class="text-teal-10 text-caption"
-        v-html="product.description"
-      ></span>
+      <span class="text-teal-10 text-caption" v-html="product.description"></span>
     </q-card-section>
     <q-card-section class="q-pt-none data">
       <q-markup-table class="text-teal-10">
@@ -80,13 +46,7 @@
               <div class="text-body1">Data Produk</div>
             </th>
             <th class="text-right">
-              <q-btn
-                color="teal-10"
-                flat
-                icon-right="edit"
-                label="Edit"
-                @click="showModalProduct = true"
-              />
+              <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalProduct = true" />
             </th>
           </tr>
         </thead>
@@ -122,10 +82,6 @@
             </td>
           </tr>
           <tr>
-            <td class="text-left">Biaya Tambahan</td>
-            <td class="text-right">Rp{{ digitSeparator(product.cost) }}</td>
-          </tr>
-          <tr>
             <td class="text-left">Harga Jual</td>
             <td class="text-right">
               Rp{{ digitSeparator(product.selling_price) }}
@@ -144,13 +100,7 @@
               <div class="text-body1">Stock</div>
             </th>
             <th class="text-right">
-              <q-btn
-                color="teal-10"
-                flat
-                icon-right="edit"
-                label="Edit"
-                @click="showModalStock = true"
-              />
+              <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalStock = true" />
             </th>
           </tr>
         </thead>
@@ -165,10 +115,7 @@
   </q-card>
 
   <q-dialog v-model="showModalDescription">
-    <modal-description
-      :product-description="product.description"
-      :product-id="parseInt(product.id)"
-    />
+    <modal-description :product-description="product.description" :product-id="parseInt(product.id)" />
   </q-dialog>
 
   <q-dialog v-model="showModalStock">
@@ -179,23 +126,9 @@
     <modal-product :is-new="false" :product="product" />
   </q-dialog>
 
-  <my-upload
-    field="image"
-    langType="en"
-    :langExt="translate"
-    no-circle
-    @crop-success="cropSuccess"
-    @crop-upload-success="cropUploadSuccess"
-    @crop-upload-fail="cropUploadFail"
-    v-model="showUploader"
-    :width="500"
-    :height="500"
-    :url="urlUpload"
-    :params="paramsImage"
-    :headers="headers"
-    withCredentials
-    img-format="png"
-  ></my-upload>
+  <my-upload field="image" langType="en" :langExt="translate" no-circle @crop-success="cropSuccess"
+    @crop-upload-success="cropUploadSuccess" @crop-upload-fail="cropUploadFail" v-model="showUploader" :width="500"
+    :height="500" :url="urlUpload" :params="paramsImage" :headers="headers" withCredentials img-format="png"></my-upload>
   <!-- <img :src="imgDataUrl"> -->
 </template>
 
@@ -281,7 +214,7 @@ try {
     notifyError(message);
   });
 }
-margin.value = product.selling_price - product.cost - product.base_price;
+margin.value = product.selling_price - product.base_price;
 </script>
 <style lang="scss" scoped>
 .data {

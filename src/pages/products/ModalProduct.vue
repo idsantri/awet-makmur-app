@@ -11,29 +11,10 @@
         <q-input outlined v-model="name" label="Nama" />
         <q-input outlined v-model="brand" label="Merek" />
         <q-input outlined v-model="supplier" label="Pemasok/Supplier" />
-        <q-input
-          outlined
-          v-model="base_price"
-          label="Harga Dasar"
-          type="number"
-        />
-        <q-input outlined v-model="cost" label="Biaya Tambahan" type="number" />
-        <q-input
-          outlined
-          v-model="selling_price"
-          label="Harga Jual"
-          type="number"
-        />
-        <q-select
-          outlined
-          v-model="category_id"
-          :options="listCategories"
-          option-value="id"
-          option-label="name"
-          label="Kategori"
-          emit-value
-          map-options
-        />
+        <q-input outlined v-model="base_price" label="Harga Dasar" type="number" />
+        <q-input outlined v-model="selling_price" label="Harga Jual" type="number" />
+        <q-select outlined v-model="category_id" :options="listCategories" option-value="id" option-label="name"
+          label="Kategori" emit-value map-options />
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
         <q-btn flat color="teal-10" label="Simpan" type="submit" />
@@ -60,7 +41,6 @@ const copyProduct = reactive({
   brand: "",
   supplier: "",
   base_price: null,
-  cost: null,
   selling_price: null,
   category_id: null,
 });
@@ -72,7 +52,6 @@ const {
   brand,
   supplier,
   base_price,
-  cost,
   selling_price,
   category_id,
 } = toRefs(copyProduct);
@@ -99,7 +78,6 @@ const onSubmit = async () => {
     brand: brand.value,
     supplier: supplier.value,
     base_price: base_price.value,
-    cost: cost.value,
     selling_price: selling_price.value,
     category_id: category_id.value,
   };
