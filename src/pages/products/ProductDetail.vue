@@ -23,7 +23,7 @@
       <div class="row">
         <div class="text-h6">{{ product.name }}</div>
         <q-space />
-        <q-btn color="teal-10" flat icon-right="add_shopping_cart" label="Order" />
+        <q-btn color="teal-10" flat icon-right="add_shopping_cart" label="Order" @click="addToCart" />
       </div>
       <div class="text-subtitle2">
         Rp{{ digitSeparator(product.selling_price) }}
@@ -144,6 +144,7 @@ import ModalStock from "./ModalStock.vue";
 import { notifyError, notifySuccess } from "src/utils/notify";
 import { forceRerender } from "src/utils/buttons-click";
 import myUpload from "vue-image-crop-upload";
+import ordersStore from "src/stores/orders-store";
 
 const route = useRoute();
 const params = ref(route.params);
@@ -154,6 +155,10 @@ const margin = ref(0);
 const showModalDescription = ref(false);
 const showModalProduct = ref(false);
 const showModalStock = ref(false);
+
+const addToCart = () => {
+  ordersStore().addOrder(product)
+}
 
 const translate = {
   hint: "Klik atau tarik file gambar ke sini untuk upload",

@@ -1,19 +1,8 @@
 <template>
   <div class="q-pa-sm">
-    <q-card
-      class="my-card q-mb-sm"
-      flat
-      bordered
-      v-for="(product, index) in products"
-      :key="index"
-    >
+    <q-card class="my-card q-mb-sm" flat bordered v-for="(product, index) in products" :key="index">
       <q-card-section class="q-pt-xs no-padding">
-        <q-item
-          clickable
-          v-ripple
-          :to="/products/ + product.id"
-          class="q-pa-sm bg-teal-3 text-teal-10"
-        >
+        <q-item clickable v-ripple :to="/products/ + product.id" class="q-pa-sm bg-teal-3 text-teal-10">
           <q-item-section class="">
             <div class="text-h6">{{ product.name }}</div>
             <div class="text-subtitle text-teal-9">
@@ -26,16 +15,10 @@
         </q-item>
         <q-card-section horizontal class="q-ma-sm">
           <div v-if="product.image_last">
-            <q-img
-              class="flex flex-center col-4 q-mr-sm img"
-              :src="product.image_url + product.image_last"
-            />
+            <q-img class="flex flex-center col-4 q-mr-sm img" :src="product.image_url + product.image_last" />
           </div>
           <div v-else>
-            <q-img
-              class="flex flex-center col-4 q-mr-sm img"
-              src="https://cdn.quasar.dev/img/parallax2.jpg"
-            />
+            <q-img class="flex flex-center col-4 q-mr-sm img" src="https://cdn.quasar.dev/img/parallax2.jpg" />
           </div>
           <div>
             <div class="text-caption text-teal-9">
@@ -50,12 +33,7 @@
           Tersisa: {{ product.total_stock ? product.total_stock : 0 }} item
         </div>
         <q-space />
-        <q-btn
-          color="teal-10"
-          flat
-          icon-right="add_shopping_cart"
-          label="Order"
-        />
+        <q-btn color="teal-10" flat icon-right="add_shopping_cart" label="Order" @click="addToCart(product)" />
       </q-card-actions>
     </q-card>
   </div>
@@ -68,6 +46,7 @@ import { apiTokened } from "../../config/api";
 import { reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import digitSeparator from "src/utils/digit-separator";
+import ordersStore from "src/stores/orders-store";
 
 const route = useRoute();
 const params = ref(route.params);
@@ -80,6 +59,11 @@ try {
 } catch (error) {
   console.log("Not Found: product -> list", error.response);
 }
+
+const addToCart = (product) => {
+  ordersStore().addOrder(product)
+}
+
 </script>
 <style lang="scss" scoped>
 .my-card {
