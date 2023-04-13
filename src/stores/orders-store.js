@@ -8,7 +8,15 @@ export default defineStore("orders", {
   },
 
   getters: {
-    getOrders: (state) => state.orders
+    getOrders: (state) => {
+      state.orders.forEach((item) => {
+        item.sub_total =
+          parseInt(item.selling_price) * parseFloat(item.quantity) -
+          parseInt(item.discount) +
+          parseInt(item.cost);
+      });
+      return state.orders;
+    }
   },
 
   actions: {
@@ -16,12 +24,25 @@ export default defineStore("orders", {
       if (this.orders.some((order) => order.id == payload.id)) {
         return notifyError("Produk ini sudah ada di keranjang!");
       }
+      payload.discount = 0;
+      payload.cost = 0;
+      payload.quantity = 1;
       this.orders.push(payload);
       return notifySuccess("Berhasil memasukkan produk ke keranjang.");
     },
 
-    removeOrder(id) {
-      return this.orders.filter((order) => order.id != id);
+    removeOrder(i) {
+      const index = this.orders.findIndex((order) => order.id == i);
+      if (index > -1) {
+        this.orders.splice(index, 1);
+      }
+    },
+
+    editQuantity(i, v) {
+      const index = this.orders.findIndex((order) => order.id == i);
+      if (index > -1) {
+        this.orders.quantity = v;
+      }
     },
 
     clearOrders() {

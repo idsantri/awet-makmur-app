@@ -22,7 +22,7 @@
           </div>
           <div>
             <div class="text-caption text-teal-9">
-              <span v-html="product.description" id="description"></span>
+              <span v-html="product.description" class="description"></span>
             </div>
           </div>
         </q-card-section>
@@ -77,7 +77,7 @@ const addToCart = (product) => {
   object-position: center;
 }
 
-#description {
+.description {
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 5;
