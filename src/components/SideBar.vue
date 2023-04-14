@@ -1,10 +1,10 @@
 <template>
   <q-list class="text-teal-1">
 
-    <q-item-label header class="text-teal-10">
+    <!-- KATEGORI -->
+    <q-item-label header class="text-teal-10 q-pb-none">
       <div class="text-body1">Kategori Produk</div>
     </q-item-label>
-
     <q-item clickable v-ripple v-for="(category, index) in categories" :key="index" :to="category.link">
       <q-item-section avatar>
         <q-icon color="teal-1" :name="category.icon" />
@@ -15,11 +15,11 @@
       </q-item-section>
     </q-item>
 
+    <!-- TRANSAKSI BY STORE -->
     <q-separator dark />
-    <q-item-label header class="text-teal-10">
+    <q-item-label header class="text-teal-10 q-pb-none">
       <div class="text-body1">Transaksi</div>
     </q-item-label>
-
     <q-item clickable v-ripple v-for="(store, index) in stores" :key="index" :to="store.link">
       <q-item-section avatar>
         <q-icon color="teal-1" :name="store.icon" />
@@ -30,9 +30,9 @@
       </q-item-section>
     </q-item>
 
-
+    <!-- FITUR -->
     <q-separator dark />
-    <q-item-label header class="text-teal-10">
+    <q-item-label header class="text-teal-10 q-pb-none">
       <div class="text-body1">Fitur</div>
     </q-item-label>
     <q-item clickable v-ripple>
@@ -45,6 +45,10 @@
       </q-item-section>
     </q-item>
 
+    <!-- SETTING -->
+    <!-- bla bla -->
+    <!-- bla bla -->
+    <!-- bla bla -->
   </q-list>
 </template>
 
@@ -73,13 +77,13 @@ const categories = [
 const stores = [
   {
     name: "Toko 1",
-    caption: "",
+    caption: "Sarbunten",
     icon: "store",
     link: "/orders/stores/1",
   },
   {
     name: "Toko 2",
-    caption: "",
+    caption: "Lajing",
     icon: "store",
     link: "/orders/stores/2",
   },
