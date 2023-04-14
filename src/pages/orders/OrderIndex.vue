@@ -153,8 +153,7 @@ const submitOrder = async () => {
     note: note.value,
     products: products_order
   }
-  // console.log(data);
-  // return;
+
   try {
     const response = await apiTokened.post(`orders`, data);
     console.log(response);

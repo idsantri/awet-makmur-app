@@ -61,7 +61,7 @@
           </tr>
           <tr>
             <td class="text-left">Nama</td>
-            <td class="text-left">{{ product.name.toUpperCase() }}</td>
+            <td class="text-left multi-line">{{ product.name.toUpperCase() }}</td>
           </tr>
           <tr>
             <td class="text-left">Merek</td>
@@ -224,5 +224,10 @@ margin.value = product.selling_price - product.base_price;
 <style lang="scss" scoped>
 .data {
   max-width: 500px;
+}
+
+.multi-line {
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 </style>

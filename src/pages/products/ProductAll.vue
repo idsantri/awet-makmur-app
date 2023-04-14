@@ -37,17 +37,22 @@
       </q-card-actions>
     </q-card>
   </div>
-
-  <!-- <pre>{{ products }}</pre> -->
+  <q-btn push color="teal" round icon="add" class="flex fixed-bottom-right q-mr-md q-mb-xl"
+    @click="showModalProduct = true" />
+  <q-dialog v-model="showModalProduct">
+    <modal-product :is-new="true" />
+  </q-dialog>
 </template>
 
 <script setup>
 import { apiTokened } from "../../config/api";
 import { reactive, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, } from "vue-router";
 import digitSeparator from "src/utils/digit-separator";
 import ordersStore from "src/stores/orders-store";
+import ModalProduct from "./ModalProduct.vue";
 
+const showModalProduct = ref(false);
 const route = useRoute();
 const params = ref(route.params);
 const products = reactive([]);

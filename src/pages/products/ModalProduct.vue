@@ -16,7 +16,9 @@
         <q-select outlined v-model="category_id" :options="listCategories" option-value="id" option-label="name"
           label="Kategori" emit-value map-options />
       </q-card-section>
-      <q-card-actions align="right" class="bg-white text-teal">
+      <q-card-actions class="bg-white text-teal">
+        <q-btn v-if="id" flat color="negative" label="Hapus" @click="deleteProduct(id)" />
+        <q-space />
         <q-btn flat color="teal-10" label="Simpan" type="submit" />
         <q-btn flat color="teal-10" label="Gagal" v-close-popup />
       </q-card-actions>
@@ -29,10 +31,12 @@ import { notifySuccess, notifyError } from "../../utils/notify";
 import { forceRerender } from "../../utils/buttons-click";
 import { apiTokened } from "../../config/api";
 import toArray from "../../utils/to-array";
+import { useRouter } from "vue-router";
 
+const router = useRouter()
 const props = defineProps({
   isNew: { type: Boolean, default: false },
-  product: { type: Object },
+  product: { type: Object, default: null },
 });
 const copyProduct = reactive({
   id: null,
@@ -81,18 +85,44 @@ const onSubmit = async () => {
     selling_price: selling_price.value,
     category_id: category_id.value,
   };
+  if (props.isNew) {
+    try {
+      const response = await apiTokened.post(`products`, data);
+      const id = response.data.data.product.id
+      notifySuccess(response.data.message);
+      router.push(`/products/${id}`)
+    } catch (error) {
+      toArray(error.response.data.message).forEach((message) => {
+        notifyError(message);
+      });
+    }
+  }
+
   if (!props.isNew) {
     try {
       const response = await apiTokened.put(`products/${id.value}`, data);
-      // console.log(response);
       notifySuccess(response.data.message);
       forceRerender();
     } catch (error) {
-      // console.log(error);
       toArray(error.response.data.message).forEach((message) => {
         notifyError(message);
       });
     }
   }
 };
+
+const deleteProduct = async (id) => {
+  const isConfirmed = true
+  if (isConfirmed) {
+    try {
+      const response = await apiTokened.delete(`products/${id}`);
+      notifySuccess(response.data.message);
+      router.go(-1)
+    } catch (error) {
+      toArray(error.response.data.message).forEach((message) => {
+        notifyError(message);
+      });
+    }
+  }
+}
 </script>
