@@ -1,6 +1,6 @@
 <template>
   <div class="q-mt-md" style="max-width: 600px;">
-    <q-form>
+    <q-form @submit.prevent="submitOrder">
       <q-card class="q-ma-sm text-teal-10">
         <q-card-section class="q-gutter-sm no-margin q-pa-sm">
           <q-select outlined v-model="store_id" :options="listStores" option-value="id" option-label="name" emit-value
@@ -81,7 +81,7 @@
           }}</span></div>
         </q-card-section>
         <q-card-actions align="right" class="bg-teal-2">
-          <q-btn icon="save" label="Proses" color="teal-6" />
+          <q-btn type="submit" icon="save" label="Proses" color="teal-6" />
         </q-card-actions>
       </q-card>
     </q-form>
@@ -94,15 +94,18 @@ import ordersStore from 'src/stores/orders-store';
 import { reactive, ref } from 'vue'
 import { apiTokened } from "../../config/api";
 import digitSeparator from 'src/utils/digit-separator';
+import toArray from 'src/utils/to-array';
+import { notifyError, notifySuccess } from 'src/utils/notify';
+import { forceRerender } from 'src/utils/buttons-click';
 
 const listStores = reactive([]);
+const listPayment = reactive([]);
 const customer_name = ref('')
 const customer_address = ref('')
 const customer_phone = ref('')
 const note = ref('')
 const store_id = ref(null)
 const payment = ref('')
-const listPayment = reactive([]);
 
 try {
   const response = await apiTokened.get(`lists/payment-method`);
@@ -131,6 +134,41 @@ try {
 const deleteOrder = (id) => {
   ordersStore().removeOrder(id)
 }
+
+const submitOrder = async () => {
+
+  const products_order = JSON.parse(JSON.stringify(products)).map((item) => ({
+    product_id: item.id,
+    quantity: item.quantity,
+    discount: item.discount,
+    cost: item.discount
+  }))
+
+  const data = {
+    store_id: store_id.value,
+    customer_name: customer_name.value,
+    customer_address: customer_address.value,
+    customer_phone: customer_phone.value,
+    payment: payment.value,
+    note: note.value,
+    products: products_order
+  }
+  // console.log(data);
+  // return;
+  try {
+    const response = await apiTokened.post(`orders`, data);
+    console.log(response);
+    notifySuccess(response.data.message);
+    ordersStore().clearOrders()
+    forceRerender()
+  } catch (error) {
+    // console.log(error);
+    toArray(error.response.data.message).forEach((message) => {
+      notifyError(message);
+    });
+  }
+}
+
 </script>
 
 <style lang="scss" scoped>
