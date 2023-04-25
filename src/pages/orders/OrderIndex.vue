@@ -76,7 +76,7 @@
           </q-list>
         </q-card-section>
         <q-card-section class="q-py-sm q-px-sm">
-          <div class="text-body1 text-right q-pr-md">Grand Total: <span class="text-weight-bold">Rp{{
+          <div class="text-body1 text-right q-pr-md">Total: <span class="text-weight-bold">Rp{{
             digitSeparator(getGrandTotal())
           }}</span></div>
         </q-card-section>

@@ -15,20 +15,36 @@
       </q-item-section>
     </q-item>
 
-    <!-- TRANSAKSI BY STORE -->
+    <!-- STOCK BY STORE -->
     <q-separator dark />
+    <q-item-label header class="text-teal-10 q-pb-none">
+      <div class="text-body1">Stok</div>
+    </q-item-label>
+    <q-item clickable v-ripple v-for="(stock, index) in stocks" :key="index" :to="stock.link">
+      <q-item-section avatar>
+        <q-icon color="teal-1" :name="stock.icon" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label>{{ stock.name }}</q-item-label>
+        <q-item-label caption>{{ stock.caption }}</q-item-label>
+      </q-item-section>
+    </q-item>
+
+    <!-- TRANSAKSI BY STORE -->
+    <!-- <q-separator dark />
     <q-item-label header class="text-teal-10 q-pb-none">
       <div class="text-body1">Transaksi</div>
     </q-item-label>
-    <q-item clickable v-ripple v-for="(store, index) in stores" :key="index" :to="store.link">
+    <q-item clickable v-ripple v-for="(order, index) in orders" :key="index" :to="order.link">
       <q-item-section avatar>
-        <q-icon color="teal-1" :name="store.icon" />
+        <q-icon color="teal-1" :name="order.icon" />
       </q-item-section>
       <q-item-section>
-        <q-item-label>{{ store.name }}</q-item-label>
-        <q-item-label caption>{{ store.caption }}</q-item-label>
+        <q-item-label>{{ order.name }}</q-item-label>
+        <q-item-label caption>{{ order.caption }}</q-item-label>
       </q-item-section>
-    </q-item>
+    </q-item> -->
+
 
     <!-- FITUR -->
     <q-separator dark />
@@ -74,18 +90,33 @@ const categories = [
   },
 ];
 
-const stores = [
+const orders = [
   {
     name: "Toko 1",
     caption: "Sarbunten",
     icon: "store",
-    link: "/orders/stores/1",
+    link: "/stores/1/orders",
   },
   {
     name: "Toko 2",
     caption: "Lajing",
     icon: "store",
-    link: "/orders/stores/2",
+    link: "/stores/2/orders",
+  },
+];
+
+const stocks = [
+  {
+    name: "Toko 1",
+    caption: "Sarbunten",
+    icon: "store",
+    link: "/stores/1/stocks",
+  },
+  {
+    name: "Toko 2",
+    caption: "Lajing",
+    icon: "store",
+    link: "/stores/2/stocks",
   },
 ];
 </script>

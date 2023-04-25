@@ -18,7 +18,15 @@ const routes = [
       {
         path: "orders",
         component: () => import("src/pages/orders/OrderIndex.vue")
-      }
+      },
+      {
+        path: "stores/:id/stocks",
+        component: () => import("src/pages/stores/stocks/StoresStocks.vue")
+      },
+      {
+        path: "stores/:id/orders",
+        component: () => import("src/pages/stores/orders/StoresOrders.vue")
+      },
     ]
   },
 
