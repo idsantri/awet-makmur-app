@@ -52,10 +52,6 @@
         </thead>
         <tbody>
           <tr>
-            <td class="text-left">ID</td>
-            <td class="text-left">{{ product.id }}</td>
-          </tr>
-          <tr>
             <td class="text-left">Kode</td>
             <td class="text-left">{{ product.code }}</td>
           </tr>

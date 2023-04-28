@@ -6,23 +6,10 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none q-gutter-md">
-        <q-select
-          outlined
-          v-model="store_id"
-          :options="listStores"
-          option-value="id"
-          option-label="name"
-          label="Toko"
-          emit-value
-          map-options
-        />
-        <q-input
-          outlined
-          v-model="stock"
-          label="Stock"
-          type="number"
-          required
-        />
+        <q-select outlined v-model="store_id" :options="listStores" option-value="id" option-label="name" label="Toko"
+          emit-value map-options :rules="[val => !!val || 'Harus diisi!']" error-color="red-6" />
+        <q-input outlined v-model="stock" label="Stock" type="number" :rules="[val => !!val || 'Harus diisi!']"
+          error-color="red-6" />
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-teal">
         <q-btn flat color="teal-10" label="Simpan" type="submit" />

@@ -1,8 +1,8 @@
 <template>
   <div class="q-pa-md">
-    <q-table :title="title" :rows="stocks" row-key="id" :columns="columns" :filter="filter">
+    <q-table :title="'Stok Toko ' + storeName" :rows="stocks" row-key="id" :columns="columns" :filter="filter">
       <template v-slot:top-right>
-        <q-input dense debounce="500" v-model="filter" placeholder="Cari">
+        <q-input debounce="500" v-model="filter" placeholder="Cari">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -10,6 +10,8 @@
       </template>
     </q-table>
   </div>
+  <pre>{{ digitSeparator(getItems()) }}</pre>
+  <pre>{{ digitSeparator(getTotal()) }}</pre>
   <pre>{{ stocks }}</pre>
 </template>
 <script setup>
@@ -22,20 +24,26 @@ import { useRoute } from 'vue-router';
 const stocks = reactive([]);
 const params = ref(useRoute().params);
 const filter = ref('')
+const storeName = ref('')
 try {
   const response = await apiTokened.get(`stores/${params.value.id}/stocks`);
   Object.assign(stocks, response.data.data.stocks);
+  const responseStore = await apiTokened.get(`stores/${params.value.id}`);
+  storeName.value = responseStore.data.data.store.name
 } catch (error) {
   toArray(error.response.data.message).forEach((message) => {
     notifyError(message);
   });
 }
-const title = "Stok Toko-" + params.value.id
 stocks.forEach((stock) => {
   stock.stock_calc = stock.stock * stock.base_price
   stock.base_price = stock.base_price
   stock.selling_price = stock.selling_price
 })
+
+const getTotal = () => stocks.reduce((acc, stock) => acc + stock.stock_calc, 0)
+const getItems = () => stocks.reduce((acc, stock) => acc + parseInt(stock.stock), 0)
+
 const columns = [
   { name: "code", field: "code", label: "Kode", align: "left" },
   { name: "name", field: "name", label: "Nama", align: "left" },

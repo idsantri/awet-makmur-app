@@ -4,13 +4,16 @@
       <q-card class="q-ma-sm text-teal-10">
         <q-card-section class="q-gutter-sm no-margin q-pa-sm">
           <q-select outlined v-model="store_id" :options="listStores" option-value="id" option-label="name" emit-value
-            map-options label="Toko" />
+            map-options label="Toko" :rules="[val => !!val || 'Harus diisi!']" error-color="red-6" />
           <div class="text-body1 q-mt-md">Data Pelanggan</div>
-          <q-input outlined v-model="customer_name" label="Nama" />
-          <q-input outlined v-model="customer_address" label="Alamat" />
-          <q-input outlined v-model="customer_phone" label="Telepon" type="number" />
+          <q-input outlined v-model="customer_name" label="Nama" :rules="[val => !!val || 'Harus diisi!']"
+            error-color="red-6" />
+          <q-input outlined v-model="customer_address" label="Alamat" :rules="[val => !!val || 'Harus diisi!']"
+            error-color="red-6" />
+          <q-input outlined v-model="customer_phone" label="Telepon" type="number"
+            :rules="[val => !!val || 'Harus diisi!']" error-color="red-6" />
           <q-select outlined v-model="payment" :options="listPayment" option-value="val" option-label="val" emit-value
-            map-options label="Pembayaran" />
+            map-options label="Pembayaran" :rules="[val => !!val || 'Harus diisi!']" error-color="red-6" />
           <q-input v-model="note" outlined type="textarea" label="Catatan" autogrow placeholder="Catatan transaksi" />
 
           <div class="text-body1 q-mt-md">Data Produk</div>
@@ -174,5 +177,4 @@ const submitOrder = async () => {
 .multi-line {
   white-space: pre-wrap;
   word-wrap: break-word;
-}
-</style>
+}</style>
