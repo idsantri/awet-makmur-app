@@ -2595,6 +2595,45 @@ csstype@^2.6.8:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.21.tgz#2efb85b7cc55c80017c66a5ad7cbd931fda3a90e"
   integrity sha512-Z1PhmomIfypOpoMjRQB70jfvy/wxT50qW08YXO5lMIJkrdq4yOTR+AW7FqutScmB9NkLwxo+jU+kZLbofZZq/w==
 
+datatables.net-dt@>=1.12.1, datatables.net-dt@^1.13.4:
+  version "1.13.4"
+  resolved "https://registry.yarnpkg.com/datatables.net-dt/-/datatables.net-dt-1.13.4.tgz#ec32d22a02772ee6dda2677032cb6b24f3f5e4d0"
+  integrity sha512-QAvuEej/qKSiaSmSeDQ36wWO72XzFGKkd0jdiqbp+2FHAAzIk+ffsqQAwylystMoBSiO0zlcdaqHoAPa5Dy7Pg==
+  dependencies:
+    datatables.net ">=1.12.1"
+    jquery ">=1.7"
+
+datatables.net-responsive-dt@^2.4.0:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/datatables.net-responsive-dt/-/datatables.net-responsive-dt-2.4.1.tgz#4f168169f89040ee8658cc32099193b0c3a89201"
+  integrity sha512-RukGH2DBFtuQKJgN7GVK6Brhue1zuJRdDVLZiwxhZmSXd2zpr+x6n7tH5vqDfYD75GCy4ZEULcDFnWpRWSyZIA==
+  dependencies:
+    datatables.net-dt ">=1.12.1"
+    datatables.net-responsive ">=2.3.0"
+    jquery ">=1.7"
+
+datatables.net-responsive@>=2.3.0:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/datatables.net-responsive/-/datatables.net-responsive-2.4.1.tgz#3396ec812e779424bc9261cc1ce527a57a2d9e42"
+  integrity sha512-6aGZybNb65lRPtd+hPHRyaBgs7D3R2Hw+RQP7he3qH5BTpMH9BG4FxVvyAud0Q4gyopO9I52uf60p2GT++4qOA==
+  dependencies:
+    datatables.net ">=1.12.1"
+    jquery ">=1.7"
+
+datatables.net-vue3@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/datatables.net-vue3/-/datatables.net-vue3-2.1.0.tgz#9648898145c4e3118023bc8d44e83cafeb1b3f17"
+  integrity sha512-1SUyco6ZaA41egobTVmD0BtcnMeBn1LlqfBksGO2WCo9m9dMt+i2Yo8jy25Z1YBjbW/ACXt5i+Q9cfJY1Nh0Uw==
+  dependencies:
+    datatables.net-responsive-dt "^2.4.0"
+
+datatables.net@>=1.12.1:
+  version "1.13.4"
+  resolved "https://registry.yarnpkg.com/datatables.net/-/datatables.net-1.13.4.tgz#9a809cee82eca0a884e10b4d47a3a3d6e65e9fe7"
+  integrity sha512-yzhArTOB6tPO2QFKm1z3hA4vabtt2hRvgw8XLsT1xqEirinfGYqWDiWXlkTPTaJv2e7gG+Kf985sXkzBFlGrGQ==
+  dependencies:
+    jquery ">=1.7"
+
 debug@2.6.9:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -3826,6 +3865,11 @@ jest-worker@^29.1.2:
     jest-util "^29.5.0"
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
+
+jquery@>=1.7:
+  version "3.6.4"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.4.tgz#ba065c188142100be4833699852bf7c24dc0252f"
+  integrity sha512-v28EW9DWDFpzcD9O5iyJXg3R3+q+mET5JhnjJzQUZMHOv67bpSIHq81GEYpPNZHG+XXHsfSme3nxp/hndKEcsQ==
 
 js-sdsl@^4.1.4:
   version "4.4.0"

@@ -126,6 +126,14 @@
     @crop-upload-success="cropUploadSuccess" @crop-upload-fail="cropUploadFail" v-model="showUploader" :width="500"
     :height="500" :url="urlUpload" :params="paramsImage" :headers="headers" withCredentials img-format="png"></my-upload>
   <!-- <img :src="imgDataUrl"> -->
+
+  <div class="flex fixed-bottom-right q-mr-md q-mb-xl q-gutter-md">
+    <q-btn push color="teal" round icon="search" @click="showModalSearch = true" />
+  </div>
+
+  <q-dialog v-model="showModalSearch">
+    <ModalSearch />
+  </q-dialog>
 </template>
 
 <script setup>
@@ -141,6 +149,7 @@ import { notifyError, notifySuccess } from "src/utils/notify";
 import { forceRerender } from "src/utils/buttons-click";
 import myUpload from "vue-image-crop-upload";
 import ordersStore from "src/stores/orders-store";
+import ModalSearch from "./ModalSearch.vue";
 
 const route = useRoute();
 const params = ref(route.params);
@@ -151,6 +160,7 @@ const margin = ref(0);
 const showModalDescription = ref(false);
 const showModalProduct = ref(false);
 const showModalStock = ref(false);
+const showModalSearch = ref(false);
 
 const addToCart = () => {
   ordersStore().addOrder(product)

@@ -37,10 +37,17 @@
       </q-card-actions>
     </q-card>
   </div>
-  <q-btn push color="teal" round icon="add" class="flex fixed-bottom-right q-mr-md q-mb-xl"
-    @click="showModalProduct = true" />
+  <div class="flex fixed-bottom-right q-mr-md q-mb-xl q-gutter-md">
+    <q-btn push color="teal" round icon="add" @click="showModalProduct = true" />
+    <q-btn push color="teal" round icon="search" @click="showModalSearch = true" />
+  </div>
+
   <q-dialog v-model="showModalProduct">
-    <modal-product :is-new="true" />
+    <ModalProduct :is-new="true" />
+  </q-dialog>
+
+  <q-dialog v-model="showModalSearch">
+    <ModalSearch />
   </q-dialog>
 </template>
 
@@ -51,8 +58,10 @@ import { useRoute, } from "vue-router";
 import digitSeparator from "src/utils/digit-separator";
 import ordersStore from "src/stores/orders-store";
 import ModalProduct from "./ModalProduct.vue";
+import ModalSearch from "./ModalSearch.vue";
 
 const showModalProduct = ref(false);
+const showModalSearch = ref(false);
 const route = useRoute();
 const params = ref(route.params);
 const products = reactive([]);
