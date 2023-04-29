@@ -25,7 +25,11 @@
       </span>
     </div>
     <q-dialog v-model="showModalZakat">
-      <ModalZakat :total="getTotal()" />
+      <ModalZakat :asset="getTotal()" @close-modal="() => showModalZakat = false">
+        <template v-slot:store>
+          Toko {{ storeName }}
+        </template>
+      </ModalZakat>
     </q-dialog>
   </div>
 </template>
@@ -45,8 +49,8 @@ const storeName = ref('')
 const showModalZakat = ref(false)
 
 try {
-  const response = await apiTokened.get(`stores/${params.value.id}/stocks`);
-  Object.assign(stocks, response.data.data.stocks);
+  const responseStock = await apiTokened.get(`stores/${params.value.id}/stocks`);
+  Object.assign(stocks, responseStock.data.data.stocks);
   stocks.forEach((stock) => {
     stock.stock_calc = stock.stock * stock.base_price
     stock.product_detail = stock.name + (stock.brand.length > 1 ? " (" + stock.brand + ")" : "")
