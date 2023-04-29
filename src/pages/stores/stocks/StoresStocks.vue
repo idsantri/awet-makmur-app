@@ -19,11 +19,14 @@
       </q-card-section>
     </q-card>
     <div class="q-mt-lg">
-      <q-btn push color="teal" round icon="card_giftcard" />
+      <q-btn push color="teal" round icon="card_giftcard" @click="showModalZakat = true" />
       <span class="text-body2 text-teal-10 q-ml-sm">
         Hitung Zakat
       </span>
     </div>
+    <q-dialog v-model="showModalZakat">
+      <ModalZakat :total="getTotal()" />
+    </q-dialog>
   </div>
 </template>
 <script setup>
@@ -33,11 +36,13 @@ import { notifyError } from 'src/utils/notify';
 import toArray from 'src/utils/to-array';
 import { reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import ModalZakat from './ModalZakat.vue'
 
 const stocks = reactive([]);
 const params = ref(useRoute().params);
 const filter = ref('')
 const storeName = ref('')
+const showModalZakat = ref(false)
 
 try {
   const response = await apiTokened.get(`stores/${params.value.id}/stocks`);
