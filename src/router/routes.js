@@ -16,10 +16,6 @@ const routes = [
         component: () => import("src/pages/products/ProductAll.vue")
       },
       {
-        path: "orders/stores/:storeId",
-        component: () => import("src/pages/orders/OrderByStore.vue")
-      },
-      {
         path: "orders/current",
         component: () => import("src/pages/orders/OrderCurrent.vue")
       },

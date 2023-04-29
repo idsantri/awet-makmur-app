@@ -1,3 +1,0 @@
-<template>
-  order all
-</template>
