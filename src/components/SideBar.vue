@@ -3,9 +3,10 @@
 
     <!-- KATEGORI -->
     <q-item-label header class="text-teal-10 q-pb-none">
-      <div class="text-body1">Kategori Produk</div>
+      <div class="text-body1">Produk</div>
+      <div class="text-caption">Berdasarkan kategori</div>
     </q-item-label>
-    <q-item clickable v-ripple v-for="(category, index) in categories" :key="index" :to="category.link">
+    <q-item clickable v-ripple v-for="(category, index) in categoryList" :key="index" :to="category.link">
       <q-item-section avatar>
         <q-icon color="teal-1" :name="category.icon" />
       </q-item-section>
@@ -15,51 +16,36 @@
       </q-item-section>
     </q-item>
 
-    <!-- STOCK BY STORE -->
-    <q-separator dark />
-    <q-item-label header class="text-teal-10 q-pb-none">
-      <div class="text-body1">Stok</div>
-    </q-item-label>
-    <q-item clickable v-ripple v-for="(stock, index) in stocks" :key="index" :to="stock.link">
-      <q-item-section avatar>
-        <q-icon color="teal-1" :name="stock.icon" />
-      </q-item-section>
-      <q-item-section>
-        <q-item-label>{{ stock.name }}</q-item-label>
-        <q-item-label caption>{{ stock.caption }}</q-item-label>
-      </q-item-section>
-    </q-item>
+    <!-- STORE -->
+    <div v-for="(store, index) in storeList" :key="index">
+      <q-separator dark />
+      <q-item-label header class="text-teal-10 q-pb-none ">
+        <div class="text-body1">Toko {{ store.name }}</div>
+        <div class="text-caption">{{ store.caption }}</div>
+      </q-item-label>
 
-    <!-- TRANSAKSI BY STORE -->
-    <!-- <q-separator dark />
-    <q-item-label header class="text-teal-10 q-pb-none">
-      <div class="text-body1">Transaksi</div>
-    </q-item-label>
-    <q-item clickable v-ripple v-for="(order, index) in orders" :key="index" :to="order.link">
-      <q-item-section avatar>
-        <q-icon color="teal-1" :name="order.icon" />
-      </q-item-section>
-      <q-item-section>
-        <q-item-label>{{ order.name }}</q-item-label>
-        <q-item-label caption>{{ order.caption }}</q-item-label>
-      </q-item-section>
-    </q-item> -->
+      <!-- STOCK -->
+      <q-item clickable :to="store.stock.link">
+        <q-item-section avatar>
+          <q-icon color="teal-1" :name="store.stock.icon" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ store.stock.name }}</q-item-label>
+          <q-item-label caption>{{ store.stock.caption }}</q-item-label>
+        </q-item-section>
+      </q-item>
 
-
-    <!-- FITUR -->
-    <q-separator dark />
-    <q-item-label header class="text-teal-10 q-pb-none">
-      <div class="text-body1">Fitur</div>
-    </q-item-label>
-    <q-item clickable v-ripple>
-      <q-item-section avatar>
-        <q-icon color="teal-1" name="card_giftcard" />
-      </q-item-section>
-      <q-item-section>
-        <q-item-label>Zakat</q-item-label>
-        <q-item-label caption></q-item-label>
-      </q-item-section>
-    </q-item>
+      <!-- ORDERS -->
+      <q-item clickable :to="store.order.link">
+        <q-item-section avatar>
+          <q-icon color="teal-1" :name="store.order.icon" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ store.order.name }}</q-item-label>
+          <q-item-label caption>{{ store.order.caption }}</q-item-label>
+        </q-item-section>
+      </q-item>
+    </div>
 
     <!-- SETTING -->
     <!-- bla bla -->
@@ -69,54 +55,45 @@
 </template>
 
 <script setup>
-const categories = [
-  {
-    name: "Kursi",
-    caption: "",
-    icon: "chair",
-    link: "/products/categories/kursi",
-  },
-  {
-    name: "Tempat Tidur",
-    caption: "",
-    icon: "king_bed",
-    link: "/products/categories/kasur",
-  },
-  {
-    name: "Lemari",
-    caption: "",
-    icon: "inventory_2",
-    link: "/products/categories/lemari",
-  },
-];
+import { apiTokened } from 'src/config/api';
+import { reactive } from 'vue';
 
-const orders = [
-  {
-    name: "Toko 1",
-    caption: "Sarbunten",
-    icon: "store",
-    link: "/stores/1/orders",
-  },
-  {
-    name: "Toko 2",
-    caption: "Lajing",
-    icon: "store",
-    link: "/stores/2/orders",
-  },
-];
+const storeList = reactive([])
+const categoryList = reactive([])
+try {
+  const responseStore = await apiTokened.get(`stores`);
+  responseStore.data.data.stores.forEach((store) => {
+    storeList.push({
+      name: store.name,
+      caption: store.address,
+      icon: "store",
+      // link: `stores/${store.id}/stocks`
+      stock: {
+        name: "Stok",
+        caption: "Data Stok",
+        icon: "inventory",
+        link: `/stores/${store.id}/stocks`
+      },
+      order: {
+        name: "Order",
+        caption: "Daftar Pesanan",
+        icon: "local_mall",
+        link: `/stores/${store.id}/orders`
+      },
+    })
+  })
 
-const stocks = [
-  {
-    name: "Toko 1",
-    caption: "Sarbunten",
-    icon: "store",
-    link: "/stores/1/stocks",
-  },
-  {
-    name: "Toko 2",
-    caption: "Lajing",
-    icon: "store",
-    link: "/stores/2/stocks",
-  },
-];
+  const responseCategory = await apiTokened.get(`categories`);
+  responseCategory.data.data.categories.forEach((category) => {
+    categoryList.push({
+      name: category.name,
+      caption: category.description,
+      icon: category.icon,
+      link: `/products/categories/${category.slug}`,
+    })
+  })
+
+} catch (error) {
+  console.log("Not Found: store -> list", error.response);
+}
 </script>

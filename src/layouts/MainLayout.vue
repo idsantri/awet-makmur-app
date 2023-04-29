@@ -6,7 +6,7 @@
 
         <q-toolbar-title> Toko Awet Makmur </q-toolbar-title>
 
-        <q-btn round flat dense icon="shopping_cart_checkout" color="green-1" to="/orders">
+        <q-btn round flat dense icon="shopping_cart_checkout" color="green-1" to="/orders/current">
           <q-badge v-if="badge" floating color="teal-13" rounded />
         </q-btn>
 
@@ -38,7 +38,16 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-teal-5">
-      <side-bar />
+      <suspense>
+        <template #default>
+          <side-bar />
+        </template>
+        <template #fallback>
+          <div class="spinner">
+            <q-spinner-cube color="teal-8" size="8em" />
+          </div>
+        </template>
+      </suspense>
     </q-drawer>
 
     <q-page-container :key="componentKey">

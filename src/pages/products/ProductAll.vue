@@ -58,7 +58,7 @@ import { useRoute, } from "vue-router";
 import digitSeparator from "src/utils/digit-separator";
 import ordersStore from "src/stores/orders-store";
 import ModalProduct from "./ModalProduct.vue";
-import ModalSearch from "./ModalSearch.vue";
+import ModalSearch from "./ProductSearch.vue";
 
 const showModalProduct = ref(false);
 const showModalSearch = ref(false);

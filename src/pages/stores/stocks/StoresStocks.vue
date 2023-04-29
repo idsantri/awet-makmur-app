@@ -9,10 +9,15 @@
         </q-input>
       </template>
     </q-table>
+    <q-card class="q-mt-md bg-teal-2">
+      <q-card-section class="text-body1 text-teal-10 text-center text-italic">
+        <p class="no-margin">Total Stok: {{ digitSeparator(getItems()) }} item, <br /> dengan nilai: <span
+            class="text-bold">Rp{{
+              digitSeparator(getTotal())
+            }}</span> </p>
+      </q-card-section>
+    </q-card>
   </div>
-  <pre>{{ digitSeparator(getItems()) }}</pre>
-  <pre>{{ digitSeparator(getTotal()) }}</pre>
-  <pre>{{ stocks }}</pre>
 </template>
 <script setup>
 import { apiTokened } from 'src/config/api';
@@ -21,13 +26,20 @@ import { notifyError } from 'src/utils/notify';
 import toArray from 'src/utils/to-array';
 import { reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
+
 const stocks = reactive([]);
 const params = ref(useRoute().params);
 const filter = ref('')
 const storeName = ref('')
+
 try {
   const response = await apiTokened.get(`stores/${params.value.id}/stocks`);
   Object.assign(stocks, response.data.data.stocks);
+  stocks.forEach((stock) => {
+    stock.stock_calc = stock.stock * stock.base_price
+    stock.product_detail = stock.name + (stock.brand.length > 1 ? " (" + stock.brand + ")" : "")
+  })
+
   const responseStore = await apiTokened.get(`stores/${params.value.id}`);
   storeName.value = responseStore.data.data.store.name
 } catch (error) {
@@ -35,22 +47,14 @@ try {
     notifyError(message);
   });
 }
-stocks.forEach((stock) => {
-  stock.stock_calc = stock.stock * stock.base_price
-  stock.base_price = stock.base_price
-  stock.selling_price = stock.selling_price
-})
 
 const getTotal = () => stocks.reduce((acc, stock) => acc + stock.stock_calc, 0)
 const getItems = () => stocks.reduce((acc, stock) => acc + parseInt(stock.stock), 0)
 
 const columns = [
-  { name: "code", field: "code", label: "Kode", align: "left" },
-  { name: "name", field: "name", label: "Nama", align: "left" },
+  { name: "name", field: "product_detail", label: "Nama", align: "left" },
   { name: "base_price", field: "base_price", label: "Harga Dasar", align: "right", format: (val, row) => `Rp${digitSeparator(val)}` },
-  // { name: "selling_price", field: "selling_price", label: "Harga Jual", align: "right", format: (val, row) => `Rp${digitSeparator(val)}` },
   { name: "stock", field: "stock", label: "Stok", align: "right", sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
   { name: "stock_calc", field: "stock_calc", label: "Harga x Stok", align: "right", format: (val, row) => `Rp${digitSeparator(val)}` },
-
 ]
 </script>

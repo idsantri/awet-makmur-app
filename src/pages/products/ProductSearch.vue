@@ -25,18 +25,13 @@
     </q-card-section>
   </q-card>
 </template>
+
 <script setup>
 import DataTable from "datatables.net-vue3";
 import DataTablesLib from "datatables.net-dt";
-import { ref, onMounted, onUnmounted, computed } from 'vue';
-// import memberCrud from '../stores/member-crud-store'
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { apiTokened } from '../../config/api'
-import toArray from '../../utils/to-array';
-import { notifyError, notifySuccess } from "src/utils/notify";
-// import { forceRerender, closeModalSearch } from '../utils/buttons-click'
-// import useAuthStore from "src/stores/auth-store";
-import { useQuasar } from "quasar";
 const router = useRouter()
 
 const url = `${apiTokened.defaults.baseURL}/products/search`
@@ -98,12 +93,6 @@ onMounted(() => {
   document.goTo = (id) => {
     router.push(`/products/${id}`)
   };
-
-  // const price = document.querySelectorAll('td > .selling-price')
-  // while (price) {
-  //   console.log(price);
-  // }
-
 });
 
 onUnmounted(() => {

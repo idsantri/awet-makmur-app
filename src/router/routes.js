@@ -16,8 +16,12 @@ const routes = [
         component: () => import("src/pages/products/ProductAll.vue")
       },
       {
-        path: "orders",
-        component: () => import("src/pages/orders/OrderIndex.vue")
+        path: "orders/stores/:storeId",
+        component: () => import("src/pages/orders/OrderByStore.vue")
+      },
+      {
+        path: "orders/current",
+        component: () => import("src/pages/orders/OrderCurrent.vue")
       },
       {
         path: "stores/:id/stocks",
@@ -26,7 +30,7 @@ const routes = [
       {
         path: "stores/:id/orders",
         component: () => import("src/pages/stores/orders/StoresOrders.vue")
-      },
+      }
     ]
   },
 

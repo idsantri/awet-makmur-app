@@ -149,7 +149,7 @@ import { notifyError, notifySuccess } from "src/utils/notify";
 import { forceRerender } from "src/utils/buttons-click";
 import myUpload from "vue-image-crop-upload";
 import ordersStore from "src/stores/orders-store";
-import ModalSearch from "./ModalSearch.vue";
+import ModalSearch from "./ProductSearch.vue";
 
 const route = useRoute();
 const params = ref(route.params);
