@@ -78,7 +78,7 @@ try {
       // link: `stores/${store.id}/stocks`
       stock: {
         name: "Stok",
-        caption: "Data Stok",
+        caption: "Data Stok dan Hitung Zakat",
         icon: "inventory",
         link: `/stores/${store.id}/stocks`
       },
