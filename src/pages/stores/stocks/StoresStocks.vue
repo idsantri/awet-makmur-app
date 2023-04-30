@@ -32,7 +32,7 @@
       </ModalZakat>
     </q-dialog>
   </div>
-  <!-- <pre>{{ stocks }}</pre> -->
+  <pre>{{ stocks }}</pre>
 </template>
 <script setup>
 import { apiTokened } from 'src/config/api';
@@ -52,10 +52,6 @@ const showModalZakat = ref(false)
 try {
   const responseStock = await apiTokened.get(`stores/${params.value.id}/stocks`);
   Object.assign(stocks, responseStock.data.data.stocks);
-  stocks.forEach((stock) => {
-    stock.stock_calc = stock.stock * stock.base_price
-    stock.product_detail = stock.name + (stock.brand.length > 1 ? " (" + stock.brand + ")" : "")
-  })
   storeName.value = stocks[0].store_name
 } catch (error) {
   toArray(error.response.data.message).forEach((message) => {
@@ -67,10 +63,10 @@ const getTotal = () => stocks.reduce((acc, stock) => acc + stock.stock_calc, 0)
 const getItems = () => stocks.reduce((acc, stock) => acc + parseInt(stock.stock), 0)
 
 const columns = [
-  { name: "name", field: "product_detail", label: "Nama", align: "left", sortable: true, },
+  { name: "product", field: row => row.name + (row.brand.length > 1 ? " (" + row.brand + ")" : ""), label: "Nama", align: "left", sortable: true, },
   { name: "base_price", field: "base_price", label: "Harga Dasar", align: "right", format: (val, row) => `Rp${digitSeparator(val)}`, sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
   { name: "stock", field: "stock", label: "Stok", align: "right", sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
-  { name: "stock_calc", field: "stock_calc", label: "Harga x Stok", align: "right", format: (val, row) => `Rp${digitSeparator(val)}` },
+  { name: "product_worth", field: "product_worth", label: "Harga x Stok", align: "right", format: (val, row) => `Rp${digitSeparator(val)}` },
 ]
 
 </script>

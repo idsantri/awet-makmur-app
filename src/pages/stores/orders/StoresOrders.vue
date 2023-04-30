@@ -26,8 +26,9 @@ const columns = [
   { name: "created_at", field: "created_at", label: "Tanggal", align: "left", format: (val, row) => `${simpleDate(val)}`, sortable: true, },
   { name: "customer", field: row => `${row.customer_name} (${row.customer_address}; ${row.customer_phone})`, label: "Pelanggan", align: "left", sortable: true, },
   { name: "payment", field: "payment", label: "Pembayaran", align: "left", sortable: true, },
-  { name: "total_income", field: "total_income", label: "Nominal Transaksi", align: "right", format: (val, row) => `Rp${digitSeparator(val)}`, sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
+  { name: "sum_selling_price", field: "sum_selling_price", label: "Nominal Transaksi", align: "right", format: (val, row) => `Rp${digitSeparator(val)}`, sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
 ]
+
 const orders = reactive([]);
 const params = ref(useRoute().params);
 const filter = ref('')
