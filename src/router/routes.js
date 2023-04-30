@@ -20,6 +20,10 @@ const routes = [
         component: () => import("src/pages/orders/OrderCurrent.vue")
       },
       {
+        path: "orders/:id",
+        component: () => import("src/pages/orders/OrderDetail.vue")
+      },
+      {
         path: "stores/:id/stocks",
         component: () => import("src/pages/stores/stocks/StoresStocks.vue")
       },

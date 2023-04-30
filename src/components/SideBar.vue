@@ -18,8 +18,8 @@
 
     <q-separator dark />
     <div v-for="(store, index) in storeList" :key="index">
-      <q-expansion-item expand-separator :label="'Toko ' + store.name" :caption="store.caption"
-        header-class="text-body1 text-teal-1">
+      <q-expansion-item expand-separator :label="store.name" :caption="store.caption"
+        header-class="text-body1 text-teal-1" expand-icon-class="text-teal-1">
 
         <!-- STOCK -->
         <q-item clickable :to="store.stock.link">

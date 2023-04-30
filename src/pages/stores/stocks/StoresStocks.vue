@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
-    <q-table :title="'Stok Toko ' + storeName" :rows="stocks" row-key="id" :columns="columns" :filter="filter"
-      @row-click="(event, row) => $router.push(`/products/${row.id}`)">
+    <q-table :title="'Stok ' + storeName" :rows="stocks" row-key="id" :columns="columns" :filter="filter"
+      @row-click="(event, row) => $router.push(`/products/${row.id}`)" class="text-teal-10">
       <template v-slot:top-right>
         <q-input debounce="500" v-model="filter" placeholder="Cari">
           <template v-slot:append>
@@ -32,6 +32,7 @@
       </ModalZakat>
     </q-dialog>
   </div>
+  <!-- <pre>{{ stocks }}</pre> -->
 </template>
 <script setup>
 import { apiTokened } from 'src/config/api';
@@ -55,9 +56,7 @@ try {
     stock.stock_calc = stock.stock * stock.base_price
     stock.product_detail = stock.name + (stock.brand.length > 1 ? " (" + stock.brand + ")" : "")
   })
-
-  const responseStore = await apiTokened.get(`stores/${params.value.id}`);
-  storeName.value = responseStore.data.data.store.name
+  storeName.value = stocks[0].store_name
 } catch (error) {
   toArray(error.response.data.message).forEach((message) => {
     notifyError(message);
@@ -68,8 +67,8 @@ const getTotal = () => stocks.reduce((acc, stock) => acc + stock.stock_calc, 0)
 const getItems = () => stocks.reduce((acc, stock) => acc + parseInt(stock.stock), 0)
 
 const columns = [
-  { name: "name", field: "product_detail", label: "Nama", align: "left" },
-  { name: "base_price", field: "base_price", label: "Harga Dasar", align: "right", format: (val, row) => `Rp${digitSeparator(val)}` },
+  { name: "name", field: "product_detail", label: "Nama", align: "left", sortable: true, },
+  { name: "base_price", field: "base_price", label: "Harga Dasar", align: "right", format: (val, row) => `Rp${digitSeparator(val)}`, sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
   { name: "stock", field: "stock", label: "Stok", align: "right", sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },
   { name: "stock_calc", field: "stock_calc", label: "Harga x Stok", align: "right", format: (val, row) => `Rp${digitSeparator(val)}` },
 ]
