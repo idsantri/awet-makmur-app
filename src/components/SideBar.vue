@@ -83,8 +83,8 @@ try {
         link: `/stores/${store.id}/stocks`
       },
       order: {
-        name: "Order",
-        caption: "Daftar Pesanan",
+        name: "Transaksi",
+        caption: "Daftar Transaksi",
         icon: "local_mall",
         link: `/stores/${store.id}/orders`
       },

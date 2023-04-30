@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <q-table :title="'Stok Toko ' + storeName" :rows="stocks" row-key="id" :columns="columns" :filter="filter"
-      @row-click="navigateToDetail">
+      @row-click="(event, row) => $router.push(`/products/${row.id}`)">
       <template v-slot:top-right>
         <q-input debounce="500" v-model="filter" placeholder="Cari">
           <template v-slot:append>
@@ -39,7 +39,7 @@ import digitSeparator from 'src/utils/digit-separator';
 import { notifyError } from 'src/utils/notify';
 import toArray from 'src/utils/to-array';
 import { reactive, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import ModalZakat from './ModalZakat.vue'
 
 const stocks = reactive([]);
@@ -74,8 +74,4 @@ const columns = [
   { name: "stock_calc", field: "stock_calc", label: "Harga x Stok", align: "right", format: (val, row) => `Rp${digitSeparator(val)}` },
 ]
 
-const router = useRouter();
-const navigateToDetail = (event, row) => {
-  router.push(`/products/${row.id}`)
-}
 </script>
