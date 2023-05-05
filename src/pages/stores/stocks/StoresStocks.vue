@@ -32,6 +32,13 @@
       </ModalZakat>
     </q-dialog>
   </div>
+
+  <div v-else>
+    <q-banner class="bg-red-2 text-red-10 q-ma-md">
+      <div class="text-body1 text-center">Tidak ada data untuk ditampilkan!</div>
+    </q-banner>
+  </div>
+
   <!-- <pre>{{ stocks }}</pre> -->
 </template>
 <script setup>
