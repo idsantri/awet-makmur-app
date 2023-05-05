@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-pa-md" v-if="stocks.length > 0">
     <q-table :title="'Stok ' + storeName" :rows="stocks" row-key="id" :columns="columns" :filter="filter"
       @row-click="(event, row) => $router.push(`/products/${row.id}`)" class="text-teal-10">
       <template v-slot:top-right>
@@ -46,14 +46,15 @@ import ModalZakat from './ModalZakat.vue'
 const stocks = reactive([]);
 const params = ref(useRoute().params);
 const filter = ref('')
-const storeName = ref('')
+const storeName = ref('Toko')
 const showModalZakat = ref(false)
 
 try {
   const responseStock = await apiTokened.get(`stores/${params.value.id}/stocks`);
   Object.assign(stocks, responseStock.data.data.stocks);
-  storeName.value = stocks[0].store_name
+  if (stocks.length > 0) storeName.value = stocks[0].store_name
 } catch (error) {
+  console.log(error);
   toArray(error.response.data.message).forEach((message) => {
     notifyError(message);
   });

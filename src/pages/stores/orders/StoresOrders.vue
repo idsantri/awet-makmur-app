@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-pa-md" v-if="orders.length > 0">
     <q-table :title="'Transaksi ' + storeName" :rows="orders" row-key="id" :columns="columns" :filter="filter"
       @row-click="(event, row) => $router.push(`/orders/${row.id}`)" class="text-teal-10">
       <template v-slot:top-right>
@@ -32,12 +32,12 @@ const columns = [
 const orders = reactive([]);
 const params = ref(useRoute().params);
 const filter = ref('')
-const storeName = ref('')
+const storeName = ref('Toko')
 
 try {
   const responseOrder = await apiTokened.get(`stores/${params.value.id}/orders`);
   Object.assign(orders, responseOrder.data.data.orders);
-  storeName.value = orders[0].store_name
+  if (orders.length > 0) storeName.value = orders[0].store_name
 } catch (error) {
   toArray(error.response.data.message).forEach((message) => {
     notifyError(message);

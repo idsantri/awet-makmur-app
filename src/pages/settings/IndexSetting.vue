@@ -9,7 +9,7 @@
 
     <q-separator />
 
-    <q-tab-panels v-model="tab" animated class="">
+    <q-tab-panels v-model="tab" animated class="" swipeable>
       <q-tab-panel name="categories">
         <tab-categories />
       </q-tab-panel>
