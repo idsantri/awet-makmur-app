@@ -12,17 +12,17 @@
             <q-item-label caption lines="2">{{ category.description }}</q-item-label>
           </q-item-section>
           <q-item-section side>
-            <q-btn icon="edit" round color="teal-2" text-color="teal-10" @click="crudCategories(false, category)"></q-btn>
+            <q-btn icon="edit" round color="teal-2" text-color="teal-10" @click="crud(false, category)"></q-btn>
           </q-item-section>
         </q-item>
       </q-list>
     </q-card-section>
     <q-card-actions class="q-py-none ">
-      <q-btn icon="add" flat label="Tambah" color="teal-2" text-color="teal-10" @click="crudCategories(true, {})" />
+      <q-btn icon="add" flat label="Tambah" color="teal-2" text-color="teal-10" @click="crud(true, {})" />
     </q-card-actions>
   </q-card>
 
-  <q-dialog v-model="showModalCategories">
+  <q-dialog v-model="showModal">
     <CategoriesCrud :is-new="newCategory" :category="category" />
   </q-dialog>
 
@@ -33,13 +33,14 @@ import { apiTokened } from 'src/config/api';
 import { reactive, ref } from 'vue';
 import CategoriesCrud from './CategoriesCrud.vue';
 
-const showModalCategories = ref(false)
+const showModal = ref(false)
 const newCategory = ref(false)
+
 let category = {}
-const crudCategories = (isNew, cat = {}) => {
+const crud = (isNew, cat = {}) => {
   newCategory.value = isNew
   category = cat
-  showModalCategories.value = true
+  showModal.value = true
 }
 
 const categories = reactive([])

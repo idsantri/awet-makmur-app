@@ -2,9 +2,9 @@
   <q-card class="q-ma-md text-teal-10">
     <q-tabs v-model="tab" class="text-grey" active-color="teal-10" indicator-color="teal" align="justify" narrow-indicator
       outside-arrows mobile-arrows>
+      <q-tab name="payments" label="Pembayaran" />
       <q-tab name="categories" label="Kategori" />
       <q-tab name="stores" label="Toko" />
-      <q-tab name="payments" label="Pembayaran" />
     </q-tabs>
 
     <q-separator />
@@ -15,13 +15,11 @@
       </q-tab-panel>
 
       <q-tab-panel name="stores">
-        <div class="text-h6">Alarms</div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        <tab-stores />
       </q-tab-panel>
 
       <q-tab-panel name="payments">
-        <div class="text-h6">Movies</div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        <tab-payments />
       </q-tab-panel>
     </q-tab-panels>
   </q-card>
@@ -30,6 +28,8 @@
 <script setup>
 import { ref } from 'vue';
 import TabCategories from './categories/CategoriesTab.vue';
+import TabStores from './stores/StoresTab.vue';
+import TabPayments from './payments/PaymentsTab.vue';
 
-const tab = ref('categories')
+const tab = ref('payments')
 </script>
