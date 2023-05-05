@@ -32,7 +32,7 @@
       </ModalZakat>
     </q-dialog>
   </div>
-  <pre>{{ stocks }}</pre>
+  <!-- <pre>{{ stocks }}</pre> -->
 </template>
 <script setup>
 import { apiTokened } from 'src/config/api';
@@ -59,9 +59,8 @@ try {
   });
 }
 
-const getTotal = () => stocks.reduce((acc, stock) => acc + stock.stock_calc, 0)
-const getItems = () => stocks.reduce((acc, stock) => acc + parseInt(stock.stock), 0)
-
+const getTotal = () => stocks.reduce((acc, stock) => acc + Number(stock.product_worth), 0)
+const getItems = () => stocks.reduce((acc, stock) => acc + Number(stock.stock), 0)
 const columns = [
   { name: "product", field: row => row.name + (row.brand.length > 1 ? " (" + row.brand + ")" : ""), label: "Nama", align: "left", sortable: true, },
   { name: "base_price", field: "base_price", label: "Harga Dasar", align: "right", format: (val, row) => `Rp${digitSeparator(val)}`, sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) },

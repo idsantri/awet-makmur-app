@@ -8,6 +8,10 @@ const routes = [
         component: () => import("pages/IndexPage.vue")
       },
       {
+        path: "home",
+        component: () => import("src/pages/home/HomeIndex.vue")
+      },
+      {
         path: "products/:id",
         component: () => import("src/pages/products/ProductDetail.vue")
       },
@@ -30,6 +34,10 @@ const routes = [
       {
         path: "stores/:id/orders",
         component: () => import("src/pages/stores/orders/StoresOrders.vue")
+      },
+      {
+        path: "settings",
+        component: () => import("src/pages/settings/IndexSetting.vue")
       }
     ]
   },

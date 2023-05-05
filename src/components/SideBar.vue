@@ -1,6 +1,22 @@
 <template>
   <q-list class="text-teal-1">
 
+    <!-- HOME -->
+    <!-- <q-item-label header class="text-teal-10 q-pb-none">
+      <div class="text-body1 text-teal-1">Setting</div>
+      <div class="text-caption">Pengaturan</div>
+    </q-item-label> -->
+    <q-item clickable v-ripple to="/home">
+      <q-item-section avatar>
+        <q-icon color="teal-1" name="home" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label>Beranda</q-item-label>
+        <q-item-label caption>Halaman Awal</q-item-label>
+      </q-item-section>
+    </q-item>
+    <q-separator dark />
+
     <!-- KATEGORI -->
     <q-item-label header class="text-teal-10 q-pb-none">
       <div class="text-body1 text-teal-1">Produk</div>
@@ -46,11 +62,12 @@
     </div>
 
     <!-- SETTING -->
-    <q-item-label header class="text-teal-10 q-pb-none">
+    <q-separator dark />
+    <!-- <q-item-label header class="text-teal-10 q-pb-none">
       <div class="text-body1 text-teal-1">Setting</div>
       <div class="text-caption">Pengaturan</div>
-    </q-item-label>
-    <q-item clickable v-ripple>
+    </q-item-label> -->
+    <q-item clickable v-ripple to="/settings">
       <q-item-section avatar>
         <q-icon color="teal-1" name="settings" />
       </q-item-section>

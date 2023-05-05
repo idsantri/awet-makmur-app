@@ -37,7 +37,7 @@
       </q-card-actions>
     </q-card>
   </div>
-  <div class="flex fixed-bottom-right q-mr-md q-mb-xl q-gutter-md">
+  <div class="q-mr-md q-mb-xl q-gutter-md text-right">
     <q-btn push color="teal" round icon="add" @click="showModalProduct = true" />
     <q-btn push color="teal" round icon="search" @click="showModalSearch = true" />
   </div>

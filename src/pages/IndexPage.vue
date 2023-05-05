@@ -1,10 +1,7 @@
 <template>
-  <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    />
+  <q-page class="flex-center">
+    <p class="text-center" style="margin-top: 100px;">selamat Datang</p>
+    <h1 class="text-h6 text-center">Toko Awet Makmur</h1>
   </q-page>
 </template>
 
