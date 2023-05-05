@@ -29,7 +29,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import TabCategories from './CategoriesTab.vue';
+import TabCategories from './categories/CategoriesTab.vue';
 
 const tab = ref('categories')
 </script>

@@ -35,7 +35,7 @@ import CategoriesCrud from './CategoriesCrud.vue';
 
 const showModalCategories = ref(false)
 const newCategory = ref(false)
-let category = reactive({})
+let category = {}
 const crudCategories = (isNew, cat = {}) => {
   newCategory.value = isNew
   category = cat

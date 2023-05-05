@@ -27,11 +27,11 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue";
-import { notifySuccess, notifyError } from "../../utils/notify";
-import { forceRerender } from "../../utils/buttons-click";
-import { apiTokened } from "../../config/api";
-import toArray from "../../utils/to-array";
-import slugify from '../../utils/slugify.js'
+import { notifySuccess, notifyError } from "src/utils/notify";
+import { forceRerender } from "src/utils/buttons-click";
+import { apiTokened } from "src/config/api";
+import toArray from "src/utils/to-array";
+import slugify from 'src/utils/slugify.js'
 
 const props = defineProps({
   isNew: { type: Boolean, default: false },
