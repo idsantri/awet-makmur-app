@@ -8,7 +8,7 @@
         </q-img>
       </div>
       <div v-else>
-        <q-img style="max-height: 30vh" src="https://cdn.quasar.dev/img/mountains.jpg">
+        <q-img style="max-height: 30vh" src="https://picsum.photos/400/300.webp">
           <q-btn push round color="teal" icon="edit" class="absolute all-pointer-events" style="bottom: 8px; right: 8px"
             @click="showUploader = true" />
         </q-img>
@@ -95,7 +95,7 @@
             <th class="text-left">
               <div class="text-body1">Stock</div>
             </th>
-            <th class="text-right">
+            <th colspan="2" class="text-right">
               <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalStock = true" />
             </th>
           </tr>
@@ -104,6 +104,9 @@
           <tr v-for="(stock, index) in stocks" :key="index">
             <td class="text-left">{{ stock.store_name }}</td>
             <td class="text-left">{{ stock.stock }}</td>
+            <td class="text-right">
+              <q-btn icon="delete" label="Hapus" color="red" flat @click="deleteStock(stock.id)" />
+            </td>
           </tr>
         </tbody>
       </q-markup-table>
@@ -161,6 +164,22 @@ const showModalDescription = ref(false);
 const showModalProduct = ref(false);
 const showModalStock = ref(false);
 const showModalSearch = ref(false);
+
+const deleteStock = async (id) => {
+  const isConfirmed = true
+  if (isConfirmed) {
+    try {
+      const response = await apiTokened.delete(`stocks/${id}`);
+      notifySuccess(response.data.message);
+    } catch (error) {
+      toArray(error.response.data.message).forEach((message) => {
+        notifyError(message);
+      });
+    } finally {
+      forceRerender();
+    }
+  }
+}
 
 const addToCart = () => {
   ordersStore().addOrder(product)

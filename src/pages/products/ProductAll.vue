@@ -18,7 +18,7 @@
             <q-img class="flex flex-center col-4 q-mr-sm img" :src="product.image_url + product.image_last" />
           </div>
           <div v-else>
-            <q-img class="flex flex-center col-4 q-mr-sm img" src="https://cdn.quasar.dev/img/parallax2.jpg" />
+            <q-img class="flex flex-center col-4 q-mr-sm img" src="https://picsum.photos/100/100.webp" />
           </div>
           <div>
             <div class="text-caption text-teal-9">

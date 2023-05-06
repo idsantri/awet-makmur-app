@@ -33,7 +33,8 @@
     <q-card-section class="q-pt-none">
       <q-list bordered separator>
         <q-item-label header overline class="q-py-sm">Data Produk</q-item-label>
-        <q-item clickable v-ripple v-for="(detail, index) in order.order_detail" :key="index">
+        <q-item clickable v-ripple v-for="(detail, index) in order.order_detail" :key="index"
+          @click="$router.push('/products/' + detail.product_id)">
           <q-item-section>
             <q-item-label>{{ detail.product_name }} {{ detail.product_brand ? ' (' + detail.product_brand + ')' : ''
             }}</q-item-label>
