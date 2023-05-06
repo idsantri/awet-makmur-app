@@ -90,7 +90,7 @@
 
 <script setup>
 import digitSeparator from 'src/utils/digit-separator';
-import { ref, defineProps, computed } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps({
   asset: { type: Number, default: null },
