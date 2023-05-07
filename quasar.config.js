@@ -13,6 +13,12 @@ const ESLintPlugin = require("eslint-webpack-plugin");
 const { configure } = require("quasar/wrappers");
 
 module.exports = configure(function (ctx) {
+  const env = ctx.dev ? "development" : "production";
+  const baseURL =
+    env === "development"
+      ? "http://localhost:8080"
+      : "https://test.baniasror.net";
+
   return {
     // https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
     supportTS: false,
@@ -39,11 +45,14 @@ module.exports = configure(function (ctx) {
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
       "roboto-font", // optional, you are not bound to it
-      "material-icons", // optional, you are not bound to it
+      "material-icons" // optional, you are not bound to it
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-build
     build: {
+      env: {
+        BASE_URL: baseURL
+      },
       vueRouterMode: "history", // available values: 'hash', 'history'
 
       // transpile: false,
@@ -70,16 +79,16 @@ module.exports = configure(function (ctx) {
         chain
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js", "vue"] }]);
-      },
+      }
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
     devServer: {
       server: {
-        type: "http",
+        type: "http"
       },
       port: 3000,
-      open: true, // opens browser window automatically
+      open: true // opens browser window automatically
     },
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-framework
@@ -87,7 +96,7 @@ module.exports = configure(function (ctx) {
       config: {
         notify: {
           /* look at QuasarConfOptions from the API card */
-        },
+        }
       },
 
       // iconSet: 'material-icons', // Quasar icon set
@@ -101,7 +110,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ["Notify"],
+      plugins: ["Notify"]
     },
 
     // animations: 'all', // --- includes all animations
@@ -129,8 +138,8 @@ module.exports = configure(function (ctx) {
 
       middlewares: [
         ctx.prod ? "compression" : "",
-        "render", // keep this as last one
-      ],
+        "render" // keep this as last one
+      ]
     },
 
     // https://v2.quasar.dev/quasar-cli-webpack/developing-pwa/configuring-pwa
@@ -159,30 +168,30 @@ module.exports = configure(function (ctx) {
           {
             src: "icons/icon-128x128.png",
             sizes: "128x128",
-            type: "image/png",
+            type: "image/png"
           },
           {
             src: "icons/icon-192x192.png",
             sizes: "192x192",
-            type: "image/png",
+            type: "image/png"
           },
           {
             src: "icons/icon-256x256.png",
             sizes: "256x256",
-            type: "image/png",
+            type: "image/png"
           },
           {
             src: "icons/icon-384x384.png",
             sizes: "384x384",
-            type: "image/png",
+            type: "image/png"
           },
           {
             src: "icons/icon-512x512.png",
             sizes: "512x512",
-            type: "image/png",
-          },
-        ],
-      },
+            type: "image/png"
+          }
+        ]
+      }
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/developing-cordova-apps/configuring-cordova
@@ -192,7 +201,7 @@ module.exports = configure(function (ctx) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/developing-capacitor-apps/configuring-capacitor
     capacitor: {
-      hideSplashscreen: true,
+      hideSplashscreen: true
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/developing-electron-apps/configuring-electron
@@ -213,7 +222,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: "awet-makmur",
+        appId: "awet-makmur"
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
@@ -228,7 +237,7 @@ module.exports = configure(function (ctx) {
         chain
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js"] }]);
-      },
-    },
+      }
+    }
   };
 });
