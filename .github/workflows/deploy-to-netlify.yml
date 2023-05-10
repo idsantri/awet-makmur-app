@@ -1,9 +1,9 @@
 name: Deploy to Netlify
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,12 +12,11 @@ jobs:
         uses: actions/checkout@v2
       - name: Install dependencies
         run: npm install
-      - name: Build
+      - name: Build PWA
         run: |
-         npm install -g @quasar/cli
-         quasar build -m pwa
-      - name: Build the app
-        run: npm run build
+          npm install -g @quasar/cli
+          quasar mode add pwa
+          quasar build -m pwa
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1
         with:
