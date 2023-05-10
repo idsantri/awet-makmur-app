@@ -15,7 +15,6 @@ jobs:
       - name: Build PWA
         run: |
           npm install -g @quasar/cli
-          quasar mode add pwa
           quasar build -m pwa
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1
