@@ -3,8 +3,10 @@
     <BannerTitle>
       <template #title>Kategori: <span>{{ products[0].category_name }}</span> </template>
       <template #buttons>
-        <q-btn round color="teal-3" class="text-teal-1 q-ml-sm" icon="add" @click="showModalProduct = true" />
-        <q-btn round color="teal-3" class="text-teal-1 q-ml-sm" icon="search" @click="showModalSearch = true" />
+        <q-btn square padding="sm" color="teal-3" class="text-teal-10 q-ml-sm" icon="add"
+          @click="showModalProduct = true" />
+        <q-btn square padding="sm" color="teal-3" class="text-teal-11 q-ml-sm" icon="search"
+          @click="showModalSearch = true" />
       </template>
     </BannerTitle>
     <q-card class="my-card q-mb-sm" flat bordered v-for="(product, index) in products" :key="index">

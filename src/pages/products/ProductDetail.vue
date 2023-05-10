@@ -93,7 +93,7 @@
         <thead>
           <tr class="bg-teal-1">
             <th class="text-left">
-              <div class="text-body1">Stock</div>
+              <div class="text-body1">Stok</div>
             </th>
             <th colspan="2" class="text-right">
               <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalStock = true" />
@@ -118,7 +118,7 @@
   </q-dialog>
 
   <q-dialog v-model="showModalStock">
-    <modal-stock :product-id="parseInt(product.id)" />
+    <modal-stock :product-id="parseInt(product.id)" :product-name="product.name" />
   </q-dialog>
 
   <q-dialog v-model="showModalProduct">
@@ -238,7 +238,8 @@ try {
   Object.assign(product, response.data.data.product);
   Object.assign(stocks, response.data.data.stocks);
   Object.assign(images, response.data.data.images);
-  // console.log(product);
+  if (response.data.data.stocks.length == 0) showModalStock.value = true
+
 } catch (error) {
   toArray(error.response.data.message).forEach((message) => {
     notifyError(message);

@@ -43,9 +43,9 @@
                         <td class="text-left">Jumlah</td>
                         <td class="text-right">
                           {{ digitSeparator(product.quantity) }}
-                          <q-popup-edit v-model="product.quantity" auto-save v-slot="scope">
+                          <q-popup-edit v-model="product.quantity" buttons v-slot="scope" :validate="val => val > 0">
                             <q-input type="number" v-model="scope.value" dense autofocus @keyup.enter="scope.set"
-                              hint="Jumlah" />
+                              hint="Jumlah" :rules="[val => scope.validate(val) || 'Jangan 0']" counter />
                           </q-popup-edit>
                         </td>
                         <td class="text-right"><q-icon name="edit" /> </td>
@@ -54,9 +54,9 @@
                         <td class="text-left">Diskon</td>
                         <td class="text-right">
                           Rp{{ digitSeparator(product.discount) }}
-                          <q-popup-edit v-model="product.discount" auto-save v-slot="scope">
+                          <q-popup-edit v-model="product.discount" buttons v-slot="scope">
                             <q-input type="number" v-model="scope.value" dense autofocus @keyup.enter="scope.set"
-                              hint="diskon" />
+                              hint="diskon" counter />
                           </q-popup-edit>
                         </td>
                         <td class="text-right"><q-icon name="edit" /> </td>
@@ -65,9 +65,9 @@
                         <td class="text-left">Biaya</td>
                         <td class="text-right">
                           Rp{{ digitSeparator(product.cost) }}
-                          <q-popup-edit v-model="product.cost" auto-save v-slot="scope">
+                          <q-popup-edit v-model="product.cost" buttons v-slot="scope">
                             <q-input type="number" v-model="scope.value" dense autofocus @keyup.enter="scope.set"
-                              hint="Biaya tambahan" />
+                              hint="Biaya tambahan" counter />
                           </q-popup-edit>
                         </td>
                         <td class="text-right"><q-icon name="edit" />
