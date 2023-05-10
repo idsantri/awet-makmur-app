@@ -17,25 +17,27 @@
           <q-input v-model="note" outlined type="textarea" label="Catatan" autogrow placeholder="Catatan transaksi" />
 
           <div class="text-body1 q-mt-md">Data Produk</div>
-          <q-list class="rounded-borders">
+          <q-list class="rounded-borders q-mx-sm">
             <q-item v-for="(product, index) in products" :key="index" class="no-padding q-mb-lg">
               <q-item-section>
                 <q-item-label>
-                  <q-markup-table class="text-teal-10" dense flat>
+                  <q-markup-table class="text-teal-10">
                     <tbody>
                       <tr>
-                        <td class="text-left ">
+                        <td class="text-left">
                           <span class="cursor-pointer text-body2 text-weight-bold multi-line">{{ product.name }}
                             ({{ product.code
                             }})</span>
                         </td>
-                        <td class="text-right">
+                        <td class="text-right" colspan="2">
                           <q-btn flat dense color="negative" icon="delete" @click="deleteOrder(product.id)" />
                         </td>
                       </tr>
+
                       <tr>
                         <td class="text-left">Satuan</td>
                         <td class="text-right">@Rp{{ digitSeparator(product.selling_price) }}</td>
+                        <td class="text-right"></td>
                       </tr>
                       <tr>
                         <td class="text-left">Jumlah</td>
@@ -46,6 +48,7 @@
                               hint="Jumlah" />
                           </q-popup-edit>
                         </td>
+                        <td class="text-right"><q-icon name="edit" /> </td>
                       </tr>
                       <tr>
                         <td class="text-left">Diskon</td>
@@ -56,6 +59,7 @@
                               hint="diskon" />
                           </q-popup-edit>
                         </td>
+                        <td class="text-right"><q-icon name="edit" /> </td>
                       </tr>
                       <tr>
                         <td class="text-left">Biaya</td>
@@ -63,13 +67,16 @@
                           Rp{{ digitSeparator(product.cost) }}
                           <q-popup-edit v-model="product.cost" auto-save v-slot="scope">
                             <q-input type="number" v-model="scope.value" dense autofocus @keyup.enter="scope.set"
-                              hint="Biaya" />
+                              hint="Biaya tambahan" />
                           </q-popup-edit>
+                        </td>
+                        <td class="text-right"><q-icon name="edit" />
                         </td>
                       </tr>
                       <tr>
                         <td class="text-left">Sub Total</td>
                         <td class="text-right text-weight-medium">Rp{{ digitSeparator(product.sub_total) }}</td>
+                        <td class="text-right"></td>
                       </tr>
                     </tbody>
                   </q-markup-table>
@@ -79,7 +86,7 @@
           </q-list>
         </q-card-section>
         <q-card-section class="q-py-sm q-px-sm">
-          <div class="text-body1 text-right q-pr-md">Total: <span class="text-weight-bold">Rp{{
+          <div class="text-body1 text-right q-mr-sm">Total: <span class="text-weight-bold">Rp{{
             digitSeparator(getGrandTotal())
           }}</span></div>
         </q-card-section>
@@ -177,4 +184,5 @@ const submitOrder = async () => {
 .multi-line {
   white-space: pre-wrap;
   word-wrap: break-word;
-}</style>
+}
+</style>
