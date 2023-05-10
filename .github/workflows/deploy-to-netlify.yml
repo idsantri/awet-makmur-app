@@ -21,6 +21,6 @@ jobs:
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1
         with:
-          publish-dir: ./dist/spa
+          publish-dir: ./dist/pwa
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          netlify-site-name: <nama-site-Netlify>
+          netlify-site-name: https://toko-awet-makmur.netlify.app
