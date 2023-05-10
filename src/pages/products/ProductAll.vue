@@ -1,5 +1,12 @@
 <template>
   <div class="q-pa-sm">
+    <BannerTitle>
+      <template #title>Kategori: <span>{{ products[0].category_name }}</span> </template>
+      <template #buttons>
+        <q-btn round color="teal-3" class="text-teal-1 q-ml-sm" icon="add" @click="showModalProduct = true" />
+        <q-btn round color="teal-3" class="text-teal-1 q-ml-sm" icon="search" @click="showModalSearch = true" />
+      </template>
+    </BannerTitle>
     <q-card class="my-card q-mb-sm" flat bordered v-for="(product, index) in products" :key="index">
       <q-card-section class="q-pt-xs no-padding">
         <q-item clickable v-ripple :to="/products/ + product.id" class="q-pa-sm bg-teal-3 text-teal-10">
@@ -37,10 +44,10 @@
       </q-card-actions>
     </q-card>
   </div>
-  <div class="q-mr-md q-mb-xl q-gutter-md text-right">
+  <!-- <div class="q-mr-md q-mb-xl q-gutter-md text-right">
     <q-btn push color="teal" round icon="add" @click="showModalProduct = true" />
     <q-btn push color="teal" round icon="search" @click="showModalSearch = true" />
-  </div>
+  </div> -->
 
   <q-dialog v-model="showModalProduct">
     <ModalProduct :is-new="true" />
@@ -59,6 +66,7 @@ import digitSeparator from "src/utils/digit-separator";
 import ordersStore from "src/stores/orders-store";
 import ModalProduct from "./ModalProduct.vue";
 import ModalSearch from "./ProductSearch.vue";
+import BannerTitle from "src/components/BannerTitle.vue";
 
 const showModalProduct = ref(false);
 const showModalSearch = ref(false);
