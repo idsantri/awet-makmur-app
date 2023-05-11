@@ -14,7 +14,7 @@ const { configure } = require("quasar/wrappers");
 
 module.exports = configure(function (ctx) {
   const env = ctx.dev ? "development" : "production";
-  const baseURL =
+  const baseURL_API =
     env === "development"
       ? "http://localhost:8080"
       : "https://test.baniasror.net";
@@ -50,7 +50,7 @@ module.exports = configure(function (ctx) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-build
     build: {
-      env: { BASE_URL: baseURL },
+      env: { BASE_URL_API: baseURL_API },
       vueRouterMode: "history", // available values: 'hash', 'history'
 
       // transpile: false,
