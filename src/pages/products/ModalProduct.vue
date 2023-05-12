@@ -6,11 +6,11 @@
       </q-card-section>
 
       <q-card-section class="q-pt-none q-gutter-md">
-        <q-input outlined v-model="id" label="ID" readonly dense />
-        <q-input outlined v-model="code" label="Kode" />
+        <!-- <q-input outlined v-model="id" label="ID" readonly dense /> -->
+        <!-- <q-input outlined v-model="code" label="Kode" /> -->
         <q-input outlined v-model="name" label="Nama" :rules="[val => !!val || 'Harus diisi!']" error-color="red-6" />
         <q-input outlined v-model="brand" label="Merek" />
-        <q-input outlined v-model="supplier" label="Pemasok/Supplier" />
+        <!-- <q-input outlined v-model="supplier" label="Pemasok/Supplier" /> -->
         <q-input outlined v-model="base_price" label="Harga Dasar" type="number" :rules="[val => !!val || 'Harus diisi!']"
           error-color="red-6" />
         <q-input outlined v-model="selling_price" label="Harga Jual" type="number"
@@ -19,10 +19,10 @@
           label="Kategori" emit-value map-options :rules="[val => !!val || 'Harus diisi!']" error-color="red-6" />
       </q-card-section>
       <q-card-actions class="bg-white text-green">
-        <q-btn v-if="id" flat color="negative" label="Hapus" @click="deleteProduct(id)" />
+        <q-btn v-if="id" outline="" color="negative" label="Hapus" @click="deleteProduct(id)" />
         <q-space />
-        <q-btn flat color="green-10" label="Simpan" type="submit" />
-        <q-btn flat color="green-10" label="Gagal" v-close-popup />
+        <q-btn outline="" color="green-10" label="Simpan" type="submit" />
+        <q-btn outline="" color="secondary" label="Gagal" v-close-popup />
       </q-card-actions>
     </q-form>
   </q-card>

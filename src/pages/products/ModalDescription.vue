@@ -9,8 +9,8 @@
     </q-card-section>
 
     <q-card-actions align="right" class="bg-white text-green">
-      <q-btn flat color="green-10" label="Simpan" @click="saveDescription" />
-      <q-btn flat color="green-10" label="Gagal" v-close-popup />
+      <q-btn outline color="green-10" label="Simpan" @click="saveDescription" />
+      <q-btn outline color="secondary" label="Gagal" v-close-popup />
     </q-card-actions>
   </q-card>
 </template>

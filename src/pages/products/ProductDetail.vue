@@ -14,47 +14,39 @@
         </q-img>
       </div>
     </q-card-section>
-    <q-card-section>
-      <div class="text-caption">
-        {{ product.category_name }} / {{ product.code }} /
-        {{ product.total_stock ? product.total_stock : 0 }}
-        item
-      </div>
-      <div class="row">
+    <q-card-section class="no-padding">
+      <q-banner class="bg-green-1 q-pa-sm" inline-actions>
         <div class="text-h6">{{ product.name }}</div>
-        <q-space />
-        <q-btn color="green-10" flat icon-right="add_shopping_cart" label="Order" @click="addToCart" />
-      </div>
-      <div class="text-subtitle2">
-        Rp{{ digitSeparator(product.selling_price) }}
-      </div>
+        <div class="text-subtitle2">Rp{{ digitSeparator(product.selling_price) }}</div>
+        <div class="text-caption">Tersisa: {{ product.total_stock ? product.total_stock : 0 }} item</div>
+        <template v-slot:action>
+          <q-btn outline no-caps icon-right="add_shopping_cart" label="Jual" @click="addToCart" />
+        </template>
+      </q-banner>
     </q-card-section>
 
-    <q-card-section class="q-pt-none">
+    <q-card-section class="q-pa-sm">
       <div class="row items-center">
         <div class="text-body1">Deskripsi:</div>
         <q-space />
-        <q-btn color="green-10" flat icon-right="edit" label="Edit" @click="showModalDescription = true" />
+        <q-btn color="green-10" outline no-caps icon-right="edit" label="Edit" @click="showModalDescription = true" />
       </div>
-      <span class="text-green-10 text-caption" v-html="product.description"></span>
+      <span v-if="!product.description">Tidak ada deskripsi</span>
+      <span v-else class="text-green-10 text-caption" v-html="product.description"></span>
     </q-card-section>
-    <q-card-section class="q-pt-none data">
-      <q-markup-table class="text-green-10">
+    <q-card-section class="no-padding data">
+      <q-markup-table flat class="text-green-10">
         <thead>
           <tr class="bg-green-1">
             <th class="text-left">
               <div class="text-body1">Data Produk</div>
             </th>
             <th class="text-right">
-              <q-btn color="green-10" flat icon-right="edit" label="Edit" @click="showModalProduct = true" />
+              <q-btn color="green-10" outline no-caps icon-right="edit" label="Edit" @click="showModalProduct = true" />
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="text-left">Kode</td>
-            <td class="text-left">{{ product.code }}</td>
-          </tr>
           <tr>
             <td class="text-left">Nama</td>
             <td class="text-left multi-line">{{ product.name.toUpperCase() }}</td>
@@ -62,10 +54,6 @@
           <tr>
             <td class="text-left">Merek</td>
             <td class="text-left">{{ product.brand }}</td>
-          </tr>
-          <tr>
-            <td class="text-left">Pemasok</td>
-            <td class="text-left">{{ product.supplier }}</td>
           </tr>
           <tr>
             <td class="text-left">Kategori</td>
@@ -89,14 +77,14 @@
           </tr>
         </tbody>
       </q-markup-table>
-      <q-markup-table class="text-green-10 q-mt-md">
+      <q-markup-table flat class="text-green-10">
         <thead>
           <tr class="bg-green-1">
             <th class="text-left">
               <div class="text-body1">Stok</div>
             </th>
             <th colspan="2" class="text-right">
-              <q-btn color="green-10" flat icon-right="edit" label="Edit" @click="showModalStock = true" />
+              <q-btn color="green-10" outline no-caps icon-right="edit" label="Edit" @click="showModalStock = true" />
             </th>
           </tr>
         </thead>
@@ -105,7 +93,7 @@
             <td class="text-left">{{ stock.store_name }}</td>
             <td class="text-left">{{ stock.stock }}</td>
             <td class="text-right">
-              <q-btn icon="delete" label="Hapus" color="red" flat @click="deleteStock(stock.id)" />
+              <q-btn icon="delete" label="Hapus" no-caps="" color="red" flat @click="deleteStock(stock.id)" />
             </td>
           </tr>
         </tbody>
@@ -255,5 +243,11 @@ margin.value = product.selling_price - product.base_price;
 .multi-line {
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+th,
+td {
+  padding-left: 8px;
+  padding-right: 8px;
 }
 </style>

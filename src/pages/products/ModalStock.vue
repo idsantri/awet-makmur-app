@@ -2,7 +2,7 @@
   <q-card style="width: 700px; max-width: 80vw">
     <q-form method="post" @submit.prevent="onSubmit">
       <q-card-section>
-        <div class="text-subtitle1 text-green-10">Stok Produk</div>
+        <div class="text-subtitle1 text-green-10">Tambah Stok</div>
         <div class="text-subtitle2 text-green-10">{{ props.productName }}</div>
       </q-card-section>
       <q-card-section class="q-pt-none q-gutter-md">
@@ -12,8 +12,8 @@
           error-color="red-6" />
       </q-card-section>
       <q-card-actions align="right" class="bg-white text-green">
-        <q-btn flat color="green-10" label="Simpan" type="submit" />
-        <q-btn flat color="green-10" label="Gagal" v-close-popup />
+        <q-btn outline color="green-10" label="Simpan" type="submit" />
+        <q-btn outline color="secondary" label="Gagal" v-close-popup />
       </q-card-actions>
     </q-form>
   </q-card>

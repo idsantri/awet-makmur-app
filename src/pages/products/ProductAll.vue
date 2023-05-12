@@ -13,13 +13,10 @@
       <q-card-section class="q-pt-xs no-padding">
         <q-item clickable v-ripple :to="/products/ + product.id" class="q-pa-sm bg-green-7 text-green-11">
           <q-item-section class="">
-            <div class="text-h6">{{ product.name }}</div>
-            <div class="text-subtitle text-green-12">
-              Rp{{ digitSeparator(product.selling_price) }} ({{
-                product.brand
-              }}
-              &mdash; {{ product.supplier }})
-            </div>
+            <div class="text-h6">{{ product.name }} <span v-show="product.brand" class="text-body2 text-italic">&mdash;
+                {{
+                  product.brand }}</span> </div>
+            <div class="text-subtitle2 text-green-12">Rp{{ digitSeparator(product.selling_price) }}</div>
           </q-item-section>
         </q-item>
         <q-card-section horizontal class="q-ma-sm">
