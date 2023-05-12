@@ -1,19 +1,19 @@
 <template>
   <q-card style="width: 700px; max-width: 80vw">
     <q-form method="post" @submit.prevent="onSubmit">
-      <q-card-section>
-        <div class="text-subtitle1 text-green-10">Tambah Stok</div>
-        <div class="text-subtitle2 text-green-10">{{ props.productName }}</div>
+      <q-card-section class="bg-green-8 text-green-1 q-pa-sm q-mb-sm">
+        <div class="text-subtitle1">Tambah Stok</div>
+        <div class="text-subtitle2">{{ props.productName }}</div>
       </q-card-section>
-      <q-card-section class="q-pt-none q-gutter-md">
+      <q-card-section class="q-pa-sm q-gutter-sm bg-green-1">
         <q-select outlined v-model="store_id" :options="listStores" option-value="id" option-label="name" label="Toko"
           emit-value map-options :rules="[val => !!val || 'Harus diisi!']" error-color="red-6" />
         <q-input outlined v-model="stock" label="Stok" type="number" :rules="[val => !!val || 'Harus diisi!']"
           error-color="red-6" />
       </q-card-section>
-      <q-card-actions align="right" class="bg-white text-green">
-        <q-btn outline color="green-10" label="Simpan" type="submit" />
-        <q-btn outline color="secondary" label="Gagal" v-close-popup />
+      <q-card-actions align="right" class="bg-green-7">
+        <q-btn color="green-10" label="Simpan" type="submit" />
+        <q-btn color="secondary" label="Gagal" v-close-popup />
       </q-card-actions>
     </q-form>
   </q-card>

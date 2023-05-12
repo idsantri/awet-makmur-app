@@ -1,11 +1,11 @@
 <template>
   <q-card style="width: 700px; max-width: 90vw">
     <q-form method="post" @submit.prevent="onSubmit">
-      <q-card-section>
-        <div class="text-h6 text-green-10">{{ title }}</div>
+      <q-card-section class="bg-green-8 text-green-1 q-pa-sm q-mb-sm">
+        <div class="text-subtitle1">{{ title }}</div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none q-gutter-md">
+      <q-card-section class="q-pa-sm q-gutter-sm bg-green-1">
         <!-- <q-input outlined v-model="id" label="ID" readonly dense /> -->
         <!-- <q-input outlined v-model="code" label="Kode" /> -->
         <q-input outlined v-model="name" label="Nama" :rules="[val => !!val || 'Harus diisi!']" error-color="red-6" />
@@ -18,11 +18,11 @@
         <q-select outlined v-model="category_id" :options="listCategories" option-value="id" option-label="name"
           label="Kategori" emit-value map-options :rules="[val => !!val || 'Harus diisi!']" error-color="red-6" />
       </q-card-section>
-      <q-card-actions class="bg-white text-green">
-        <q-btn v-if="id" outline="" color="negative" label="Hapus" @click="deleteProduct(id)" />
+      <q-card-actions class="bg-green-7">
+        <q-btn v-if="id" color="negative" label="Hapus" @click="deleteProduct(id)" />
         <q-space />
-        <q-btn outline="" color="green-10" label="Simpan" type="submit" />
-        <q-btn outline="" color="secondary" label="Gagal" v-close-popup />
+        <q-btn color="green-10" label="Simpan" type="submit" />
+        <q-btn color="secondary" label="Gagal" v-close-popup />
       </q-card-actions>
     </q-form>
   </q-card>

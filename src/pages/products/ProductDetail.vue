@@ -15,14 +15,17 @@
       </div>
     </q-card-section>
     <q-card-section class="no-padding">
-      <q-banner class="bg-green-1 q-pa-sm" inline-actions>
-        <div class="text-h6">{{ product.name }}</div>
-        <div class="text-subtitle2">Rp{{ digitSeparator(product.selling_price) }}</div>
-        <div class="text-caption">Tersisa: {{ product.total_stock ? product.total_stock : 0 }} item</div>
-        <template v-slot:action>
-          <q-btn outline no-caps icon-right="add_shopping_cart" label="Jual" @click="addToCart" />
+      <BannerTitle>
+        <template #title>
+          <div class="text-h6">{{ product.name }}</div>
+          <div class="text-subtitle2">Rp{{ digitSeparator(product.selling_price) }}</div>
+          <div class="text-caption">Tersisa: {{ product.total_stock ? product.total_stock : 0 }} item</div>
         </template>
-      </q-banner>
+        <template #buttons>
+          <q-btn color="green-11" class="text-green-10" no-caps icon-right="add_shopping_cart" label="Jual"
+            @click="addToCart" />
+        </template>
+      </BannerTitle>
     </q-card-section>
 
     <q-card-section class="q-pa-sm">
@@ -141,6 +144,7 @@ import { forceRerender } from "src/utils/buttons-click";
 import myUpload from "vue-image-crop-upload";
 import ordersStore from "src/stores/orders-store";
 import ModalSearch from "./ProductSearch.vue";
+import BannerTitle from "src/components/BannerTitle.vue";
 
 const route = useRoute();
 const params = ref(route.params);

@@ -37,7 +37,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-green-6">
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-green-7">
       <suspense>
         <template #default>
           <side-bar />
@@ -68,7 +68,7 @@
       <button @click="forceRerender" id="btn-force-rerender">rerender</button>
     </div>
 
-    <q-footer bordered class="bg-green-5 text-green-12">
+    <q-footer bordered class="bg-green-6 text-green-12">
       <p class="text-center no-margin q-pa-xs">by idsantri</p>
     </q-footer>
   </q-layout>

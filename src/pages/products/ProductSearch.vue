@@ -1,7 +1,7 @@
 <template>
   <q-card style="width: 100%; ">
-    <q-card-section>
-      <h2 class="text-h6 text-green-10 no-margin">Cari Produk</h2>
+    <q-card-section class="bg-green-8 text-green-1 q-pa-sm">
+      <h2 class="text-subtitle1 no-margin">Cari Produk</h2>
     </q-card-section>
     <q-card-section>
       <Suspense>
@@ -23,6 +23,9 @@
         </template>
       </Suspense>
     </q-card-section>
+    <q-card-actions align="right" class="bg-green-7">
+      <q-btn color="secondary" label="Tutup" v-close-popup />
+    </q-card-actions>
   </q-card>
 </template>
 
@@ -50,11 +53,7 @@ const options = ref({
   columnDefs: [
     {
       targets: 0,
-      orderable: false,
-      className: 'dt-body-center',
-      render: function (data, type, row, meta) {
-        return "#"
-      },
+      className: 'hidden',
     },
     {
       targets: 1,
@@ -74,6 +73,10 @@ const options = ref({
         };
         return "Rp" + digitSeparator(data)
       },
+    },
+    {
+      targets: 4,
+      className: 'dt-body-center',
     },
   ],
   language: {

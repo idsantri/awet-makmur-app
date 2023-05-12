@@ -1,7 +1,13 @@
 <template>
   <div class="q-pa-sm">
     <BannerTitle>
-      <template #title>Kategori: <span>{{ products[0].category_name }}</span> </template>
+      <template #title>
+        <h2 class="no-margin text-green-11 text-h6 text-weight-light">
+          Kategori:
+          <span v-if="products.length > 0">{{ products[0].category_name }}</span>
+          <span v-else>{{ $route.params.category }}</span>
+        </h2>
+      </template>
       <template #buttons>
         <q-btn square padding="sm" color="green-12" class="text-green-10 q-ml-sm" icon="add"
           @click="showModalProduct = true" />
@@ -9,13 +15,17 @@
           @click="showModalSearch = true" />
       </template>
     </BannerTitle>
-    <q-card class="my-card q-mb-sm" flat bordered v-for="(product, index) in products" :key="index">
+    <div v-if="!products.length > 0">
+      <q-banner class="bg-red-2 text-red-10 q-mt-sm">
+        <div class="text-body1 text-center">Tidak ada data untuk ditampilkan!</div>
+      </q-banner>
+    </div>
+    <q-card v-else class="my-card q-my-sm" flat bordered v-for="(product, index) in products" :key="index">
       <q-card-section class="q-pt-xs no-padding">
         <q-item clickable v-ripple :to="/products/ + product.id" class="q-pa-sm bg-green-7 text-green-11">
           <q-item-section class="">
             <div class="text-h6">{{ product.name }} <span v-show="product.brand" class="text-body2 text-italic">&mdash;
-                {{
-                  product.brand }}</span> </div>
+                {{ product.brand }}</span> </div>
             <div class="text-subtitle2 text-green-12">Rp{{ digitSeparator(product.selling_price) }}</div>
           </q-item-section>
         </q-item>

@@ -17,11 +17,10 @@ body {
   }
 
   @media screen and (max-width: 480px) {
-    table > tbody > tr:nth-child(odd) > td {
+    tbody > tr:nth-child(odd) > td {
       padding: 4px;
     }
-
-    table > tbody > tr:nth-child(even) > td {
+    tbody > tr:nth-child(even) > td {
       padding: 4px;
     }
   }
