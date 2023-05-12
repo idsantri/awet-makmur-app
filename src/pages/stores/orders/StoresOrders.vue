@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md" v-if="orders.length > 0">
     <q-table :title="'Transaksi ' + storeName" :rows="orders" row-key="id" :columns="columns" :filter="filter"
-      @row-click="(event, row) => $router.push(`/orders/${row.id}`)" class="text-teal-10">
+      @row-click="(event, row) => $router.push(`/orders/${row.id}`)" class="text-green-10">
       <template v-slot:top-right>
         <q-input debounce="500" v-model="filter" placeholder="Cari">
           <template v-slot:append>

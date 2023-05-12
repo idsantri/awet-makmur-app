@@ -1,7 +1,7 @@
 <template>
-  <q-card class="q-ma-md text-teal-10">
+  <q-card class="q-ma-md text-green-10">
     <q-card-section>
-      <q-markup-table class="text-teal-10" flat bordered="">
+      <q-markup-table class="text-green-10" flat bordered="">
         <tbody>
           <tr>
             <td>Toko</td>
@@ -39,7 +39,7 @@
             <q-item-label>{{ detail.product_name }} {{ detail.product_brand ? ' (' + detail.product_brand + ')' : ''
             }}</q-item-label>
             <q-item-label caption>
-              <q-markup-table flat dense class="text-teal-10">
+              <q-markup-table flat dense class="text-green-10">
                 <tbody>
                   <tr>
                     <td>Harga (Rp{{ digitSeparator(detail.selling_price) }} x {{ detail.quantity }})</td>

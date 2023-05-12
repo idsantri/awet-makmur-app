@@ -1,7 +1,7 @@
 <template>
   <div class="q-mt-md" style="max-width: 600px;">
     <q-form @submit.prevent="submitOrder">
-      <q-card class="q-ma-sm text-teal-10">
+      <q-card class="q-ma-sm text-green-10">
         <q-card-section class="q-gutter-sm no-margin q-pa-sm">
           <q-select outlined v-model="store_id" :options="listStores" option-value="id" option-label="name" emit-value
             map-options label="Toko" :rules="[val => !!val || 'Harus diisi!']" error-color="red-6" />
@@ -21,7 +21,7 @@
             <q-item v-for="(product, index) in products" :key="index" class="no-padding q-mb-lg">
               <q-item-section>
                 <q-item-label>
-                  <q-markup-table class="text-teal-10">
+                  <q-markup-table class="text-green-10">
                     <tbody>
                       <tr>
                         <td class="text-left">
@@ -90,8 +90,8 @@
             digitSeparator(getGrandTotal())
           }}</span></div>
         </q-card-section>
-        <q-card-actions align="right" class="bg-teal-2">
-          <q-btn type="submit" icon="save" label="Proses" color="teal-6" />
+        <q-card-actions align="right" class="bg-green-2">
+          <q-btn type="submit" icon="save" label="Proses" color="green-6" />
         </q-card-actions>
       </q-card>
     </q-form>

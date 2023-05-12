@@ -3,13 +3,13 @@
     <q-card-section class="no-padding">
       <div v-if="product.image_last">
         <q-img style="height: 30vh" :src="product.image_url + product.image_last">
-          <q-btn push round color="teal" icon="edit" class="absolute all-pointer-events" style="bottom: 8px; right: 8px"
+          <q-btn push round color="green" icon="edit" class="absolute all-pointer-events" style="bottom: 8px; right: 8px"
             @click="showUploader = true" />
         </q-img>
       </div>
       <div v-else>
         <q-img style="max-height: 30vh" src="https://picsum.photos/400/300.webp">
-          <q-btn push round color="teal" icon="edit" class="absolute all-pointer-events" style="bottom: 8px; right: 8px"
+          <q-btn push round color="green" icon="edit" class="absolute all-pointer-events" style="bottom: 8px; right: 8px"
             @click="showUploader = true" />
         </q-img>
       </div>
@@ -23,7 +23,7 @@
       <div class="row">
         <div class="text-h6">{{ product.name }}</div>
         <q-space />
-        <q-btn color="teal-10" flat icon-right="add_shopping_cart" label="Order" @click="addToCart" />
+        <q-btn color="green-10" flat icon-right="add_shopping_cart" label="Order" @click="addToCart" />
       </div>
       <div class="text-subtitle2">
         Rp{{ digitSeparator(product.selling_price) }}
@@ -34,19 +34,19 @@
       <div class="row items-center">
         <div class="text-body1">Deskripsi:</div>
         <q-space />
-        <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalDescription = true" />
+        <q-btn color="green-10" flat icon-right="edit" label="Edit" @click="showModalDescription = true" />
       </div>
-      <span class="text-teal-10 text-caption" v-html="product.description"></span>
+      <span class="text-green-10 text-caption" v-html="product.description"></span>
     </q-card-section>
     <q-card-section class="q-pt-none data">
-      <q-markup-table class="text-teal-10">
+      <q-markup-table class="text-green-10">
         <thead>
-          <tr class="bg-teal-1">
+          <tr class="bg-green-1">
             <th class="text-left">
               <div class="text-body1">Data Produk</div>
             </th>
             <th class="text-right">
-              <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalProduct = true" />
+              <q-btn color="green-10" flat icon-right="edit" label="Edit" @click="showModalProduct = true" />
             </th>
           </tr>
         </thead>
@@ -89,14 +89,14 @@
           </tr>
         </tbody>
       </q-markup-table>
-      <q-markup-table class="text-teal-10 q-mt-md">
+      <q-markup-table class="text-green-10 q-mt-md">
         <thead>
-          <tr class="bg-teal-1">
+          <tr class="bg-green-1">
             <th class="text-left">
               <div class="text-body1">Stok</div>
             </th>
             <th colspan="2" class="text-right">
-              <q-btn color="teal-10" flat icon-right="edit" label="Edit" @click="showModalStock = true" />
+              <q-btn color="green-10" flat icon-right="edit" label="Edit" @click="showModalStock = true" />
             </th>
           </tr>
         </thead>
@@ -131,7 +131,7 @@
   <!-- <img :src="imgDataUrl"> -->
 
   <div class="flex fixed-bottom-right q-mr-md q-mb-xl q-gutter-md">
-    <q-btn push color="teal" round icon="search" @click="showModalSearch = true" />
+    <q-btn push color="green" round icon="search" @click="showModalSearch = true" />
   </div>
 
   <q-dialog v-model="showModalSearch">

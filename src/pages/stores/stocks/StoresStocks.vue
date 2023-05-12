@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md" v-if="stocks.length > 0">
     <q-table :title="'Stok ' + storeName" :rows="stocks" row-key="id" :columns="columns" :filter="filter"
-      @row-click="(event, row) => $router.push(`/products/${row.id}`)" class="text-teal-10">
+      @row-click="(event, row) => $router.push(`/products/${row.id}`)" class="text-green-10">
       <template v-slot:top-right>
         <q-input debounce="500" v-model="filter" placeholder="Cari">
           <template v-slot:append>
@@ -10,8 +10,8 @@
         </q-input>
       </template>
     </q-table>
-    <q-card class="q-mt-md bg-teal-2">
-      <q-card-section class="text-body1 text-teal-10 text-center text-italic">
+    <q-card class="q-mt-md bg-green-2">
+      <q-card-section class="text-body1 text-green-10 text-center text-italic">
         <p class="no-margin">Total Stok: {{ digitSeparator(getItems()) }} item, <br /> dengan nilai: <span
             class="text-bold">Rp{{
               digitSeparator(getTotal())
@@ -19,8 +19,8 @@
       </q-card-section>
     </q-card>
     <div class="q-mt-lg">
-      <q-btn push color="teal" round icon="card_giftcard" @click="showModalZakat = true" />
-      <span class="text-body2 text-teal-10 q-ml-sm">
+      <q-btn push color="green" round icon="card_giftcard" @click="showModalZakat = true" />
+      <span class="text-body2 text-green-10 q-ml-sm">
         Hitung Zakat
       </span>
     </div>

@@ -1,14 +1,14 @@
 <template>
-  <q-list class="text-teal-1">
+  <q-list class="text-green-1">
 
     <!-- HOME -->
-    <!-- <q-item-label header class="text-teal-10 q-pb-none">
-      <div class="text-body1 text-teal-1">Setting</div>
+    <!-- <q-item-label header class="text-green-10 q-pb-none">
+      <div class="text-body1 text-green-1">Setting</div>
       <div class="text-caption">Pengaturan</div>
     </q-item-label> -->
     <q-item clickable v-ripple to="/home">
       <q-item-section avatar>
-        <q-icon color="teal-1" name="home" />
+        <q-icon color="green-1" name="home" />
       </q-item-section>
       <q-item-section>
         <q-item-label>Beranda</q-item-label>
@@ -18,13 +18,13 @@
     <q-separator dark />
 
     <!-- KATEGORI -->
-    <q-item-label header class="text-teal-10 q-pb-none">
-      <div class="text-body1 text-teal-1">Produk</div>
+    <q-item-label header class="text-green-10 q-pb-none">
+      <div class="text-body1 text-green-1">Produk</div>
       <div class="text-caption">Berdasarkan kategori</div>
     </q-item-label>
     <q-item clickable v-ripple v-for="(category, index) in categoryList" :key="index" :to="category.link">
       <q-item-section avatar>
-        <q-icon color="teal-1" :name="category.icon" />
+        <q-icon color="green-1" :name="category.icon" />
       </q-item-section>
       <q-item-section>
         <q-item-label>{{ category.name }}</q-item-label>
@@ -35,12 +35,12 @@
     <q-separator dark />
     <div v-for="(store, index) in storeList" :key="index">
       <q-expansion-item expand-separator :label="store.name" :caption="store.caption"
-        header-class="text-body1 text-teal-1" expand-icon-class="text-teal-1">
+        header-class="text-body1 text-green-1" expand-icon-class="text-green-1">
 
         <!-- STOCK -->
         <q-item clickable :to="store.stock.link">
           <q-item-section avatar>
-            <q-icon color="teal-1" :name="store.stock.icon" />
+            <q-icon color="green-1" :name="store.stock.icon" />
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ store.stock.name }}</q-item-label>
@@ -51,7 +51,7 @@
         <!-- ORDERS -->
         <q-item clickable :to="store.order.link">
           <q-item-section avatar>
-            <q-icon color="teal-1" :name="store.order.icon" />
+            <q-icon color="green-1" :name="store.order.icon" />
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ store.order.name }}</q-item-label>
@@ -63,13 +63,13 @@
 
     <!-- SETTING -->
     <q-separator dark />
-    <!-- <q-item-label header class="text-teal-10 q-pb-none">
-      <div class="text-body1 text-teal-1">Setting</div>
+    <!-- <q-item-label header class="text-green-10 q-pb-none">
+      <div class="text-body1 text-green-1">Setting</div>
       <div class="text-caption">Pengaturan</div>
     </q-item-label> -->
     <q-item clickable v-ripple to="/settings">
       <q-item-section avatar>
-        <q-icon color="teal-1" name="settings" />
+        <q-icon color="green-1" name="settings" />
       </q-item-section>
       <q-item-section>
         <q-item-label>Pengaturan</q-item-label>

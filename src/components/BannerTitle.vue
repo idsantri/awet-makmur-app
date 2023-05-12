@@ -1,6 +1,6 @@
 <template>
-  <q-banner class="bg-teal-4 text-teal-11 q-mb-xs q-pa-sm" inline-actions>
-    <h2 class="text-h6 no-margin text-weight-light text-teal-1">
+  <q-banner class="bg-green-8 text-green-11 q-mb-xs q-pa-sm" inline-actions>
+    <h2 class="text-h6 no-margin text-weight-light text-green-1">
       <slot name="title"></slot>
     </h2>
     <!-- TOMBOL CARI -->

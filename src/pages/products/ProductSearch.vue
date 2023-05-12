@@ -1,7 +1,7 @@
 <template>
   <q-card style="width: 100%; ">
     <q-card-section>
-      <h2 class="text-h6 text-teal-10 no-margin">Cari Produk</h2>
+      <h2 class="text-h6 text-green-10 no-margin">Cari Produk</h2>
     </q-card-section>
     <q-card-section>
       <Suspense>

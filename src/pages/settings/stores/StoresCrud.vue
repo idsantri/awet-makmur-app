@@ -2,7 +2,7 @@
   <q-card style="width: 700px; max-width: 90vw">
     <q-form @submit.prevent="onSubmit">
       <q-card-section>
-        <div class="text-h6 text-teal-10">{{ title }}</div>
+        <div class="text-h6 text-green-10">{{ title }}</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none q-gutter-md">
@@ -11,11 +11,11 @@
         <q-input outlined v-model="propsStore.address" label="Alamat" />
 
       </q-card-section>
-      <q-card-actions class="bg-white text-teal">
+      <q-card-actions class="bg-white text-green">
         <q-btn v-if="propsStore.id" flat color="negative" label="Hapus" @click="deleteStore(propsStore.id)" />
         <q-space />
-        <q-btn flat color="teal-10" label="Simpan" type="submit" />
-        <q-btn flat color="teal-10" label="Gagal" v-close-popup />
+        <q-btn flat color="green-10" label="Simpan" type="submit" />
+        <q-btn flat color="green-10" label="Gagal" v-close-popup />
       </q-card-actions>
     </q-form>
     <!-- <pre>{{ propsCategory }}</pre> -->

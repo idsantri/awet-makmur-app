@@ -1,5 +1,5 @@
 <template>
-  <q-card class="text-teal-10" style="width: 600px; max-width: 90vh;">
+  <q-card class="text-green-10" style="width: 600px; max-width: 90vh;">
     <q-card-section class="q-pb-none">
       <div class="text-body1">Hitung Zakat</div>
       <div class="text-body1 text-overline">
@@ -54,7 +54,7 @@
               </q-popup-edit>
             </td>
           </tr>
-          <tr class="bg-teal-1">
+          <tr class="bg-green-1">
             <td></td>
             <td class="text-italic">Total</td>
             <td class="text-right text-bold">Rp{{ digitSeparator(total) }}</td>
@@ -81,9 +81,9 @@
       </q-list>
     </q-card-section>
     <q-card-actions class="q-px-md q-pb-md q-pt-none">
-      <q-btn icon="calculate" label="Hitung" flat="" color="teal-1" class="bg-teal" @click="calculateZakat" />
+      <q-btn icon="calculate" label="Hitung" flat="" color="green-1" class="bg-green" @click="calculateZakat" />
       <q-space />
-      <q-btn flat label="Tutup" color="teal-10" @click="$emit('close-modal', true)" />
+      <q-btn flat label="Tutup" color="green-10" @click="$emit('close-modal', true)" />
     </q-card-actions>
   </q-card>
 </template>

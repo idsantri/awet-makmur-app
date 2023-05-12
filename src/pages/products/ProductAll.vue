@@ -3,18 +3,18 @@
     <BannerTitle>
       <template #title>Kategori: <span>{{ products[0].category_name }}</span> </template>
       <template #buttons>
-        <q-btn square padding="sm" color="teal-3" class="text-teal-10 q-ml-sm" icon="add"
+        <q-btn square padding="sm" color="green-12" class="text-green-10 q-ml-sm" icon="add"
           @click="showModalProduct = true" />
-        <q-btn square padding="sm" color="teal-3" class="text-teal-11 q-ml-sm" icon="search"
+        <q-btn square padding="sm" color="green-13" class="text-green-10 q-ml-sm" icon="search"
           @click="showModalSearch = true" />
       </template>
     </BannerTitle>
     <q-card class="my-card q-mb-sm" flat bordered v-for="(product, index) in products" :key="index">
       <q-card-section class="q-pt-xs no-padding">
-        <q-item clickable v-ripple :to="/products/ + product.id" class="q-pa-sm bg-teal-3 text-teal-10">
+        <q-item clickable v-ripple :to="/products/ + product.id" class="q-pa-sm bg-green-7 text-green-11">
           <q-item-section class="">
             <div class="text-h6">{{ product.name }}</div>
-            <div class="text-subtitle text-teal-9">
+            <div class="text-subtitle text-green-12">
               Rp{{ digitSeparator(product.selling_price) }} ({{
                 product.brand
               }}
@@ -30,25 +30,26 @@
             <q-img class="flex flex-center col-4 q-mr-sm img" src="https://picsum.photos/100/100.webp" />
           </div>
           <div>
-            <div class="text-caption text-teal-9">
+            <div class="text-caption text-green-9">
               <span v-html="product.description" class="description"></span>
             </div>
           </div>
         </q-card-section>
       </q-card-section>
       <q-separator />
-      <q-card-actions class="bg-teal-2 q-pa-xs">
-        <div class="text-caption q-ml-xs text-teal-10">
+      <q-card-actions class="bg-green-6 q-pa-xs">
+        <div class="text-caption q-ml-xs text-green-12">
           Tersisa: {{ product.total_stock ? product.total_stock : 0 }} item
         </div>
         <q-space />
-        <q-btn color="teal-10" flat icon-right="add_shopping_cart" label="Order" @click="addToCart(product)" />
+        <q-btn color="green-13" no-caps="" outline icon-right="add_shopping_cart" label="Jual"
+          @click="addToCart(product)" />
       </q-card-actions>
     </q-card>
   </div>
   <!-- <div class="q-mr-md q-mb-xl q-gutter-md text-right">
-    <q-btn push color="teal" round icon="add" @click="showModalProduct = true" />
-    <q-btn push color="teal" round icon="search" @click="showModalSearch = true" />
+    <q-btn push color="green" round icon="add" @click="showModalProduct = true" />
+    <q-btn push color="green" round icon="search" @click="showModalSearch = true" />
   </div> -->
 
   <q-dialog v-model="showModalProduct">

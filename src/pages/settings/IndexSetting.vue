@@ -1,7 +1,7 @@
 <template>
-  <q-card class="q-ma-md text-teal-10">
-    <q-tabs v-model="tab" class="text-grey" active-color="teal-10" indicator-color="teal" align="justify" narrow-indicator
-      outside-arrows mobile-arrows>
+  <q-card class="q-ma-md text-green-10">
+    <q-tabs v-model="tab" class="text-grey" active-color="green-10" indicator-color="green" align="justify"
+      narrow-indicator outside-arrows mobile-arrows>
       <q-tab name="payments" label="Pembayaran" />
       <q-tab name="categories" label="Kategori" />
       <q-tab name="stores" label="Toko" />

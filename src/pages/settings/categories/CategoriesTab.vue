@@ -4,7 +4,7 @@
       <q-list>
         <q-item v-for="(category, index) in categories" :key="index">
           <q-item-section top avatar>
-            <q-avatar color="teal" text-color="white" :icon="category.icon" />
+            <q-avatar color="green" text-color="white" :icon="category.icon" />
           </q-item-section>
 
           <q-item-section>
@@ -12,13 +12,13 @@
             <q-item-label caption lines="2">{{ category.description }}</q-item-label>
           </q-item-section>
           <q-item-section side>
-            <q-btn icon="edit" round color="teal-2" text-color="teal-10" @click="crud(false, category)"></q-btn>
+            <q-btn icon="edit" round color="green-2" text-color="green-10" @click="crud(false, category)"></q-btn>
           </q-item-section>
         </q-item>
       </q-list>
     </q-card-section>
     <q-card-actions class="q-py-none ">
-      <q-btn icon="add" flat label="Tambah" color="teal-2" text-color="teal-10" @click="crud(true, {})" />
+      <q-btn icon="add" flat label="Tambah" color="green-2" text-color="green-10" @click="crud(true, {})" />
     </q-card-actions>
   </q-card>
 

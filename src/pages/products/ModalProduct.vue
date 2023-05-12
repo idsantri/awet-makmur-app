@@ -2,7 +2,7 @@
   <q-card style="width: 700px; max-width: 90vw">
     <q-form method="post" @submit.prevent="onSubmit">
       <q-card-section>
-        <div class="text-h6 text-teal-10">{{ title }}</div>
+        <div class="text-h6 text-green-10">{{ title }}</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none q-gutter-md">
@@ -18,11 +18,11 @@
         <q-select outlined v-model="category_id" :options="listCategories" option-value="id" option-label="name"
           label="Kategori" emit-value map-options :rules="[val => !!val || 'Harus diisi!']" error-color="red-6" />
       </q-card-section>
-      <q-card-actions class="bg-white text-teal">
+      <q-card-actions class="bg-white text-green">
         <q-btn v-if="id" flat color="negative" label="Hapus" @click="deleteProduct(id)" />
         <q-space />
-        <q-btn flat color="teal-10" label="Simpan" type="submit" />
-        <q-btn flat color="teal-10" label="Gagal" v-close-popup />
+        <q-btn flat color="green-10" label="Simpan" type="submit" />
+        <q-btn flat color="green-10" label="Gagal" v-close-popup />
       </q-card-actions>
     </q-form>
   </q-card>

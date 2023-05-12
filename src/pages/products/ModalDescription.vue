@@ -1,16 +1,16 @@
 <template>
   <q-card style="width: 700px; max-width: 90vw">
     <q-card-section>
-      <div class="text-h6 text-teal-10">Deskripsi Produk</div>
+      <div class="text-h6 text-green-10">Deskripsi Produk</div>
     </q-card-section>
 
     <q-card-section class="q-pt-none">
       <q-editor v-model="textDescription" min-height="5rem" />
     </q-card-section>
 
-    <q-card-actions align="right" class="bg-white text-teal">
-      <q-btn flat color="teal-10" label="Simpan" @click="saveDescription" />
-      <q-btn flat color="teal-10" label="Gagal" v-close-popup />
+    <q-card-actions align="right" class="bg-white text-green">
+      <q-btn flat color="green-10" label="Simpan" @click="saveDescription" />
+      <q-btn flat color="green-10" label="Gagal" v-close-popup />
     </q-card-actions>
   </q-card>
 </template>

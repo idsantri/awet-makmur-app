@@ -2,8 +2,8 @@
   <q-card style="width: 700px; max-width: 80vw">
     <q-form method="post" @submit.prevent="onSubmit">
       <q-card-section>
-        <div class="text-subtitle1 text-teal-10">Stok Produk</div>
-        <div class="text-subtitle2 text-teal-10">{{ props.productName }}</div>
+        <div class="text-subtitle1 text-green-10">Stok Produk</div>
+        <div class="text-subtitle2 text-green-10">{{ props.productName }}</div>
       </q-card-section>
       <q-card-section class="q-pt-none q-gutter-md">
         <q-select outlined v-model="store_id" :options="listStores" option-value="id" option-label="name" label="Toko"
@@ -11,9 +11,9 @@
         <q-input outlined v-model="stock" label="Stok" type="number" :rules="[val => !!val || 'Harus diisi!']"
           error-color="red-6" />
       </q-card-section>
-      <q-card-actions align="right" class="bg-white text-teal">
-        <q-btn flat color="teal-10" label="Simpan" type="submit" />
-        <q-btn flat color="teal-10" label="Gagal" v-close-popup />
+      <q-card-actions align="right" class="bg-white text-green">
+        <q-btn flat color="green-10" label="Simpan" type="submit" />
+        <q-btn flat color="green-10" label="Gagal" v-close-popup />
       </q-card-actions>
     </q-form>
   </q-card>
