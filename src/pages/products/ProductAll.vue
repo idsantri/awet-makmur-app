@@ -49,7 +49,7 @@
           Tersisa: {{ product.total_stock ? product.total_stock : 0 }} item
         </div>
         <q-space />
-        <q-btn color="green-13" no-caps="" outline icon-right="add_shopping_cart" label="Jual"
+        <q-btn color="green-11" class="text-green-10" no-caps icon-right="add_shopping_cart" label="Jual"
           @click="addToCart(product)" />
       </q-card-actions>
     </q-card>
