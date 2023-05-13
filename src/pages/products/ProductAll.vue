@@ -45,7 +45,7 @@
       </q-card-section>
       <q-separator />
       <q-card-actions class="bg-green-6 q-pa-xs">
-        <div class="text-caption q-ml-xs text-green-12">
+        <div class="text-caption q-ml-xs text-green-11">
           Tersisa: {{ product.total_stock ? product.total_stock : 0 }} item
         </div>
         <q-space />
