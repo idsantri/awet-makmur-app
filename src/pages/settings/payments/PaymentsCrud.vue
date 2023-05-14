@@ -1,21 +1,21 @@
 <template>
   <q-card style="width: 700px; max-width: 90vw">
     <q-form @submit.prevent="onSubmit">
-      <q-card-section>
-        <div class="text-h6 text-green-10">{{ title }}</div>
+      <q-card-section class="bg-green-8 text-green-1 q-pa-sm q-mb-sm">
+        <div class="text-subtitle1">{{ title }}</div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none q-gutter-md">
+      <q-card-section class="q-pa-sm q-gutter-sm bg-green-1">
         <q-input outlined v-model="propsPayment.val" label="Metode Pembayaran" :rules="[val => !!val || 'Harus diisi!']"
           error-color="red-6" />
         <q-input outlined v-model="propsPayment.description" label="Deskripsi &sol; No. Rekening" />
 
       </q-card-section>
-      <q-card-actions class="bg-white text-green">
-        <q-btn v-if="propsPayment.id" flat color="negative" label="Hapus" @click="deleteList(propsPayment.id)" />
+      <q-card-actions align="right" class="bg-green-7">
+        <q-btn v-if="propsPayment.id" color="negative" label="Hapus" @click="deleteList(propsPayment.id)" />
         <q-space />
-        <q-btn flat color="green-10" label="Simpan" type="submit" />
-        <q-btn flat color="green-10" label="Gagal" v-close-popup />
+        <q-btn color="green-10" label="Simpan" type="submit" />
+        <q-btn color="secondary" label="Gagal" v-close-popup />
       </q-card-actions>
     </q-form>
     <!-- <pre>{{ propsCategory }}</pre> -->
@@ -27,6 +27,7 @@ import { notifySuccess, notifyError } from "src/utils/notify";
 import { forceRerender } from "src/utils/buttons-click";
 import { apiTokened } from "src/config/api";
 import toArray from "src/utils/to-array";
+import { useQuasar } from "quasar";
 
 const props = defineProps({
   isNew: { type: Boolean, default: false },
@@ -67,9 +68,15 @@ const onSubmit = async () => {
   }
 };
 
+const $q = useQuasar();
 const deleteList = async (id) => {
-  const isConfirmed = true
-  if (isConfirmed) {
+  $q.dialog({
+    title: "Konfirmasi",
+    message: `<span style="color:'red'">Hapus metode pembayaran ini?</span>`,
+    cancel: true,
+    persistent: false,
+    html: true,
+  }).onOk(async () => {
     try {
       const response = await apiTokened.delete(`lists/${id}`);
       notifySuccess(response.data.message);
@@ -80,6 +87,6 @@ const deleteList = async (id) => {
     } finally {
       forceRerender();
     }
-  }
+  })
 }
 </script>
