@@ -1,10 +1,10 @@
 <template>
   <q-card flat>
     <q-card-section class="no-padding">
-      <q-list>
+      <q-list separator="" class="bg-green-1">
         <q-item v-for="(store, index) in stores" :key="index">
           <q-item-section top avatar>
-            <q-avatar color="green" text-color="white" icon="store" />
+            <q-avatar color="green" text-color="green-12" icon="store" />
           </q-item-section>
 
           <q-item-section>
@@ -12,13 +12,13 @@
             <q-item-label caption lines="2">{{ store.address }}</q-item-label>
           </q-item-section>
           <q-item-section side>
-            <q-btn icon="edit" round color="green-2" text-color="green-10" @click="crud(false, store)"></q-btn>
+            <q-btn icon="edit" round color="green-8" text-color="green-1" @click="crud(false, store)"></q-btn>
           </q-item-section>
         </q-item>
       </q-list>
     </q-card-section>
-    <q-card-actions class="q-py-none ">
-      <q-btn icon="add" flat label="Tambah" color="green-2" text-color="green-10" @click="crud(true, {})" />
+    <q-card-actions class="bg-green-6">
+      <q-btn icon="add" label="Tambah" no-caps="" color="green-10" text-color="green-11" @click="crud(true, {})" />
     </q-card-actions>
   </q-card>
 

@@ -32,6 +32,7 @@ import { forceRerender } from "src/utils/buttons-click";
 import { apiTokened } from "src/config/api";
 import toArray from "src/utils/to-array";
 import slugify from 'src/utils/slugify.js'
+import { useQuasar } from "quasar";
 
 const props = defineProps({
   isNew: { type: Boolean, default: false },
@@ -52,8 +53,6 @@ if (props.isNew) {
 } else {
   title.value = "Edit Kategori";
 }
-
-
 
 const onSubmit = async () => {
   const data = {
@@ -77,9 +76,19 @@ const onSubmit = async () => {
   }
 };
 
+const $q = useQuasar();
+const deleteOrder = (id) => {
+
+}
+
 const deleteCategory = async (id) => {
-  const isConfirmed = true
-  if (isConfirmed) {
+  $q.dialog({
+    title: "Konfirmasi",
+    message: `<span style="color:'red'">Hapus kategori produk?</span>`,
+    cancel: true,
+    persistent: false,
+    html: true,
+  }).onOk(async () => {
     try {
       const response = await apiTokened.delete(`categories/${id}`);
       notifySuccess(response.data.message);
@@ -90,6 +99,6 @@ const deleteCategory = async (id) => {
     } finally {
       forceRerender();
     }
-  }
+  })
 }
 </script>
