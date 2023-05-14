@@ -96,7 +96,8 @@
             <td class="text-left">{{ stock.store_name }}</td>
             <td class="text-left">{{ stock.stock }}</td>
             <td class="text-right">
-              <q-btn icon="delete" label="Hapus" no-caps="" color="red" flat @click="deleteStock(stock.id)" />
+              <q-btn icon="delete" label="Hapus" no-caps="" color="red" flat
+                @click="deleteStock(stock.id, stock.store_name)" />
             </td>
           </tr>
         </tbody>
@@ -145,6 +146,7 @@ import myUpload from "vue-image-crop-upload";
 import ordersStore from "src/stores/orders-store";
 import ModalSearch from "./ProductSearch.vue";
 import BannerTitle from "src/components/BannerTitle.vue";
+import { useQuasar } from "quasar";
 
 const route = useRoute();
 const params = ref(route.params);
@@ -157,9 +159,15 @@ const showModalProduct = ref(false);
 const showModalStock = ref(false);
 const showModalSearch = ref(false);
 
-const deleteStock = async (id) => {
-  const isConfirmed = true
-  if (isConfirmed) {
+const $q = useQuasar();
+const deleteStock = async (id, store) => {
+  $q.dialog({
+    title: "Konfirmasi",
+    message: `<span style="color:'red'">Hapus stok produk di toko ${store}?</span>`,
+    cancel: true,
+    persistent: false,
+    html: true,
+  }).onOk(async () => {
     try {
       const response = await apiTokened.delete(`stocks/${id}`);
       notifySuccess(response.data.message);
@@ -170,7 +178,7 @@ const deleteStock = async (id) => {
     } finally {
       forceRerender();
     }
-  }
+  })
 }
 
 const addToCart = () => {
