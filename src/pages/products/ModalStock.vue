@@ -40,9 +40,9 @@ try {
 } catch (error) {
   console.log("Not Found: stores -> list", error.response);
 }
+
 const onSubmit = async () => {
   if (isNaN(store_id.value)) return notifyError("Tentukan Toko");
-
   try {
     const response = await apiTokened.post(`stocks`, {
       product_id: props.productId,

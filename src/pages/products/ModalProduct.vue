@@ -34,6 +34,7 @@ import { forceRerender } from "../../utils/buttons-click";
 import { apiTokened } from "../../config/api";
 import toArray from "../../utils/to-array";
 import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 
 const router = useRouter()
 const props = defineProps({
@@ -113,9 +114,15 @@ const onSubmit = async () => {
   }
 };
 
+const $q = useQuasar();
 const deleteProduct = async (id) => {
-  const isConfirmed = true
-  if (isConfirmed) {
+  $q.dialog({
+    title: "Konfirmasi",
+    message: `<span style="color:'red'">Hapus produk?</span>`,
+    cancel: true,
+    persistent: false,
+    html: true,
+  }).onOk(async () => {
     try {
       const response = await apiTokened.delete(`products/${id}`);
       notifySuccess(response.data.message);
@@ -125,6 +132,6 @@ const deleteProduct = async (id) => {
         notifyError(message);
       });
     }
-  }
+  })
 }
 </script>
