@@ -43,7 +43,8 @@
                               }})</span>
                           </td>
                           <td class="text-right" colspan="2">
-                            <q-btn flat dense color="negative" icon="delete" @click="deleteOrder(product.id)" />
+                            <q-btn flat dense color="negative" label="Hapus" no-caps icon="delete"
+                              @click="deleteOrder(product.id)" />
                           </td>
                         </tr>
 
@@ -122,6 +123,7 @@ import toArray from 'src/utils/to-array';
 import { notifyError, notifySuccess } from 'src/utils/notify';
 import BannerTitle from 'src/components/BannerTitle.vue';
 import { useRouter } from 'vue-router';
+import { useQuasar } from 'quasar';
 
 const listStores = reactive([]);
 const listPayment = reactive([]);
@@ -157,12 +159,21 @@ try {
   console.log("Not Found: stores -> list", error.response);
 }
 
+
+const $q = useQuasar();
 const deleteOrder = (id) => {
-  ordersStore().removeOrder(id)
+  $q.dialog({
+    title: "Konfirmasi",
+    message: `<span style="color:'red'">Hapus produk dari nota?</span>`,
+    cancel: true,
+    persistent: false,
+    html: true,
+  }).onOk(async () => {
+    ordersStore().removeOrder(id)
+  })
 }
 
 const submitOrder = async () => {
-
   const products_order = JSON.parse(JSON.stringify(products)).map((item) => ({
     product_id: item.id,
     quantity: item.quantity,
