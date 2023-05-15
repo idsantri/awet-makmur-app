@@ -40,7 +40,7 @@
                           <td class="text-left">
                             <span class="cursor-pointer text-body2 text-weight-bold multi-line">{{ product.name }}
                               ({{ product.code
-                              }})</span>
+                                                            }})</span>
                           </td>
                           <td class="text-right" colspan="2">
                             <q-btn flat dense color="negative" label="Hapus" no-caps icon="delete"
@@ -101,8 +101,8 @@
           </q-card-section>
           <q-card-section class="q-py-sm q-px-sm bg-green-11">
             <div class="text-body1 text-right q-mr-sm">Total: <span class="text-weight-bold">Rp{{
-              digitSeparator(getGrandTotal())
-            }}</span></div>
+                            digitSeparator(getGrandTotal())
+                            }}</span></div>
           </q-card-section>
           <q-card-actions align="right" class="bg-green-7">
             <q-btn type="submit" icon="save" label="Proses" color="green-10" />
@@ -178,7 +178,7 @@ const submitOrder = async () => {
     product_id: item.id,
     quantity: item.quantity,
     discount: item.discount,
-    cost: item.discount
+    cost: item.cost
   }))
 
   const data = {
