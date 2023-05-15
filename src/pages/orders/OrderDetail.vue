@@ -3,7 +3,7 @@
     <BannerTitle>
       <template #title>
         <div class="text-h6 text-weight-light">Data Transaksi</div>
-        <QSpace />
+        <q-space />
         <div class="text-subtitle1 text-weight-light">{{ order.store_name }} ({{ order.store_address }})
         </div>
         <div class="text-subtitle2">{{ fullDate(order.created_at) }}</div>
@@ -36,7 +36,7 @@
         <q-list bordered separator>
           <q-item-label header overline class="q-py-sm">Data Produk</q-item-label>
           <q-item clickable v-ripple v-for="(detail, index) in order.order_detail" :key="index"
-            @click="$router.push('/products/' + detail.product_id)">
+            @click="goToProduct(detail.product_id)">
             <q-item-section>
               <q-item-label>{{ detail.product_name }} {{ detail.product_brand ? ' (' + detail.product_brand + ')' : ''
               }}</q-item-label>
@@ -44,8 +44,8 @@
                 <q-markup-table flat dense class="text-green-10">
                   <tbody>
                     <tr>
-                      <td>Harga (Rp{{ digitSeparator(detail.selling_price) }} x {{ detail.quantity }})</td>
-                      <td class="text-right">Rp{{ digitSeparator(Number(detail.selling_price) *
+                      <td>Harga (Rp{{ digitSeparator(detail.product_selling_price) }} x {{ detail.quantity }})</td>
+                      <td class="text-right">Rp{{ digitSeparator(Number(detail.product_selling_price) *
                         Number(detail.quantity))
                       }}</td>
                     </tr>
@@ -65,7 +65,7 @@
                 </q-markup-table>
               </q-item-label>
             </q-item-section>
-            <QSeparator dark />
+            <q-separator dark />
           </q-item>
 
         </q-list>
@@ -80,7 +80,7 @@ import { apiTokened } from 'src/config/api';
 import { notifyError } from 'src/utils/notify';
 import toArray from 'src/utils/to-array';
 import { reactive, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { fullDate } from 'src/utils/format-date'
 import digitSeparator from 'src/utils/digit-separator';
 import BannerTitle from 'src/components/BannerTitle.vue';
@@ -94,5 +94,12 @@ try {
   toArray(error.response.data.message).forEach((message) => {
     notifyError(message);
   });
+}
+const router = useRouter();
+const goToProduct = (id) => {
+  if (!id) {
+    return notifyError("Produk sudah dihapus!");
+  }
+  router.push('/products/' + id)
 }
 </script>
