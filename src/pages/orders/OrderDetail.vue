@@ -148,7 +148,7 @@ const createInvoice = async () => {
       output: 'datauristring',
       jsPDF: {
         format: 'a5',
-        orientation: 'portrait',
+        orientation: 'landscape',
       },
     }).from(clonedElement).save();
   }
