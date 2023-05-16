@@ -183,9 +183,9 @@ const submitOrder = async () => {
 
   const data = {
     store_id: store_id.value,
-    customer_name: customer_name.value,
-    customer_address: customer_address.value,
-    customer_phone: customer_phone.value,
+    customer_name: customer_name.value.trim(),
+    customer_address: customer_address.value.trim(),
+    customer_phone: customer_phone.value.trim(),
     payment: payment.value,
     note: note.value,
     products: products_order
