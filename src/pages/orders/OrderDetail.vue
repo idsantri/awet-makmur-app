@@ -10,8 +10,7 @@
       </template>
       <template #buttons>
         <div>
-          <q-btn color="green-10" class="block text-green-11 q-mb-sm" icon="description" @click="createPDF" />
-          <q-btn color="green-10" class="block text-green-11 q-mb-sm" icon="description" @click="createPDF2" />
+          <q-btn color="green-10" class="block text-green-11 q-mb-sm" icon="description" @click="createInvoice" />
           <q-btn color="green-14" class="block text-white" icon="call" @click="openWA" />
         </div>
       </template>
@@ -87,10 +86,6 @@
     <OrderInvoice :order="order" />
   </q-dialog>
 
-  <q-dialog v-model="showModalInvoice2">
-    <OrderInvoice2 :order="order" />
-  </q-dialog>
-
   <!-- <pre>{{ order.order_detail }}</pre> -->
 </template>
 
@@ -105,12 +100,11 @@ import digitSeparator from 'src/utils/digit-separator';
 import BannerTitle from 'src/components/BannerTitle.vue';
 import html2pdf from "html2pdf.js";
 import OrderInvoice from './OrderInvoice.vue';
-import OrderInvoice2 from './OrderInvoice2.vue';
+import slugify from 'src/utils/slugify';
 
 const order = reactive({})
 const params = ref(useRoute().params);
 const showModalInvoice = ref(false)
-const showModalInvoice2 = ref(false)
 
 try {
   const response = await apiTokened.get(`orders/${params.value.id}`);
@@ -133,17 +127,24 @@ const deleteOrder = () => {
   alert('fitur belum siap')
 }
 
-const createPDF = async () => {
+function getInitials(str) {
+  const words = str.split(' ');
+  const initials = words.map(word => word.charAt(0).toLowerCase());
+  return initials.join('');
+}
+
+const createInvoice = async () => {
   showModalInvoice.value = true;
   // Tunggu beberapa saat agar modalInvoice terlihat sebelum membuat PDF
   await new Promise((resolve) => setTimeout(resolve, 500));
   const targetElement = document.getElementById('invoice');
+  const filename = getInitials(order.store_name) + '-' + order.created_at.slice(0, 10) + '-' + slugify(order.customer_name) + '.pdf'
   if (targetElement) {
     const clonedElement = targetElement.cloneNode(true);
     clonedElement.style.overflow = 'linebreak';
     await html2pdf().set({
       margin: [5, 10, 10, 10],
-      filename: 'invoice1.pdf',
+      filename: filename,
       output: 'datauristring',
       jsPDF: {
         format: 'a5',
@@ -154,29 +155,7 @@ const createPDF = async () => {
 
   showModalInvoice.value = false;
   notifySuccess('Berhasil membuat Nota. Silakan periksa di folder download!')
-};
-
-const createPDF2 = async () => {
-  showModalInvoice2.value = true;
-  // Tunggu beberapa saat agar modalInvoice terlihat sebelum membuat PDF
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  const targetElement = document.getElementById('invoice');
-  if (targetElement) {
-    const clonedElement = targetElement.cloneNode(true);
-    clonedElement.style.overflow = 'linebreak';
-    await html2pdf().set({
-      margin: [5, 10, 10, 10],
-      filename: 'invoice2.pdf',
-      output: 'datauristring',
-      jsPDF: {
-        format: 'a5',
-        orientation: 'landscape',
-      },
-    }).from(clonedElement).save();
-  }
-
-  showModalInvoice2.value = false;
-  notifySuccess('Berhasil membuat Nota. Silakan periksa di folder download!')
+  notifySuccess(filename)
 };
 
 const openWA = () => {
