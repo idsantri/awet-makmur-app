@@ -8,9 +8,15 @@
         </div>
         <div class="text-subtitle2">{{ fullDate(order.created_at) }}</div>
       </template>
+      <template #buttons>
+        <div>
+          <q-btn color="green-10" class="block text-green-11 q-mb-sm" icon="description" @click="createPDF" />
+          <q-btn color="green-14" class="block text-white" icon="call" @click="openWA" />
+        </div>
+      </template>
     </BannerTitle>
-    <q-card class="q-mt-sm text-green-10">
-      <q-card-section>
+    <q-card class="q-mt-sm q-pa-sm">
+      <q-card-section class="no-padding">
         <q-markup-table class="text-green-10" flat bordered="">
           <tbody>
             <tr>
@@ -32,7 +38,7 @@
           </tbody>
         </q-markup-table>
       </q-card-section>
-      <q-card-section class="q-pt-none">
+      <q-card-section class="no-padding q-mt-sm">
         <q-list bordered separator>
           <q-item-label header overline class="q-py-sm">Data Produk</q-item-label>
           <q-item clickable v-ripple v-for="(detail, index) in order.order_detail" :key="index"
@@ -54,7 +60,7 @@
                       <td class="text-right">Rp{{ digitSeparator(detail.discount) }}</td>
                     </tr>
                     <tr>
-                      <td>Biaya Tambahan</td>
+                      <td>Biaya (ongkir dll)</td>
                       <td class="text-right">Rp{{ digitSeparator(detail.cost) }}</td>
                     </tr>
                     <tr>
@@ -70,6 +76,9 @@
 
         </q-list>
       </q-card-section>
+      <q-card-actions class="q-mt-sm bg-green-7">
+        <q-btn color="negative" label="Hapus" @click="deleteOrder" />
+      </q-card-actions>
     </q-card>
   </div>
   <!-- <pre>{{ order.order_detail }}</pre> -->
@@ -101,5 +110,15 @@ const goToProduct = (id) => {
     return notifyError("Produk sudah dihapus!");
   }
   router.push('/products/' + id)
+}
+
+const deleteOrder = () => {
+  alert('fitur belum siap')
+}
+const createPDF = () => {
+  alert('fitur belum siap')
+}
+const openWA = () => {
+  alert('fitur belum siap')
 }
 </script>

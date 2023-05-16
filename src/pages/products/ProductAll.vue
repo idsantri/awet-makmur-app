@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-sm">
+  <div class="q-ma-sm">
     <BannerTitle>
       <template #title>
         <h2 class="no-margin text-green-11 text-h6 text-weight-light">

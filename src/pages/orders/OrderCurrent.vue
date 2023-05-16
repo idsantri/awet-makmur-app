@@ -76,7 +76,7 @@
                           <td class="text-right"><q-icon name="edit" /> </td>
                         </tr>
                         <tr>
-                          <td class="text-left">Biaya</td>
+                          <td class="text-left">Biaya (ongkir dll)</td>
                           <td class="text-right">
                             Rp{{ digitSeparator(product.cost) }}
                             <q-popup-edit v-model="product.cost" buttons v-slot="scope">

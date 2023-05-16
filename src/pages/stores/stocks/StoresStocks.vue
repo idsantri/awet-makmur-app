@@ -1,43 +1,50 @@
 <template>
-  <div class="q-pa-md" v-if="stocks.length > 0">
-    <q-table :title="'Stok ' + storeName" :rows="stocks" row-key="id" :columns="columns" :filter="filter"
-      @row-click="(event, row) => $router.push(`/products/${row.id}`)" class="text-green-10">
-      <template v-slot:top-right>
-        <q-input debounce="500" v-model="filter" placeholder="Cari">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
+  <div class="q-ma-sm">
+    <BannerTitle>
+      <template #title>
+        <div class="text-h6 text-weight-light">Data Stok</div>
+        <div class="text-subtitle1 ">{{ storeName }}</div>
       </template>
-    </q-table>
-    <q-card class="q-mt-md bg-green-2">
-      <q-card-section class="text-body1 text-green-10 text-center text-italic">
-        <p class="no-margin">Total Stok: {{ digitSeparator(getItems()) }} item, <br /> dengan nilai: <span
-            class="text-bold">Rp{{
-              digitSeparator(getTotal())
-            }}</span> </p>
-      </q-card-section>
-    </q-card>
-    <div class="q-mt-lg">
-      <q-btn push color="green" round icon="card_giftcard" @click="showModalZakat = true" />
-      <span class="text-body2 text-green-10 q-ml-sm">
-        Hitung Zakat
-      </span>
+    </BannerTitle>
+    <div class="q-mt-sm">
+      <div v-if="stocks.length > 0">
+        <q-table :rows="stocks" row-key="id" :columns="columns" :filter="filter"
+          @row-click="(event, row) => $router.push(`/products/${row.id}`)" class="text-green-10 ">
+          <template v-slot:top>
+            <q-input debounce="500" v-model="filter" placeholder="Cari">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
+        </q-table>
+        <q-card class="q-mt-sm bg-green-7">
+          <q-card-section class="text-body1 text-green-11 text-center text-italic q-pb-none">
+            <p class="no-margin">Total Stok: {{ digitSeparator(getItems()) }} item, <br /> dengan nilai: <span
+                class="text-bold">Rp{{
+                  digitSeparator(getTotal())
+                }}</span> </p>
+          </q-card-section>
+          <q-card-section>
+            <q-btn color="green-10" class="text-green-11 full-width" label="Hitung Zakat" icon="card_giftcard"
+              @click="showModalZakat = true" />
+          </q-card-section>
+        </q-card>
+      </div>
+      <div v-else>
+        <q-banner class="bg-red-2 text-red-10 q-ma-md">
+          <div class="text-body1 text-center">Tidak ada data untuk ditampilkan!</div>
+        </q-banner>
+      </div>
     </div>
-    <q-dialog v-model="showModalZakat">
-      <ModalZakat :asset="getTotal()" @close-modal="() => showModalZakat = false">
-        <template v-slot:store>
-          Toko {{ storeName }}
-        </template>
-      </ModalZakat>
-    </q-dialog>
   </div>
-
-  <div v-else>
-    <q-banner class="bg-red-2 text-red-10 q-ma-md">
-      <div class="text-body1 text-center">Tidak ada data untuk ditampilkan!</div>
-    </q-banner>
-  </div>
+  <q-dialog v-model="showModalZakat">
+    <ModalZakat :asset="getTotal()" @close-modal="() => showModalZakat = false">
+      <template v-slot:store>
+        Toko {{ storeName }}
+      </template>
+    </ModalZakat>
+  </q-dialog>
 
   <!-- <pre>{{ stocks }}</pre> -->
 </template>
@@ -49,11 +56,12 @@ import toArray from 'src/utils/to-array';
 import { reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import ModalZakat from './ModalZakat.vue'
+import BannerTitle from 'src/components/BannerTitle.vue';
 
 const stocks = reactive([]);
 const params = ref(useRoute().params);
 const filter = ref('')
-const storeName = ref('Toko')
+const storeName = ref('')
 const showModalZakat = ref(false)
 
 try {

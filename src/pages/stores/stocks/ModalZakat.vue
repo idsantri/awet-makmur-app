@@ -1,18 +1,19 @@
 <template>
   <q-card class="text-green-10" style="width: 600px; max-width: 90vh;">
-    <q-card-section class="q-pb-none">
-      <div class="text-body1">Hitung Zakat</div>
-      <div class="text-body1 text-overline">
+    <q-card-section class="bg-green-8 text-green-11 q-pa-sm">
+      <div class="text-subtitle1">Hitung Zakat</div>
+      <div class="text-overline">
         <slot name="store"></slot>
       </div>
     </q-card-section>
-    <q-card-section>
-      <q-markup-table flat bordered="">
+    <q-card-section class="q-pa-sm">
+      <q-markup-table flat bordered="" class="text-green-10">
         <tbody>
           <tr>
             <td>1</td>
             <td>Total Aset</td>
             <td class="text-right">Rp{{ digitSeparator(asset) }}</td>
+            <td></td>
           </tr>
           <tr>
             <td>2</td>
@@ -23,6 +24,7 @@
                 <q-input v-model.number="scope.value" type="number" dense autofocus counter @keyup.enter="scope.set" />
               </q-popup-edit>
             </td>
+            <td><q-icon name="edit" /></td>
           </tr>
           <tr>
             <td>3</td>
@@ -33,6 +35,7 @@
                 <q-input v-model.number="scope.value" type="number" dense autofocus counter @keyup.enter="scope.set" />
               </q-popup-edit>
             </td>
+            <td><q-icon name="edit" /></td>
           </tr>
           <tr>
             <td>4</td>
@@ -43,6 +46,7 @@
                 <q-input v-model.number="scope.value" type="number" dense autofocus counter @keyup.enter="scope.set" />
               </q-popup-edit>
             </td>
+            <td><q-icon name="edit" /></td>
           </tr>
           <tr>
             <td>5</td>
@@ -53,16 +57,18 @@
                 <q-input v-model.number="scope.value" type="number" dense autofocus counter @keyup.enter="scope.set" />
               </q-popup-edit>
             </td>
+            <td><q-icon name="edit" /></td>
           </tr>
           <tr class="bg-green-1">
             <td></td>
             <td class="text-italic">Total</td>
             <td class="text-right text-bold">Rp{{ digitSeparator(total) }}</td>
+            <td></td>
           </tr>
         </tbody>
       </q-markup-table>
     </q-card-section>
-    <q-card-section v-show="zakat > 0" class="q-pt-none">
+    <q-card-section v-show="zakat > 0" class="q-pa-sm">
       <q-list bordered separator>
         <q-item>
           <q-item-section>
@@ -80,10 +86,10 @@
         </q-item>
       </q-list>
     </q-card-section>
-    <q-card-actions class="q-px-md q-pb-md q-pt-none">
-      <q-btn icon="calculate" label="Hitung" flat="" color="green-1" class="bg-green" @click="calculateZakat" />
+    <q-card-actions class="bg-green-7">
+      <q-btn icon="calculate" label="Hitung" color="green-10" class="text-green-11" @click="calculateZakat" />
       <q-space />
-      <q-btn flat label="Tutup" color="green-10" @click="$emit('close-modal', true)" />
+      <q-btn label="Tutup" color="secondary" class="text-green-1" @click="$emit('close-modal', true)" />
     </q-card-actions>
   </q-card>
 </template>
