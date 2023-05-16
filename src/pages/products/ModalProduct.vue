@@ -80,10 +80,10 @@ try {
 
 const onSubmit = async () => {
   const data = {
-    code: code.value,
-    name: name.value,
-    brand: brand.value,
-    supplier: supplier.value,
+    code: code.value.trim(),
+    name: name.value.trim(),
+    brand: brand.value.trim(),
+    supplier: supplier.value.trim(),
     base_price: base_price.value,
     selling_price: selling_price.value,
     category_id: category_id.value,

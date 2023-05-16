@@ -37,10 +37,10 @@
                     <q-markup-table class="text-green-10">
                       <tbody>
                         <tr>
-                          <td class="text-left">
-                            <span class="cursor-pointer text-body2 text-weight-bold multi-line">{{ product.name }}
-                              ({{ product.code
-                                                            }})</span>
+                          <td class="text-left cursor-pointer" @click="$router.push('/products/' + product.id)">
+                            <span class=" text-body2 text-weight-bold multi-line">{{ product.name }}
+                              ({{ product.brand
+                              }})</span>
                           </td>
                           <td class="text-right" colspan="2">
                             <q-btn flat dense color="negative" label="Hapus" no-caps icon="delete"
@@ -101,8 +101,8 @@
           </q-card-section>
           <q-card-section class="q-py-sm q-px-sm bg-green-11">
             <div class="text-body1 text-right q-mr-sm">Total: <span class="text-weight-bold">Rp{{
-                            digitSeparator(getGrandTotal())
-                            }}</span></div>
+              digitSeparator(getGrandTotal())
+            }}</span></div>
           </q-card-section>
           <q-card-actions align="right" class="bg-green-7">
             <q-btn type="submit" icon="save" label="Proses" color="green-10" />
@@ -198,7 +198,7 @@ const submitOrder = async () => {
     ordersStore().clearOrders()
     router.push(`/orders/${response.data.data.order.id}`)
   } catch (error) {
-    // console.log(error);
+    // console.log(error.response.data.message);
     toArray(error.response.data.message).forEach((message) => {
       notifyError(message);
     });
