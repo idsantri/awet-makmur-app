@@ -6,7 +6,7 @@
         <q-space />
         <div class="text-subtitle1 text-weight-light">{{ order.store_name }} ({{ order.store_address }})
         </div>
-        <div class="text-subtitle2">{{ fullDate(order.created_at) }}</div>
+        <div class="text-caption">{{ fullDate(order.created_at) }}</div>
       </template>
       <template #buttons>
         <div>
