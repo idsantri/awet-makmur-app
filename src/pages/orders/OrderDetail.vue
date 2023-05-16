@@ -11,6 +11,7 @@
       <template #buttons>
         <div>
           <q-btn color="green-10" class="block text-green-11 q-mb-sm" icon="description" @click="createPDF" />
+          <q-btn color="green-10" class="block text-green-11 q-mb-sm" icon="description" @click="createPDF2" />
           <q-btn color="green-14" class="block text-white" icon="call" @click="openWA" />
         </div>
       </template>
@@ -81,21 +82,36 @@
       </q-card-actions>
     </q-card>
   </div>
+
+  <q-dialog v-model="showModalInvoice">
+    <OrderInvoice :order="order" />
+  </q-dialog>
+
+  <q-dialog v-model="showModalInvoice2">
+    <OrderInvoice2 :order="order" />
+  </q-dialog>
+
   <!-- <pre>{{ order.order_detail }}</pre> -->
 </template>
 
 <script setup>
 import { apiTokened } from 'src/config/api';
-import { notifyError } from 'src/utils/notify';
+import { notifyError, notifySuccess } from 'src/utils/notify';
 import toArray from 'src/utils/to-array';
 import { reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { fullDate } from 'src/utils/format-date'
 import digitSeparator from 'src/utils/digit-separator';
 import BannerTitle from 'src/components/BannerTitle.vue';
+import html2pdf from "html2pdf.js";
+import OrderInvoice from './OrderInvoice.vue';
+import OrderInvoice2 from './OrderInvoice2.vue';
 
 const order = reactive({})
 const params = ref(useRoute().params);
+const showModalInvoice = ref(false)
+const showModalInvoice2 = ref(false)
+
 try {
   const response = await apiTokened.get(`orders/${params.value.id}`);
   Object.assign(order, response.data.data.order);
@@ -104,6 +120,7 @@ try {
     notifyError(message);
   });
 }
+
 const router = useRouter();
 const goToProduct = (id) => {
   if (!id) {
@@ -115,9 +132,53 @@ const goToProduct = (id) => {
 const deleteOrder = () => {
   alert('fitur belum siap')
 }
-const createPDF = () => {
-  alert('fitur belum siap')
-}
+
+const createPDF = async () => {
+  showModalInvoice.value = true;
+  // Tunggu beberapa saat agar modalInvoice terlihat sebelum membuat PDF
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const targetElement = document.getElementById('invoice');
+  if (targetElement) {
+    const clonedElement = targetElement.cloneNode(true);
+    clonedElement.style.overflow = 'linebreak';
+    await html2pdf().set({
+      margin: [5, 10, 10, 10],
+      filename: 'invoice1.pdf',
+      output: 'datauristring',
+      jsPDF: {
+        format: 'a5',
+        orientation: 'portrait',
+      },
+    }).from(clonedElement).save();
+  }
+
+  showModalInvoice.value = false;
+  notifySuccess('Berhasil membuat Nota. Silakan periksa di folder download!')
+};
+
+const createPDF2 = async () => {
+  showModalInvoice2.value = true;
+  // Tunggu beberapa saat agar modalInvoice terlihat sebelum membuat PDF
+  await new Promise((resolve) => setTimeout(resolve, 500));
+  const targetElement = document.getElementById('invoice');
+  if (targetElement) {
+    const clonedElement = targetElement.cloneNode(true);
+    clonedElement.style.overflow = 'linebreak';
+    await html2pdf().set({
+      margin: [5, 10, 10, 10],
+      filename: 'invoice2.pdf',
+      output: 'datauristring',
+      jsPDF: {
+        format: 'a5',
+        orientation: 'landscape',
+      },
+    }).from(clonedElement).save();
+  }
+
+  showModalInvoice2.value = false;
+  notifySuccess('Berhasil membuat Nota. Silakan periksa di folder download!')
+};
+
 const openWA = () => {
   alert('fitur belum siap')
 }
