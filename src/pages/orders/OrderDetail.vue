@@ -11,7 +11,7 @@
       <template #buttons>
         <div>
           <q-btn color="green-10" class="block text-green-11 q-mb-sm" icon="description" @click="createInvoice" />
-          <q-btn color="green-14" class="block text-white" icon="call" @click="openWA" />
+          <q-btn color="green-14" class="block text-white" icon="call" @click="redirectToWA" />
         </div>
       </template>
     </BannerTitle>
@@ -21,7 +21,8 @@
           <tbody>
             <tr>
               <td>Pelanggan</td>
-              <td>{{ order.customer_name }} ({{ order.customer_address }}; {{ order.customer_phone }})</td>
+              <td class="multi-line">{{ order.customer_name }} ({{ order.customer_address }}; {{ order.customer_phone }})
+              </td>
             </tr>
             <tr>
               <td>Pembayaran</td>
@@ -33,7 +34,7 @@
             </tr>
             <tr>
               <td>Catatan</td>
-              <td>{{ order.note }}</td>
+              <td class="multi-line">{{ order.note }}</td>
             </tr>
           </tbody>
         </q-markup-table>
@@ -101,6 +102,7 @@ import BannerTitle from 'src/components/BannerTitle.vue';
 import html2pdf from "html2pdf.js";
 import OrderInvoice from './OrderInvoice.vue';
 import slugify from 'src/utils/slugify';
+import { useQuasar } from 'quasar';
 
 const order = reactive({})
 const params = ref(useRoute().params);
@@ -109,6 +111,7 @@ const showModalInvoice = ref(false)
 try {
   const response = await apiTokened.get(`orders/${params.value.id}`);
   Object.assign(order, response.data.data.order);
+  // console.log(order);
 } catch (error) {
   toArray(error.response.data.message).forEach((message) => {
     notifyError(message);
@@ -123,16 +126,15 @@ const goToProduct = (id) => {
   router.push('/products/' + id)
 }
 
-const deleteOrder = () => {
-  alert('fitur belum siap')
-}
-
 function getInitials(str) {
   const words = str.split(' ');
   const initials = words.map(word => word.charAt(0).toLowerCase());
   return initials.join('');
 }
 
+const redirectToWA = () => window.open("https://wa.me/" + order.customer_phone, '_blank');
+
+const $q = useQuasar()
 const createInvoice = async () => {
   showModalInvoice.value = true;
   // Tunggu beberapa saat agar modalInvoice terlihat sebelum membuat PDF
@@ -152,13 +154,45 @@ const createInvoice = async () => {
       },
     }).from(clonedElement).save();
   }
-
+  $q.dialog({
+    title: "Konfirmasi",
+    message: `Berhasil membuat Nota. Silakan periksa di folder download!<br/>Nama file: <strong>${filename}</strong><br/><br/>Buka WhatsApp?`,
+    cancel: true,
+    persistent: false,
+    html: true,
+    ok: "Ya",
+    cancel: "Tidak"
+  }).onOk(async () => {
+    redirectToWA()
+  })
   showModalInvoice.value = false;
-  notifySuccess('Berhasil membuat Nota. Silakan periksa di folder download!')
-  notifySuccess(filename)
 };
 
-const openWA = () => {
-  alert('fitur belum siap')
+const deleteOrder = async () => {
+  $q.dialog({
+    title: "Konfirmasi",
+    message: `<span style="color:'red'">Hapus transaksi ini?</span><br/><br/><hr/><em>Stok akan dikembalikan ke semula!</em><hr/>`,
+    cancel: true,
+    persistent: false,
+    html: true,
+  }).onOk(async () => {
+    try {
+      const response = await apiTokened.delete(`orders/${order.id}`);
+      notifySuccess(response.data.message);
+      router.go(-1)
+    } catch (error) {
+      toArray(error.response.data.message).forEach((message) => {
+        notifyError(message);
+      });
+    }
+  })
 }
+
 </script>
+
+<style scoped>
+.multi-line {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+</style>

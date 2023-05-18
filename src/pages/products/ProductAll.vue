@@ -39,6 +39,7 @@
           <div>
             <div class="text-caption text-green-9">
               <span v-html="product.description" class="description"></span>
+              <pre>{{ product.stocks }}</pre>
             </div>
           </div>
         </q-card-section>
@@ -88,6 +89,7 @@ try {
     `products/categories/${params.value.category}`
   );
   Object.assign(products, response.data.data.products);
+  // console.log(products);
 } catch (error) {
   console.log("Not Found: product -> list", error.response);
 }
