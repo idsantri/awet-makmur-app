@@ -103,6 +103,7 @@ import html2pdf from "html2pdf.js";
 import OrderInvoice from './OrderInvoice.vue';
 import slugify from 'src/utils/slugify';
 import { useQuasar } from 'quasar';
+import getInitials from 'src/utils/initial';
 
 const order = reactive({})
 const params = ref(useRoute().params);
@@ -124,12 +125,6 @@ const goToProduct = (id) => {
     return notifyError("Produk sudah dihapus!");
   }
   router.push('/products/' + id)
-}
-
-function getInitials(str) {
-  const words = str.split(' ');
-  const initials = words.map(word => word.charAt(0).toLowerCase());
-  return initials.join('');
 }
 
 const redirectToWA = () => window.open("https://wa.me/" + order.customer_phone, '_blank');
