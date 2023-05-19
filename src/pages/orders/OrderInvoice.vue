@@ -2,33 +2,36 @@
   <q-card class="text-black" id="invoice">
     <q-card-section class="no-padding q-ma-md">
       <div class="row justify-between">
-        <div class="col-8">
+        <div class="col-1">
+          <q-img src="../../assets/icon.png" width="100%" />
+        </div>
+        <div class="col-7 q-px-sm">
           <div class="text-h6">Toko {{ order.store_name }}</div>
-          <div class="text-caption "> {{ order.store_address_full }}</div>
+          <div class="text-caption multi-line"> {{ order.store_address_full }} </div>
         </div>
         <div class="col-4">
           <div class="text-h5 text-right">INVOICE</div>
-          <div class="text-caption text-right">{{ fullDate(order.created_at) }}</div>
+          <div class="text-caption text-right">{{ fullDate(order.created_at) }} </div>
         </div>
       </div>
       <q-separator />
     </q-card-section>
     <q-card-section class="no-padding q-ma-md">
       <div class="row justify-between">
-        <div>
+        <div class="col-6 q-pr-xs">
           <div class="text-caption text-italic">Nama:</div>
           <div class="text-body2 text-capitalize">{{ order.customer_name }}</div>
           <div class="text-caption text-italic q-mt-sm">Alamat Pengiriman:</div>
-          <div class="text-body2">{{ order.customer_address }}</div>
+          <div class="text-body2 multi-line">{{ order.customer_address }}</div>
         </div>
-        <div>
+        <div class="col-6 q-pl-xs">
           <div class="text-caption text-italic">Total:</div>
           <div class="text-body2 text-bold">Rp{{ digitSeparator(order.sum_selling_price) }}</div>
           <div class="text-caption text-italic q-mt-sm">Catatan:</div>
-          <div class="text-body2">{{ order.note }}</div>
+          <div class="text-body2 multi-line">{{ order.note }} </div>
         </div>
-
       </div>
+      <q-separator />
     </q-card-section>
     <q-card-section class="no-padding q-ma-md">
       <q-markup-table flat dense>

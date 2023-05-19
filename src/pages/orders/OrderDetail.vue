@@ -34,10 +34,14 @@
             </tr>
             <tr>
               <td>Catatan</td>
-              <td class="multi-line">{{ order.note }}</td>
+              <td class="multi-line" style="padding-right: 40px;">{{ order.note }}</td>
             </tr>
           </tbody>
         </q-markup-table>
+
+        <q-btn round dense color="green-10" icon="edit" class="absolute-bottom-right q-mb-xs q-mr-xs"
+          @click="showModalOrder = true" />
+
       </q-card-section>
       <q-card-section class="no-padding q-mt-sm">
         <q-list bordered separator>
@@ -87,6 +91,10 @@
     <OrderInvoice :order="order" />
   </q-dialog>
 
+  <q-dialog v-model="showModalOrder">
+    <OrderModal :order="order" />
+  </q-dialog>
+
   <!-- <pre>{{ order.order_detail }}</pre> -->
 </template>
 
@@ -104,10 +112,12 @@ import OrderInvoice from './OrderInvoice.vue';
 import slugify from 'src/utils/slugify';
 import { useQuasar } from 'quasar';
 import getInitials from 'src/utils/initial';
+import OrderModal from './OrderModal.vue';
 
 const order = reactive({})
 const params = ref(useRoute().params);
 const showModalInvoice = ref(false)
+const showModalOrder = ref(false)
 
 try {
   const response = await apiTokened.get(`orders/${params.value.id}`);
@@ -184,10 +194,3 @@ const deleteOrder = async () => {
 }
 
 </script>
-
-<style scoped>
-.multi-line {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-</style>

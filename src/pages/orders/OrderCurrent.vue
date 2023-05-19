@@ -136,10 +136,12 @@ const payment = ref('')
 const router = useRouter()
 
 try {
-  const response = await apiTokened.get(`lists/payment-method`);
-  Object.assign(listPayment, response.data.data.lists);
+  const responsePayment = await apiTokened.get(`lists/payment-method`);
+  Object.assign(listPayment, responsePayment.data.data.lists);
+  const responseStore = await apiTokened.get(`stores`);
+  Object.assign(listStores, responseStore.data.data.stores);
 } catch (error) {
-  console.log("Not Found: list -> payment", error.response);
+  console.log("Not Found: list ", error.response);
 }
 
 const products = reactive(ordersStore().getOrders)
@@ -152,12 +154,6 @@ const getGrandTotal = () => {
   return grandTotal.value = total
 }
 
-try {
-  const response = await apiTokened.get(`stores`);
-  Object.assign(listStores, response.data.data.stores);
-} catch (error) {
-  console.log("Not Found: stores -> list", error.response);
-}
 
 
 const $q = useQuasar();
@@ -206,10 +202,3 @@ const submitOrder = async () => {
 }
 
 </script>
-
-<style lang="scss" scoped>
-.multi-line {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-</style>

@@ -252,11 +252,6 @@ margin.value = product.selling_price - product.base_price;
   max-width: 500px;
 }
 
-.multi-line {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
 th,
 td {
   padding-left: 8px;
