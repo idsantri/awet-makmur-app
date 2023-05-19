@@ -7,8 +7,10 @@
 
       <q-card-section class="q-pa-sm q-gutter-sm bg-green-1">
         <q-input outlined v-model="propsStore.name" label="Nama" :rules="[val => !!val || 'Harus diisi!']"
-          error-color="red-6" />
-        <q-input outlined v-model="propsStore.address" label="Alamat" />
+          error-color="red-6" hint="Nama Toko" />
+        <q-input outlined v-model="propsStore.address" label="Alamat" hint="Alamat singkat" />
+        <q-input outlined v-model="propsStore.address_full" label="Alamat Lengkap" autogrow
+          hint="Termasuk nomor telepon" />
 
       </q-card-section>
       <q-card-actions align="right" class="bg-green-7">
@@ -37,6 +39,7 @@ const propsStore = reactive({
   id: null,
   name: "",
   address: "",
+  address_full: "",
 });
 Object.assign(propsStore, props.store);
 
@@ -51,6 +54,7 @@ const onSubmit = async () => {
   const data = {
     name: propsStore.name,
     address: propsStore.address,
+    address_full: propsStore.address_full,
   };
 
   try {

@@ -10,6 +10,10 @@
     <q-separator />
 
     <q-tab-panels v-model="tab" animated swipeable>
+      <q-tab-panel name="payments" class="no-padding">
+        <tab-payments />
+      </q-tab-panel>
+
       <q-tab-panel name="categories" class="no-padding">
         <tab-categories />
       </q-tab-panel>
@@ -18,9 +22,6 @@
         <tab-stores />
       </q-tab-panel>
 
-      <q-tab-panel name="payments" class="no-padding">
-        <tab-payments />
-      </q-tab-panel>
     </q-tab-panels>
   </q-card>
 </template>

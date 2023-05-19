@@ -9,7 +9,8 @@
 
           <q-item-section>
             <q-item-label>{{ store.name }}</q-item-label>
-            <q-item-label caption lines="2">{{ store.address }}</q-item-label>
+            <q-item-label overline="">{{ store.address }}</q-item-label>
+            <q-item-label caption="" lines="2">{{ store.address_full }}</q-item-label>
           </q-item-section>
           <q-item-section side>
             <q-btn icon="edit" round color="green-8" text-color="green-1" @click="crud(false, store)"></q-btn>
