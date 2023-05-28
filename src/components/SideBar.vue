@@ -67,15 +67,33 @@
       <div class="text-body1 text-green-1">Setting</div>
       <div class="text-caption">Pengaturan</div>
     </q-item-label> -->
-    <q-item clickable v-ripple to="/settings">
-      <q-item-section avatar>
-        <q-icon color="green-1" name="settings" />
-      </q-item-section>
-      <q-item-section>
-        <q-item-label>Pengaturan</q-item-label>
-        <q-item-label caption>Pengaturan Aplikasi</q-item-label>
-      </q-item-section>
-    </q-item>
+
+    <q-expansion-item expand-separator label="Pengaturan" caption="Aplikasi dan Pengguna"
+      header-class="text-body1 text-green-1" expand-icon-class="text-green-1">
+      <!-- APP -->
+      <q-item clickable v-ripple to="/settings/app">
+        <q-item-section avatar>
+          <q-icon color="green-1" name="settings" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>Aplikasi</q-item-label>
+          <q-item-label caption>Pengaturan Aplikasi</q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <!-- USER -->
+      <q-item clickable v-ripple to="/settings/users">
+        <q-item-section avatar>
+          <q-icon color="green-1" name="manage_accounts" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>Pengguna</q-item-label>
+          <q-item-label caption>Pengaturan Pengguna</q-item-label>
+        </q-item-section>
+      </q-item>
+
+    </q-expansion-item>
+
   </q-list>
 </template>
 
