@@ -43,7 +43,7 @@ const login = async () => {
   emit("errors", []);
   try {
     showSpinner.value = true
-    const response = await api.post("auth/login", {
+    const response = await api.post("login", {
       login: username.value,
       password: password.value,
     });
