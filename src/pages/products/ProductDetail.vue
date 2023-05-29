@@ -207,7 +207,7 @@ const translate = {
 const showUploader = ref(false);
 const imgDataUrl = ref("");
 const urlUpload = `${apiTokened.defaults.baseURL}/products/${params.value.id}/image`;
-const headers = {};
+const headers = { Authorization: apiTokened.defaults.headers.common.Authorization }
 const paramsImage = {};
 const cropSuccess = (imgData, field) => {
   imgDataUrl.value = imgData;
