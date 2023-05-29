@@ -1,7 +1,7 @@
 import axios from "axios";
 import { baseUrl } from "src/boot/axios";
 
-const api = axios.create({ baseURL: baseUrl.defaults.baseURL + '/auth'});
+const api = axios.create({ baseURL: baseUrl.defaults.baseURL });
 
 const apiTokened = axios.create({ baseURL: baseUrl.defaults.baseURL });
 const auth = JSON.parse(localStorage.getItem("auth"));
