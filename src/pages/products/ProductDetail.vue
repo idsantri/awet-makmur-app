@@ -3,9 +3,9 @@
     <q-card-section class="no-padding">
       <div v-if="product.image_last">
         <q-img style="height: 30vh" :src="product.image_url + product.image_last">
-          <q-btn push round color="green" icon="edit" class="absolute all-pointer-events" style="bottom: 8px; right: 8px"
-            @click="showUploader = true" />
         </q-img>
+        <q-btn push round color="green" icon="edit" class="absolute all-pointer-events" style="bottom: 8px; right: 8px"
+          @click="showUploader = true" />
       </div>
       <div v-else>
         <q-img style="max-height: 30vh" src="https://picsum.photos/400/300.webp">
