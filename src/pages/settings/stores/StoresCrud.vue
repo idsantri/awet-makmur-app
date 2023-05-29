@@ -58,7 +58,7 @@ const onSubmit = async () => {
   };
 
   try {
-    const response = null
+    let response = null
     if (props.isNew) response = await apiTokened.post(`stores`, data);
     else response = await apiTokened.put(`stores/${propsStore.id}`, data);
     notifySuccess(response.data.message);

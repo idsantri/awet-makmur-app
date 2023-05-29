@@ -63,7 +63,7 @@ const onSubmit = async () => {
   };
 
   try {
-    const response = null
+    let response = null
     if (props.isNew) response = await apiTokened.post(`categories`, data);
     else response = await apiTokened.put(`categories/${propsCategory.id}`, data);
     notifySuccess(response.data.message);

@@ -55,7 +55,7 @@ const onSubmit = async () => {
   };
 
   try {
-    const response = null
+    let response = null
     if (props.isNew) response = await apiTokened.post(`lists`, data);
     else response = await apiTokened.put(`lists/${propsPayment.id}`, data);
     notifySuccess(response.data.message);
