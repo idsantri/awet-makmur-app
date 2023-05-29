@@ -51,8 +51,8 @@ const register = async () => {
   try {
     showSpinner.value = true
     const response = await api.post("register", {
-      username: username.value,
-      email: email.value,
+      username: username.value.toLowerCase(),
+      email: email.value.toLowerCase(),
       password: password.value,
       password_confirm: password_confirm.value,
     });
