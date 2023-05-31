@@ -137,7 +137,10 @@ const goToProduct = (id) => {
   router.push('/products/' + id)
 }
 
-const redirectToWA = () => window.open("https://wa.me/" + order.customer_phone, '_blank');
+const redirectToWA = () => {
+  const wa = order.customer_phone.replace(/^0/, '62');
+  window.open(`https://wa.me/${wa}`, '_blank');
+}
 
 const $q = useQuasar()
 const createInvoice = async () => {
