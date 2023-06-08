@@ -5,7 +5,7 @@
         <h2 class="no-margin text-green-11 text-h6 text-weight-light">
           Kategori:
           <span v-if="products.length > 0">{{ products[0].category_name }}</span>
-          <span v-else>{{ $route.params.category }}</span>
+          <span v-else>{{ titleCase($route.params.category) }}</span>
         </h2>
       </template>
       <template #buttons>
@@ -78,6 +78,7 @@ import ordersStore from "src/stores/orders-store";
 import ModalProduct from "./ModalProduct.vue";
 import ModalSearch from "./ProductSearch.vue";
 import BannerTitle from "src/components/BannerTitle.vue";
+import titleCase from "src/utils/tittle-case";
 
 const showModalProduct = ref(false);
 const showModalSearch = ref(false);

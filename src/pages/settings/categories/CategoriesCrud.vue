@@ -9,6 +9,7 @@
         <q-input outlined v-model="propsCategory.slug" label="Slug" readonly dense />
         <q-input outlined v-model="propsCategory.name" label="Nama" :rules="[val => !!val || 'Harus diisi!']"
           error-color="red-6" @blur="propsCategory.slug = slugify(propsCategory.name)" />
+        <q-input outlined v-model="propsCategory.sort" label="No Urut" type="number" />
         <q-input outlined v-model="propsCategory.description" label="Deskripsi" />
         <q-input outlined v-model="propsCategory.icon" label="Ikon" />
         <div>
@@ -42,6 +43,7 @@ const propsCategory = reactive({
   id: null,
   name: "",
   slug: "",
+  sort: "",
   icon: "",
   description: null,
 });
@@ -58,6 +60,7 @@ const onSubmit = async () => {
   const data = {
     name: propsCategory.name,
     slug: propsCategory.slug,
+    sort: propsCategory.sort,
     description: propsCategory.description,
     icon: propsCategory.icon,
   };

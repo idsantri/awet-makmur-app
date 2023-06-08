@@ -8,7 +8,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>{{ category.name }}</q-item-label>
+            <q-item-label>{{ category.sort }} &ndash; {{ category.name }}</q-item-label>
             <q-item-label caption lines="2">{{ category.description }}</q-item-label>
           </q-item-section>
           <q-item-section side>
