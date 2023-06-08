@@ -1530,11 +1530,12 @@
     core-js "^3.6.5"
     core-js-compat "^3.6.5"
 
-"@quasar/cli@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@quasar/cli/-/cli-2.1.1.tgz#5e57863114be8cf735c37a26c388f0a50f7feaef"
-  integrity sha512-ff2/z2G4FJMDBP3L+G1Ae8i9PxA94GSyCU6Ww3q0mvwaR8iHKaLwaldvxZTHU4HIhRIZaczIwBF6H/RkeLgodA==
+"@quasar/cli@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@quasar/cli/-/cli-2.2.1.tgz#8b7c3016c5681c1a9967265a8fe3943269dd4c3a"
+  integrity sha512-PMwJ76IeeNRRBw+08hUMjhqGC6JKJ/t1zIb+IOiyR5D4rkBR26Ha/Z46OD3KfwUprq4Q8s4ieB1+d3VY8FhPKg==
   dependencies:
+    "@quasar/ssl-certificate" "^1.0.0"
     ci-info "^3.8.0"
     compression "^1.7.4"
     connect-history-api-fallback "^2.0.0"
@@ -1559,6 +1560,14 @@
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/@quasar/fastclick/-/fastclick-1.1.5.tgz#948e79c44098cced6c3d1645315683ebc29ed834"
   integrity sha512-p3JKgTjRlJ1YQXbqTw3Bsa4j0mQdt5dq+WfYvyb7MgKGdephHCKdR/kxA5PCTAmJanGJuDKqRdyGYX/hYN4KGw==
+
+"@quasar/ssl-certificate@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@quasar/ssl-certificate/-/ssl-certificate-1.0.0.tgz#8126d99241ea1558ed14f31cf5003fc5cacdd891"
+  integrity sha512-RhZF7rO76T7Ywer1/5lCe7xl3CIiXxSAH1xgwOj0wcHTityDxJqIN/5YIj6BxMvlFw8XkJDoB1udEQafoVFA4g==
+  dependencies:
+    fs-extra "^11.1.1"
+    selfsigned "^2.1.1"
 
 "@quasar/ssr-helpers@2.2.2":
   version "2.2.2"
