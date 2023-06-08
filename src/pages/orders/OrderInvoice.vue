@@ -3,7 +3,7 @@
     <q-card-section class="no-padding q-ma-md">
       <div class="row justify-between">
         <div class="col-1">
-          <q-img src="../../assets/icon.png" width="100%" />
+          <q-img src="../../assets/icon-s.png" width="100%" />
         </div>
         <div class="col-7 q-px-sm">
           <div class="text-h6">Toko {{ order.store_name }}</div>
