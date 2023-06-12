@@ -19,4 +19,4 @@ jobs:
         with:
           publish-dir: ./dist/pwa
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          netlify-site-name: https://toko-awet-makmur.netlify.app
+          netlify-site-name: https://awetmakmur.netlify.app
