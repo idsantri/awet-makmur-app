@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          node-version: "16"
       - name: Install dependencies
         run: npm install
       - name: Build PWA
@@ -19,4 +21,3 @@ jobs:
         with:
           publish-dir: ./dist/pwa
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          netlify-site-name: https://awetmakmur.netlify.app
