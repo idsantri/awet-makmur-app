@@ -12,19 +12,19 @@
 
         <q-btn-dropdown flat round dense dropdown-icon="more_vert" class="q-pl-md" color="green-1">
           <q-list>
-            <!-- <q-item clickable v-close-popup name="install" @click="installApp" v-if="!pwaIsInstalled">
+            <q-item clickable v-close-popup name="install" @click="installApp" v-if="!pwaIsInstalled">
               <q-item-section>Install</q-item-section>
               <q-item-section avatar>
                 <q-icon color="green" name="install_mobile" />
               </q-item-section>
-            </q-item> -->
+            </q-item>
 
-            <q-item clickable v-close-popup>
+            <!-- <q-item clickable v-close-popup>
               <q-item-section>Profil</q-item-section>
               <q-item-section avatar>
                 <q-icon color="green" name="3p" />
               </q-item-section>
-            </q-item>
+            </q-item> -->
 
             <q-item clickable v-close-popup to="/logout">
               <q-item-section>Keluar</q-item-section>
