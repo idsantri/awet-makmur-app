@@ -19,12 +19,12 @@
               </q-item-section>
             </q-item>
 
-            <!-- <q-item clickable v-close-popup>
+            <q-item clickable v-close-popup>
               <q-item-section>Profil</q-item-section>
               <q-item-section avatar>
                 <q-icon color="green" name="3p" />
               </q-item-section>
-            </q-item> -->
+            </q-item>
 
             <q-item clickable v-close-popup to="/logout">
               <q-item-section>Keluar</q-item-section>
