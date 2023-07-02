@@ -41,6 +41,10 @@
                             <span class=" text-body2 text-weight-bold multi-line">{{ product.name }}
                               ({{ product.brand
                               }})</span>
+                            <span class="text-italic">
+                              ~Stok:
+                              {{ product.total_stock }}
+                            </span>
                           </td>
                           <td class="text-right" colspan="2">
                             <q-btn flat dense color="negative" label="Hapus" no-caps icon="delete"
@@ -145,6 +149,7 @@ try {
 }
 
 const products = reactive(ordersStore().getOrders)
+// console.log('p', products);
 const grandTotal = ref(0)
 const getGrandTotal = () => {
   let total = 0;

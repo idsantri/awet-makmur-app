@@ -164,7 +164,7 @@ const createInvoice = async () => {
   }
   $q.dialog({
     title: "Konfirmasi",
-    message: `Berhasil membuat Nota. Silakan periksa di folder download!<br/>Nama file: <strong>${filename}</strong><br/><br/>Buka WhatsApp?`,
+    message: `Berhasil membuat Nota. Silakan periksa di folder download/unduhan!<br/>Nama file: <strong>${filename}</strong><br/><br/>Buka WhatsApp?`,
     cancel: true,
     persistent: false,
     html: true,
