@@ -16,6 +16,7 @@
     "@quasar/cli": "^2.2.1",
     "@quasar/extras": "^1.0.0",
     "axios": "^1.2.1",
+    "chart.js": "^4.4.0",
     "core-js": "^3.6.5",
     "datatables.net-dt": "^1.13.4",
     "datatables.net-vue3": "^2.1.0",
