@@ -76,11 +76,19 @@ const routes = [
 			},
 			{
 				path: "reports",
+				component: () => import("src/pages/reports/IndexPage.vue"),
 				children: [
 					{
 						path: "transactions/:year/:month?",
 						component: () =>
-							import("src/pages/reports/IndexPage.vue"),
+							import("src/pages/reports/ReportPage.vue"),
+						name: "transactions",
+					},
+					{
+						path: "products-out/:year/:month?",
+						component: () =>
+							import("src/pages/reports/ProductsOutPage.vue"),
+						name: "products-out",
 					},
 				],
 			},
