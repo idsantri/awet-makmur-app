@@ -1,10 +1,10 @@
-function sumRows(data, fieldTotal) {
+function sumRows(data, rowTotal, fieldTotal = "sub_total") {
 	let totalRow = {};
 	const total = {};
 
 	data.forEach((row) => {
 		for (const key in row) {
-			if (key === "store_name") {
+			if (key === rowTotal) {
 				if (!totalRow[key]) {
 					totalRow[key] = "Total";
 				}
@@ -12,9 +12,9 @@ function sumRows(data, fieldTotal) {
 			const checkKey = !isNaN(key.substring(1, 3)) || key === fieldTotal;
 			if (checkKey) {
 				if (!totalRow[key]) totalRow[key] = 0;
-				totalRow[key] += parseInt(row[key]);
+				totalRow[key] += parseInt(row[key]) || 0;
 				if (!total[key]) total[key] = 0;
-				total[key] += parseInt(row[key]);
+				total[key] += parseInt(row[key]) || 0;
 			}
 		}
 	});
@@ -47,16 +47,16 @@ function daysInMonth() {
 	return result;
 }
 
-function chartYear(data) {
+function chartYear(data, objKey) {
 	return {
 		labels: monthsShort(),
 		datasets: data.map((item, index) => ({
-			label: item.store_name,
+			label: item[objKey],
 			data: Object.keys(item)
 				.filter((key) => key.startsWith("m"))
 				.map((key) => item[key]),
 			backgroundColor:
-				index === 0
+				index % 2 == 0
 					? "rgba(255, 99, 132, 0.5)"
 					: "rgba(54, 162, 235, 0.5)",
 			tension: 0.1,
@@ -64,16 +64,16 @@ function chartYear(data) {
 	};
 }
 
-function chartMonth(data) {
+function chartMonth(data, objKey) {
 	return {
 		labels: daysInMonth(),
 		datasets: data.map((item, index) => ({
-			label: item.store_name,
+			label: item[objKey],
 			data: Object.keys(item)
 				.filter((key) => key.startsWith("d"))
 				.map((key) => item[key]),
 			backgroundColor:
-				index === 0
+				index % 2 == 0
 					? "rgba(255, 99, 132, 0.5)"
 					: "rgba(54, 162, 235, 0.5)",
 			tension: 0.1,
@@ -81,8 +81,8 @@ function chartMonth(data) {
 	};
 }
 
-const columnYear = [
-	{ field: "store_name", label: "Toko", align: "left" },
+const columnYear = (obj) => [
+	obj,
 	{ field: "m01", label: "Jan" },
 	{ field: "m02", label: "Feb" },
 	{ field: "m03", label: "Mar" },
@@ -95,11 +95,16 @@ const columnYear = [
 	{ field: "m10", label: "Okt" },
 	{ field: "m11", label: "Nov" },
 	{ field: "m12", label: "Des" },
-	{ field: "sub_total", label: "Total" },
+	{
+		field: "sub_total",
+		label: "Total",
+		sortable: true,
+		sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
+	},
 ];
 
-const columnMonth = [
-	{ field: "store_name", label: "Toko", align: "left" },
+const columnMonth = (obj) => [
+	obj,
 	{ field: "d01", label: "01" },
 	{ field: "d02", label: "02" },
 	{ field: "d03", label: "03" },
@@ -134,7 +139,12 @@ const columnMonth = [
 	{ field: "d30", label: "30" },
 	{ field: "d31", label: "31" },
 
-	{ field: "sub_total", label: "Total" },
+	{
+		field: "sub_total",
+		label: "Total",
+		sortable: true,
+		sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
+	},
 ];
 
 function arrayFromTo(f, t) {

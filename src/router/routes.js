@@ -87,7 +87,7 @@ const routes = [
 					{
 						path: "products-out/:year/:month?",
 						component: () =>
-							import("src/pages/reports/ProductsOutPage.vue"),
+							import("src/pages/reports/ReportPage.vue"),
 						name: "products-out",
 					},
 				],

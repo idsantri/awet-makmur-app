@@ -23,12 +23,7 @@
 			</div>
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
-			<q-table
-				:rows="transactionsTable"
-				row-key="name"
-				hide-pagination=""
-				:columns="transactionsColumn"
-			/>
+			<q-table :rows="dataTable" row-key="name" :columns="dataColumn" />
 		</q-card-section>
 	</q-card>
 	<!-- <pre>{{ transactions }}</pre> -->
@@ -48,17 +43,17 @@ const year = route.params.year;
 const month = route.params.month;
 const reportName = route.name;
 
-const transactions = ref([]);
-const transactionsTable = ref([]);
-const transactionsColumn = ref([]);
-const transactionsChart = ref({});
+const data = ref([]);
+const dataTable = ref([]);
+const dataColumn = ref([]);
+const dataChart = ref({});
 
-const getTransactions = async () => {
+const fetchData = async () => {
 	try {
 		const response = await apiTokened.get(
 			`reports/${reportName}/${year}${month ? "/" + month : ""}`
 		);
-		const result = response.data.data.transactions;
+		const result = response.data.data;
 		return result;
 	} catch (error) {
 		toArray(error.response.data.message).forEach((message) => {
@@ -66,22 +61,46 @@ const getTransactions = async () => {
 		});
 	}
 };
-
 onMounted(async () => {
-	transactions.value = await getTransactions();
-	transactionsTable.value = utils.sumRows(transactions.value, "sub_total");
+	const dataFetch = await fetchData();
 
-	if (month) {
-		transactionsChart.value = utils.chartMonth(transactions.value);
-		transactionsColumn.value = utils.columnMonth;
-	} else {
-		transactionsChart.value = utils.chartYear(transactions.value);
-		transactionsColumn.value = utils.columnYear;
+	if (reportName == "transactions") {
+		data.value = dataFetch.transactions;
+		dataTable.value = utils.sumRows(data.value, "store_name");
+		const head = {
+			field: "store_name",
+			label: "Toko",
+			align: "left",
+		};
+		if (month) {
+			dataChart.value = utils.chartMonth(data.value, "store_name");
+			dataColumn.value = utils.columnMonth(head);
+		} else {
+			dataChart.value = utils.chartYear(data.value, "store_name");
+			dataColumn.value = utils.columnYear(head);
+		}
+	}
+
+	if (reportName == "products-out") {
+		data.value = dataFetch.products_out;
+		dataTable.value = utils.sumRows(data.value, "product_name");
+		const head = {
+			field: "product_name",
+			label: "Produk",
+			align: "left",
+		};
+		if (month) {
+			dataChart.value = utils.chartMonth(data.value, "product_name");
+			dataColumn.value = utils.columnMonth(head);
+		} else {
+			dataChart.value = utils.chartYear(data.value, "product_name");
+			dataColumn.value = utils.columnYear(head);
+		}
 	}
 
 	new Chart(document.getElementById("my-chart"), {
 		type: "bar",
-		data: transactionsChart.value,
+		data: dataChart.value,
 		options: {
 			scales: { y: { beginAtZero: true } },
 			responsive: true,
