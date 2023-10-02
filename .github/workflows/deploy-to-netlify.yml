@@ -8,6 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Install dependencies
@@ -19,4 +21,3 @@ jobs:
         with:
           publish-dir: ./dist/pwa
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          netlify-site-name: https://awetmakmur.netlify.app
