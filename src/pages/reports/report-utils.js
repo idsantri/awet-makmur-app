@@ -83,6 +83,12 @@ function chartMonth(data, objKey) {
 
 const columnYear = (obj) => [
 	obj,
+	{
+		field: "sub_total",
+		label: "Total",
+		sortable: true,
+		sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
+	},
 	{ field: "m01", label: "Jan" },
 	{ field: "m02", label: "Feb" },
 	{ field: "m03", label: "Mar" },
@@ -95,16 +101,16 @@ const columnYear = (obj) => [
 	{ field: "m10", label: "Okt" },
 	{ field: "m11", label: "Nov" },
 	{ field: "m12", label: "Des" },
+];
+
+const columnMonth = (obj) => [
+	obj,
 	{
 		field: "sub_total",
 		label: "Total",
 		sortable: true,
 		sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
 	},
-];
-
-const columnMonth = (obj) => [
-	obj,
 	{ field: "d01", label: "01" },
 	{ field: "d02", label: "02" },
 	{ field: "d03", label: "03" },
@@ -138,13 +144,6 @@ const columnMonth = (obj) => [
 	{ field: "d29", label: "29" },
 	{ field: "d30", label: "30" },
 	{ field: "d31", label: "31" },
-
-	{
-		field: "sub_total",
-		label: "Total",
-		sortable: true,
-		sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
-	},
 ];
 
 function arrayFromTo(f, t) {
@@ -156,10 +155,22 @@ function arrayFromTo(f, t) {
 }
 
 const reportOptions = [
-	{ value: "transactions", label: "Transaksi" },
-	{ value: "products-out", label: "Produk Keluar" },
+	{
+		value: "transactions",
+		label: "Transaksi",
+		response: "transactions",
+		fieldTotal: "store_name",
+		fieldHead: "Toko",
+	},
+	{
+		value: "products-out",
+		label: "Produk Keluar",
+		response: "products_out",
+		fieldTotal: "product",
+		fieldHead: "Produk",
+	},
 ];
-const yearOptions = arrayFromTo(2021, 2030);
+const yearOptions = arrayFromTo(2023, 2030);
 const monthOptions = [
 	{ value: "01", label: "Januari" },
 	{ value: "02", label: "Februari" },

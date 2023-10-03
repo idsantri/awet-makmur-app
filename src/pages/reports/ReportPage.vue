@@ -6,7 +6,7 @@
 					<h2
 						class="no-margin text-green-11 text-h6 text-weight-light text-center"
 					>
-						Laporan Transaksi ({{
+						Laporan {{ title }} ({{
 							month
 								? String(month).padStart(2, "0") + "/" + year
 								: year
@@ -23,7 +23,12 @@
 			</div>
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
-			<q-table :rows="dataTable" row-key="name" :columns="dataColumn" />
+			<q-table
+				:rows="dataTable"
+				row-key="name"
+				:columns="dataColumn"
+				separator="cell"
+			/>
 		</q-card-section>
 	</q-card>
 	<!-- <pre>{{ transactions }}</pre> -->
@@ -31,12 +36,10 @@
 <script setup>
 import Chart from "chart.js/auto";
 import BannerTitle from "src/components/BannerTitle.vue";
-import { apiTokened } from "src/config/api";
-import { notifyError } from "src/utils/notify";
-import toArray from "src/utils/to-array";
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import * as utils from "./report-utils";
+import fetchApi from "src/api/fetchApi";
 
 const route = useRoute();
 const year = route.params.year;
@@ -47,56 +50,57 @@ const data = ref([]);
 const dataTable = ref([]);
 const dataColumn = ref([]);
 const dataChart = ref({});
+const title = ref("");
 
-const fetchData = async () => {
-	try {
-		const response = await apiTokened.get(
-			`reports/${reportName}/${year}${month ? "/" + month : ""}`
-		);
-		const result = response.data.data;
-		return result;
-	} catch (error) {
-		toArray(error.response.data.message).forEach((message) => {
-			notifyError(message);
-		});
+async function process() {
+	const report = utils.reportOptions.find(
+		(word) => word.value === reportName
+	);
+
+	const dataFetch = await fetchApi(
+		`reports/${reportName}/${year}${month ? "/" + month : ""}`
+	);
+
+	title.value = report.label;
+	data.value = dataFetch[report.response];
+	dataTable.value = utils.sumRows(data.value, report.fieldTotal);
+	const head = {
+		field: report.fieldTotal,
+		label: report.fieldHead,
+		align: "left",
+	};
+	if (month) {
+		dataChart.value = utils.chartMonth(data.value, report.fieldTotal);
+		dataColumn.value = utils.columnMonth(head);
+	} else {
+		dataChart.value = utils.chartYear(data.value, report.fieldTotal);
+		dataColumn.value = utils.columnYear(head);
 	}
-};
+}
+
 onMounted(async () => {
-	const dataFetch = await fetchData();
+	await process();
+	// const dataFetch = await fetchApi(
+	// 	`reports/${reportName}/${year}${month ? "/" + month : ""}`
+	// );
 
-	if (reportName == "transactions") {
-		data.value = dataFetch.transactions;
-		dataTable.value = utils.sumRows(data.value, "store_name");
-		const head = {
-			field: "store_name",
-			label: "Toko",
-			align: "left",
-		};
-		if (month) {
-			dataChart.value = utils.chartMonth(data.value, "store_name");
-			dataColumn.value = utils.columnMonth(head);
-		} else {
-			dataChart.value = utils.chartYear(data.value, "store_name");
-			dataColumn.value = utils.columnYear(head);
-		}
-	}
-
-	if (reportName == "products-out") {
-		data.value = dataFetch.products_out;
-		dataTable.value = utils.sumRows(data.value, "product_name");
-		const head = {
-			field: "product_name",
-			label: "Produk",
-			align: "left",
-		};
-		if (month) {
-			dataChart.value = utils.chartMonth(data.value, "product_name");
-			dataColumn.value = utils.columnMonth(head);
-		} else {
-			dataChart.value = utils.chartYear(data.value, "product_name");
-			dataColumn.value = utils.columnYear(head);
-		}
-	}
+	// if (reportName == "transactions") {
+	// 	title.value = "Transaksi";
+	// 	data.value = dataFetch.transactions;
+	// 	dataTable.value = utils.sumRows(data.value, "store_name");
+	// 	const head = {
+	// 		field: "store_name",
+	// 		label: "Toko",
+	// 		align: "left",
+	// 	};
+	// 	if (month) {
+	// 		dataChart.value = utils.chartMonth(data.value, "store_name");
+	// 		dataColumn.value = utils.columnMonth(head);
+	// 	} else {
+	// 		dataChart.value = utils.chartYear(data.value, "store_name");
+	// 		dataColumn.value = utils.columnYear(head);
+	// 	}
+	// }
 
 	new Chart(document.getElementById("my-chart"), {
 		type: "bar",
