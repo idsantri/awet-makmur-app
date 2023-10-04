@@ -88,6 +88,7 @@ const columnYear = (obj) => [
 		label: "Total",
 		sortable: true,
 		sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
+		name: "sub_total",
 	},
 	{ field: "m01", label: "Jan" },
 	{ field: "m02", label: "Feb" },
@@ -110,6 +111,7 @@ const columnMonth = (obj) => [
 		label: "Total",
 		sortable: true,
 		sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
+		name: "sub_total",
 	},
 	{ field: "d01", label: "01" },
 	{ field: "d02", label: "02" },
@@ -161,6 +163,9 @@ const reportOptions = [
 		response: "transactions",
 		fieldTotal: "store_name",
 		fieldHead: "Toko",
+		withChart: true,
+		withSum: true,
+		withYear: true,
 	},
 	{
 		value: "products-out",
@@ -168,6 +173,19 @@ const reportOptions = [
 		response: "products_out",
 		fieldTotal: "product",
 		fieldHead: "Produk",
+		withChart: true,
+		withSum: true,
+		withYear: true,
+	},
+	{
+		value: "products-stock",
+		label: "Stok Produk",
+		response: "products_stock",
+		fieldTotal: "product",
+		fieldHead: "Produk",
+		withChart: false,
+		withSum: false,
+		withYear: false,
 	},
 ];
 const yearOptions = arrayFromTo(2023, 2030);
@@ -185,6 +203,10 @@ const monthOptions = [
 	{ value: "11", label: "November" },
 	{ value: "12", label: "Desember" },
 ];
+
+function selectedReport(reportValue) {
+	return reportOptions.find((report) => report.value === reportValue);
+}
 export {
 	sumRows,
 	chartMonth,
@@ -194,4 +216,5 @@ export {
 	reportOptions,
 	yearOptions,
 	monthOptions,
+	selectedReport,
 };

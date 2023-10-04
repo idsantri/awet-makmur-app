@@ -90,6 +90,12 @@ const routes = [
 							import("src/pages/reports/ReportPage.vue"),
 						name: "products-out",
 					},
+					{
+						path: "products-stock",
+						component: () =>
+							import("src/pages/reports/ReportPage.vue"),
+						name: "products-stock",
+					},
 				],
 			},
 			{
