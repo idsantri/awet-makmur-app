@@ -114,6 +114,7 @@ const columnMonth = (obj) => [
 		sortable: true,
 		sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
 		name: "sub_total",
+		name: "sub_total",
 	},
 	{ field: "d01", label: "01" },
 	{ field: "d02", label: "02" },
@@ -168,6 +169,9 @@ const reportOptions = [
 		withChart: true,
 		withSum: true,
 		withYear: true,
+		withChart: true,
+		withSum: true,
+		withYear: true,
 	},
 	{
 		value: "products-out",
@@ -208,6 +212,10 @@ const monthOptions = [
 function selectedReport(reportValue) {
 	return reportOptions.find((report) => report.value === reportValue);
 }
+
+function selectedReport(reportValue) {
+	return reportOptions.find((report) => report.value === reportValue);
+}
 export {
 	sumRows,
 	chartMonth,
@@ -216,5 +224,6 @@ export {
 	columnMonth,
 	reportOptions,
 	monthOptions,
+	selectedReport,
 	selectedReport,
 };
