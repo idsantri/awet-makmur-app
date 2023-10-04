@@ -53,28 +53,45 @@
 	</div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { notifyError } from "src/utils/notify";
-import { reportOptions, yearOptions, monthOptions } from "./report-utils";
+import { reportOptions, monthOptions, selectedReport } from "./report-utils";
+import fetchApi from "src/api/fetchApi";
 
 const router = useRouter();
 const reportModel = ref(useRoute().name);
 const yearModel = ref(useRoute().params.year);
 const monthModel = ref(useRoute().params.month);
+const yearOptions = ref([]);
+
+onMounted(async () => {
+	const { lists_year } = await fetchApi("orders/lists-year");
+	yearOptions.value = lists_year;
+});
 
 const goToReport = () => {
-	const report = reportModel.value;
+	const report = selectedReport(reportModel.value);
+	if (!report) return notifyError("Tentukan jenis laporan yang diinginkan!");
+
 	const year = yearModel.value;
 	const month = monthModel.value;
-	if (!report) return notifyError("Tentukan jenis laporan yang diinginkan!");
-	if (!year) return notifyError("Tentukan tahun laporan!");
+
 	let url = "";
-	if (month) {
-		url = `/reports/${report}/${year}/${month}`;
+	if (report.withYear) {
+		if (!year) {
+			return notifyError("Tentukan tahun laporan!");
+		}
+
+		if (month) {
+			url = `/reports/${report.value}/${year}/${month}`;
+		} else {
+			url = `/reports/${report.value}/${year}`;
+		}
 	} else {
-		url = `/reports/${report}/${year}`;
+		url = `/reports/${report.value}`;
 	}
+	// return console.log(url);
 	router.push(url);
 };
 </script>
