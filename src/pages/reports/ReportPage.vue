@@ -75,11 +75,11 @@ function clickRow(e, r, i) {
 }
 
 async function process() {
-	const dataFetch = await fetchApi(
-		`reports/${reportName}/${year ? "/" + year : ""}${
-			month ? "/" + month : ""
-		}`
-	);
+	const url = `reports/${reportName}${year ? "/" + year : ""}${
+		month ? "/" + month : ""
+	}`;
+	// console.log(url);
+	const dataFetch = await fetchApi(url);
 
 	title.value = report.label;
 	data.value = dataFetch[report.response];
