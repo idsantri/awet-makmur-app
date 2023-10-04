@@ -213,9 +213,6 @@ function selectedReport(reportValue) {
 	return reportOptions.find((report) => report.value === reportValue);
 }
 
-function selectedReport(reportValue) {
-	return reportOptions.find((report) => report.value === reportValue);
-}
 export {
 	sumRows,
 	chartMonth,
@@ -224,6 +221,5 @@ export {
 	columnMonth,
 	reportOptions,
 	monthOptions,
-	selectedReport,
 	selectedReport,
 };
