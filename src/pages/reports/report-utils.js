@@ -175,7 +175,7 @@ const reportOptions = [
 		response: "products_out",
 		fieldTotal: "product",
 		fieldHead: "Produk",
-		withChart: true,
+		withChart: false,
 		withSum: true,
 		withYear: true,
 	},
