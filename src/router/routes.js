@@ -118,6 +118,11 @@ const routes = [
 					},
 				],
 			},
+			{
+				path: "about",
+				component: () => import("src/pages/about/AboutIndex.vue"),
+				meta: { title: "Tentang Aplikasi" },
+			},
 		],
 	},
 

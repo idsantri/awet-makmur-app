@@ -121,48 +121,71 @@
 				</q-item-section>
 			</q-item>
 		</q-expansion-item>
+
+		<div v-if="isAdmin">
+			<q-separator dark />
+			<q-item clickable v-ripple to="/about">
+				<q-item-section avatar>
+					<q-icon color="green-1" name="info" />
+				</q-item-section>
+				<q-item-section>
+					<q-item-label>Tentang</q-item-label>
+					<q-item-label caption>Tentang Aplikasi</q-item-label>
+				</q-item-section>
+			</q-item>
+		</div>
 	</q-list>
 </template>
 
 <script setup>
 import { apiTokened } from "src/config/api";
-import { reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
+import authState from "src/stores/auth-store";
+const isAdmin = ref(false);
 
 const storeList = reactive([]);
 const categoryList = reactive([]);
-try {
-	const responseStore = await apiTokened.get(`stores`);
-	responseStore.data.data.stores.forEach((store) => {
-		storeList.push({
-			name: store.name,
-			caption: store.address,
-			icon: "store",
-			// link: `stores/${store.id}/stocks`
-			stock: {
-				name: "Stok",
-				caption: "Data Stok dan Hitung Zakat",
-				icon: "inventory",
-				link: `/stores/${store.id}/stocks`,
-			},
-			order: {
-				name: "Transaksi",
-				caption: "Daftar Transaksi",
-				icon: "local_mall",
-				link: `/stores/${store.id}/orders`,
-			},
-		});
-	});
 
-	const responseCategory = await apiTokened.get(`categories`);
-	responseCategory.data.data.categories.forEach((category) => {
-		categoryList.push({
-			name: category.name,
-			caption: category.description,
-			icon: category.icon,
-			link: `/products/categories/${category.slug}`,
+onMounted(async () => {
+	await getData();
+	isAdmin.value = authState().groups.admin;
+});
+
+async function getData() {
+	try {
+		const responseStore = await apiTokened.get(`stores`);
+		responseStore.data.data.stores.forEach((store) => {
+			storeList.push({
+				name: store.name,
+				caption: store.address,
+				icon: "store",
+				// link: `stores/${store.id}/stocks`
+				stock: {
+					name: "Stok",
+					caption: "Data Stok dan Hitung Zakat",
+					icon: "inventory",
+					link: `/stores/${store.id}/stocks`,
+				},
+				order: {
+					name: "Transaksi",
+					caption: "Daftar Transaksi",
+					icon: "local_mall",
+					link: `/stores/${store.id}/orders`,
+				},
+			});
 		});
-	});
-} catch (error) {
-	console.log("Not Found: store -> list", error.response);
+
+		const responseCategory = await apiTokened.get(`categories`);
+		responseCategory.data.data.categories.forEach((category) => {
+			categoryList.push({
+				name: category.name,
+				caption: category.description,
+				icon: category.icon,
+				link: `/products/categories/${category.slug}`,
+			});
+		});
+	} catch (error) {
+		console.log("Not Found: store -> list", error.response);
+	}
 }
 </script>
