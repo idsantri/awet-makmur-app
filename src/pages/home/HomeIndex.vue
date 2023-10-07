@@ -13,7 +13,7 @@
 		<q-card-section class="no-padding">
 			<h2 class="text-h6 text-center no-margin">Laporan Transaksi</h2>
 			<p class="text-subtitle1 text-center no-margin q-pb-sm">
-				Lima Bulan Terakhir
+				Enam Bulan Terakhir
 			</p>
 		</q-card-section>
 		<q-card-section class="no-padding">
@@ -21,7 +21,7 @@
 		</q-card-section>
 	</q-card>
 
-	<!-- <pre>{{ dataFetch }}</pre> -->
+	<!-- <pre>{{ get5Months() }}</pre> -->
 </template>
 <script setup>
 import fetchApi from "src/api/fetchApi";
@@ -31,18 +31,39 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 
 const dataFetch = ref([]);
 const dataChart = ref([]);
+
+function getMonths6() {
+	const months = [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"Mei",
+		"Jun",
+		"Jul",
+		"Agu",
+		"Sep",
+		"Okt",
+		"Nov",
+		"Des",
+	];
+	const d = new Date();
+	const thisMonth = d.getMonth();
+
+	return Array.from({ length: 6 }, (_, i) => {
+		let monthIndex = thisMonth - i;
+		if (monthIndex < 0) monthIndex += 12;
+		return months[monthIndex];
+	}).reverse();
+}
+
 function chart(data) {
 	return {
-		labels: [
-			"4 Bulan Lalu",
-			"3 Bulan lalu",
-			"2 Bulan Lalu",
-			"1 Bulan Lalu",
-			"Bulan Ini",
-		],
+		labels: getMonths6(),
 		datasets: data.map((item, index) => ({
 			label: item.store_name,
 			data: [
+				item.month_5,
 				item.month_4,
 				item.month_3,
 				item.month_2,

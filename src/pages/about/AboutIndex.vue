@@ -55,7 +55,7 @@ const releases = [
 				"Data produk",
 				"Data stok",
 				"Data Transaksi",
-				"Nota",
+				"Nota PDF",
 				"Kirim nota via WA",
 				"Mendukung multi toko",
 				"Perhitungan Zakat Mal",
@@ -83,37 +83,6 @@ const releases = [
 		},
 	},
 ];
-const release = {
-	Fitur: [
-		"Data produk",
-		"Data stok",
-		"Data Transaksi",
-		"Nota",
-		"Kirim nota via WA",
-		"Mendukung multi toko",
-		"Perhitungan Zakat Mal",
-		"Aplikasi berbasis web dengan fitur PWA (bisa diinstall)",
-		"Biaya Rp3.000.000",
-	],
-	Hosting: [
-		"3 tahun",
-		"Berakhir tanggal 13 Juni 2026",
-		"Biaya Rp1.100.000 (termasuk PPN 11%)",
-		"Biaya perpanjangan mengikuti kebijakan penyedia hosting",
-	],
-	Domain: ["https://awetmakmur.netlify.app", "harga Rp0"],
-	"Ringkasan Biaya": [
-		"Aplikasi: Rp3.000.000",
-		"Hosting: Rp1.100.000 (untuk tiga tahun)",
-		"Domain: Rp0",
-		"Total: Rp4.100.000",
-	],
-	Pembayaran: [
-		"Tahap 1: Rp2.000.000, tanggal 12 Mei 2023",
-		"Tahap 2: Rp2.100.000, tanggal 12 Juni 2023",
-		"Status: LUNAS",
-	],
-};
 </script>
 
 <style scoped></style>
