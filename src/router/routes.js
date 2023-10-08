@@ -91,6 +91,12 @@ const routes = [
 						name: "products-out",
 					},
 					{
+						path: "profit/:year/:month?",
+						component: () =>
+							import("src/pages/reports/ReportPage.vue"),
+						name: "profit",
+					},
+					{
 						path: "products-stock",
 						component: () =>
 							import("src/pages/reports/ReportPage.vue"),
