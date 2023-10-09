@@ -9,7 +9,7 @@
 		</q-avatar>
 	</div>
 
-	<q-card class="q-pa-sm q-ma-sm q-mt-lg bg-green-11">
+	<q-card class="q-pa-sm q-ma-sm q-mt-lg bg-green-11" v-if="isAdmin">
 		<q-card-section class="no-padding">
 			<h2 class="text-h6 text-center no-margin">Laporan Transaksi</h2>
 			<p class="text-subtitle1 text-center no-margin q-pb-sm">
@@ -28,7 +28,9 @@ import fetchApi from "src/api/fetchApi";
 import { onMounted, ref } from "vue";
 import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import authState from "src/stores/auth-store";
 
+const isAdmin = ref(false);
 const dataFetch = ref([]);
 const dataChart = ref([]);
 
@@ -80,6 +82,8 @@ function chart(data) {
 }
 
 onMounted(async () => {
+	isAdmin.value = authState().groups.admin;
+
 	const { transactions } = await fetchApi("reports/transactions/by-month");
 	dataFetch.value = transactions;
 	// console.log("f", dataFetch.value);

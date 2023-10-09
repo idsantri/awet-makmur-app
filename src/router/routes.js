@@ -74,33 +74,20 @@ const routes = [
 				component: () =>
 					import("src/pages/stores/orders/StoresOrders.vue"),
 			},
+
 			{
 				path: "reports",
-				component: () => import("src/pages/reports/IndexPage.vue"),
+				meta: { title: "Report" },
 				children: [
-					{
-						path: "transactions/:year/:month?",
-						component: () =>
-							import("src/pages/reports/ReportPage.vue"),
-						name: "transactions",
-					},
-					{
-						path: "products-out/:year/:month?",
-						component: () =>
-							import("src/pages/reports/ReportPage.vue"),
-						name: "products-out",
-					},
-					{
-						path: "profit/:year/:month?",
-						component: () =>
-							import("src/pages/reports/ReportPage.vue"),
-						name: "profit",
-					},
 					{
 						path: "products-stock",
 						component: () =>
-							import("src/pages/reports/ReportPage.vue"),
-						name: "products-stock",
+							import("src/pages/reports/ReportStocks.vue"),
+					},
+					{
+						path: "periodic",
+						component: () =>
+							import("src/pages/reports/ReportPeriodic.vue"),
 					},
 				],
 			},

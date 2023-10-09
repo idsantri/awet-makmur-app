@@ -75,15 +75,43 @@
 		</div>
 
 		<q-separator dark />
-		<q-item clickable v-ripple to="/reports">
-			<q-item-section avatar>
-				<q-icon color="green-1" name="summarize" />
-			</q-item-section>
-			<q-item-section>
-				<q-item-label>Laporan</q-item-label>
-				<q-item-label caption>Halaman Laporan</q-item-label>
-			</q-item-section>
-		</q-item>
+
+		<q-expansion-item
+			expand-separator
+			label="Laporan"
+			caption="Halaman Laporan"
+			header-class="text-body1 text-green-1"
+			expand-icon-class="text-green-1"
+		>
+			<q-list>
+				<q-item clickable v-ripple to="/reports/products-stock">
+					<q-item-section avatar>
+						<q-icon color="green-1" name="summarize" />
+					</q-item-section>
+					<q-item-section>
+						<q-item-label>Laporan Stok</q-item-label>
+						<q-item-label caption>Stok Produk</q-item-label>
+					</q-item-section>
+				</q-item>
+
+				<q-item
+					v-if="isAdmin"
+					clickable
+					v-ripple
+					to="/reports/periodic"
+				>
+					<q-item-section avatar>
+						<q-icon color="green-1" name="summarize" />
+					</q-item-section>
+					<q-item-section>
+						<q-item-label>Laporan Berkala</q-item-label>
+						<q-item-label caption
+							>Periodik Tahunan/Bulanan</q-item-label
+						>
+					</q-item-section>
+				</q-item>
+			</q-list>
+		</q-expansion-item>
 
 		<!-- SETTING -->
 		<q-separator dark />
@@ -141,8 +169,8 @@
 import { apiTokened } from "src/config/api";
 import { onMounted, reactive, ref } from "vue";
 import authState from "src/stores/auth-store";
-const isAdmin = ref(false);
 
+const isAdmin = ref(false);
 const storeList = reactive([]);
 const categoryList = reactive([]);
 

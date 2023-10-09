@@ -331,9 +331,19 @@ const reportOptions = [
 		withYear: true,
 	},
 	{
-		value: "profit",
-		label: "Laba",
-		response: "profit",
+		value: "profit-net",
+		label: "Laba Bersih",
+		response: "profit_net",
+		fieldTotal: "store_name",
+		fieldHead: "Toko",
+		withChart: false,
+		withSum: true,
+		withYear: true,
+	},
+	{
+		value: "profit-gross",
+		label: "Laba Kotor",
+		response: "profit_gross",
 		fieldTotal: "store_name",
 		fieldHead: "Toko",
 		withChart: false,
@@ -351,7 +361,39 @@ const reportOptions = [
 		withYear: false,
 	},
 ];
-const monthOptions = [
+const reports = () => {
+	return [
+		{
+			url: "transactions",
+			title: "Transaksi",
+			response: "transactions",
+			fieldTotal: "store_name",
+			fieldHead: "Toko",
+		},
+		{
+			url: "profit-net",
+			title: "Laba Bersih",
+			response: "profit_net",
+			fieldTotal: "store_name",
+			fieldHead: "Toko",
+		},
+		{
+			url: "profit-gross",
+			title: "Laba Kotor",
+			response: "profit_gross",
+			fieldTotal: "store_name",
+			fieldHead: "Toko",
+		},
+		{
+			url: "products-out",
+			title: "Produk Keluar",
+			response: "products_out",
+			fieldTotal: "product",
+			fieldHead: "Produk",
+		},
+	];
+};
+const monthOptions = () => [
 	{ value: "01", lab: "Jan", label: "Januari" },
 	{ value: "02", lab: "Feb", label: "Februari" },
 	{ value: "03", lab: "Mar", label: "Maret" },
@@ -374,13 +416,4 @@ function selectedReport(reportValue) {
 	return reportOptions.find((report) => report.value === reportValue);
 }
 
-export {
-	sumRows,
-	chartMonth,
-	chartYear,
-	columnYear,
-	columnMonth,
-	reportOptions,
-	monthOptions,
-	selectedReport,
-};
+export { sumRows, columnYear, columnMonth, monthOptions, reports };

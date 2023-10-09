@@ -34,17 +34,22 @@ const releases = [
 		ver: "1.1.0",
 		date: "Oktober 2023",
 		release: {
-			"Upgrade Fitur": ["Laporan"],
-			"Halaman Awal": ["Laporan transaksi lima bulan terakhir"],
-			"Halaman Laporan": [
+			"Upgrade Fitur": ["Laporan + Nota"],
+			"Halaman Awal (Admin)": ["Laporan transaksi enam bulan terakhir"],
+			"Laporan Berkala (Admin)": [
 				"Laporan transaksi per tahun",
 				"Laporan transaksi per bulan",
 				"Laporan barang keluar per tahun",
 				"Laporan barang keluar per bulan",
-				"Laporan Stok Produk Semua Toko",
+				"Laporan laba bersih per tahun",
+				"Laporan laba bersih per bulan",
+				"Laporan laba kotor per tahun",
+				"Laporan laba kotor per bulan",
 			],
+			"Laporan Stok (Semua User)": ["Laporan Stok Produk Semua Toko"],
+			Nota: ["Hapus detail harga"],
 			Biaya: ["Rp500.000"],
-			Pembayaran: ["Tanggal ", "Status: LUNAS"],
+			Pembayaran: ["Tanggal ", "Status: ?"],
 		},
 	},
 	{
