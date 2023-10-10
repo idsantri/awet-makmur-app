@@ -34,7 +34,7 @@ const releases = [
 		ver: "1.1.0",
 		date: "Oktober 2023",
 		release: {
-			"Upgrade Fitur": ["Laporan + Nota"],
+			"Upgrade Fitur": ["Laporan", "Nota"],
 			"Halaman Awal (Admin)": ["Laporan transaksi enam bulan terakhir"],
 			"Laporan Berkala (Admin)": [
 				"Laporan transaksi per tahun",
@@ -47,7 +47,7 @@ const releases = [
 				"Laporan laba kotor per bulan",
 			],
 			"Laporan Stok (Semua User)": ["Laporan Stok Produk Semua Toko"],
-			Nota: ["Hapus detail harga"],
+			Nota: ["Pelanggan tidak perlu tahu rincian biaya (ongkir)"],
 			Biaya: ["Rp500.000"],
 			Pembayaran: ["Tanggal ", "Status: ?"],
 		},
