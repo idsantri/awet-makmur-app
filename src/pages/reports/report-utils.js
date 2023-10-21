@@ -366,6 +366,7 @@ const reports = () => {
 		{
 			url: "transactions",
 			title: "Transaksi",
+			subTitle: "",
 			response: "transactions",
 			fieldTotal: "store_name",
 			fieldHead: "Toko",
@@ -373,6 +374,7 @@ const reports = () => {
 		{
 			url: "profit-net",
 			title: "Laba Bersih",
+			subTitle: "Harga Jual - Harga Dasar - Diskon",
 			response: "profit_net",
 			fieldTotal: "store_name",
 			fieldHead: "Toko",
@@ -380,13 +382,23 @@ const reports = () => {
 		{
 			url: "profit-gross",
 			title: "Laba Kotor",
+			subTitle: "Harga Jual - Diskon + Biaya",
 			response: "profit_gross",
+			fieldTotal: "store_name",
+			fieldHead: "Toko",
+		},
+		{
+			url: "costs",
+			title: "Biaya",
+			subTitle: "Biaya penanganan, Ongkir, Custom produk, dll…",
+			response: "costs",
 			fieldTotal: "store_name",
 			fieldHead: "Toko",
 		},
 		{
 			url: "products-out",
 			title: "Produk Keluar",
+			subTitle: "",
 			response: "products_out",
 			fieldTotal: "product",
 			fieldHead: "Produk",

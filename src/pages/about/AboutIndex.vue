@@ -31,6 +31,22 @@ import { resolveDirective } from 'vue'; import { resolveDirective } from 'vue';
 <script setup>
 const releases = [
 	{
+		ver: "1.1.1",
+		date: "Oktober 2023",
+		release: {
+			"Upgrade Fitur": ["Laporan"],
+			"Laporan Berkala (Admin)": [
+				"Laporan biaya per tahun",
+				"Laporan biaya per bulan",
+			],
+			"Fixed bug": [
+				"Biaya tidak masuk pada laporan laba bersih",
+				"Laba bersih: (Harga Jual - Harga Dasar - Diskon)",
+			],
+			Biaya: ["0"],
+		},
+	},
+	{
 		ver: "1.1.0",
 		date: "Oktober 2023",
 		release: {
@@ -49,7 +65,7 @@ const releases = [
 			"Laporan Stok (Semua User)": ["Laporan Stok Produk Semua Toko"],
 			Nota: ["Pelanggan tidak perlu tahu rincian biaya (ongkir)"],
 			Biaya: ["Rp500.000"],
-			Pembayaran: ["Tanggal ", "Status: ?"],
+			Pembayaran: ["Tanggal 18 Oktober 2023", "Status: Lunas"],
 		},
 	},
 	{

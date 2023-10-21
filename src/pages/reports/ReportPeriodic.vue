@@ -62,7 +62,14 @@
 					:filter="index == 'products_out' ? filter : null"
 				>
 					<template v-slot:top>
-						<h3 class="text-body1">Data {{ item.title }}</h3>
+						<div>
+							<h3 class="text-body1 no-margin">
+								{{ item.title }}
+							</h3>
+							<h4 class="text-caption no-margin text-italic">
+								{{ item.subTitle }}
+							</h4>
+						</div>
 						<div v-if="index == 'products_out'">
 							<q-input
 								debounce="500"
@@ -127,6 +134,7 @@ function process() {
 			);
 		}
 		dataFetch.value[report.response].title = report.title;
+		dataFetch.value[report.response].subTitle = report.subTitle;
 
 		const head = {
 			field: report.fieldTotal,
@@ -150,14 +158,5 @@ onMounted(async () => {
 	const { lists_year } = await fetchApi("orders/lists-year");
 	yearOptions.value = lists_year;
 });
-
-const data = [
-	{ a: "a1", b: "b1", c: "c1", d: "d1" },
-	{ a: "a2", b: "b2", c: "c2", d: "d2" },
-];
-const data2 = [
-	{ ab: "a1 b1", c: "c1", d: "d1" },
-	{ ab: "a2 b2", c: "c2", d: "d2" },
-];
 </script>
 <style lang=""></style>
