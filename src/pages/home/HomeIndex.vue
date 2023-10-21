@@ -84,7 +84,10 @@ function chart(data) {
 onMounted(async () => {
 	isAdmin.value = authState().groups.admin;
 
-	const { transactions } = await fetchApi("reports/transactions/by-month");
+	const { transactions } = await fetchApi(
+		"reports/transactions/by-month",
+		false
+	);
 	dataFetch.value = transactions;
 	// console.log("f", dataFetch.value);
 

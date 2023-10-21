@@ -3,7 +3,7 @@ import { notifyError, notifyWarningExpired } from "src/utils/notify";
 import toArray from "src/utils/to-array";
 import auth from "src/stores/auth-store";
 
-async function fetchApi(url) {
+async function fetchApi(url, notificationMessage = true) {
 	try {
 		const response = await apiTokened.get(url);
 		const result = response.data.data;
@@ -28,11 +28,11 @@ async function fetchApi(url) {
 		}
 
 		if (status == 401 && isExp) {
-			message.forEach((msg) => {
+			arrMessage.forEach((msg) => {
 				notifyWarningExpired(msg);
 			});
 			auth().$reset();
-		} else if (message) {
+		} else if (message && notificationMessage) {
 			arrMessage.forEach((msg) => {
 				notifyError(msg);
 			});
