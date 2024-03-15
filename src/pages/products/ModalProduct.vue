@@ -17,19 +17,17 @@
 				/>
 				<q-input outlined v-model="brand" label="Merek" />
 				<!-- <q-input outlined v-model="supplier" label="Pemasok/Supplier" /> -->
-				<q-input
+				<currency-input
 					outlined
 					v-model="base_price"
 					label="Harga Dasar"
-					type="number"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					error-color="red-6"
 				/>
-				<q-input
+				<currency-input
 					outlined
 					v-model="selling_price"
 					label="Harga Jual"
-					type="number"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					error-color="red-6"
 				/>
@@ -68,6 +66,7 @@ import { apiTokened } from "../../config/api";
 import toArray from "../../utils/to-array";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
+import CurrencyInput from "src/components/CurrencyInput.vue";
 
 const router = useRouter();
 const props = defineProps({

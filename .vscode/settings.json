@@ -1,11 +1,11 @@
 {
-  "editor.bracketPairColorization.enabled": true,
-  "editor.guides.bracketPairs": true,
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.codeActionsOnSave": ["source.fixAll.eslint"],
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
-  "html-css-class-completion.remoteStyleSheets": [
-    "https://cdn.jsdelivr.net/npm/quasar@2.11.10/dist/quasar.prod.css"
-  ]
+	"editor.bracketPairColorization.enabled": true,
+	"editor.guides.bracketPairs": true,
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.codeActionsOnSave": ["source.fixAll.eslint"],
+	"eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
+	"html-css-class-completion.remoteStyleSheets": [
+		"https://cdn.jsdelivr.net/npm/quasar@2.11.10/dist/quasar.prod.css"
+	]
 }

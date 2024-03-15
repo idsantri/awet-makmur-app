@@ -1,6 +1,6 @@
 // import memberCrudState from "../stores/member-crud-store";
 const forceRerender = () => {
-  document.getElementById("btn-force-rerender").click();
+	document.getElementById("btn-force-rerender").click();
 };
 
 // const crudState = (param = {}) => {
@@ -13,17 +13,17 @@ const forceRerender = () => {
 // };
 
 const showModalSearch = (param = {}) => {
-  crudState(param);
-  document.getElementById("btn-show-modal-search").click();
+	crudState(param);
+	document.getElementById("btn-show-modal-search").click();
 };
 
 const closeModalSearch = () => {
-  document.getElementById("btn-close-modal-search").click();
+	document.getElementById("btn-close-modal-search").click();
 };
 
 const showModalCrud = (reset = true) => {
-  if (reset) crudState();
-  document.getElementById("btn-show-modal-crud").click();
+	if (reset) crudState();
+	document.getElementById("btn-show-modal-crud").click();
 };
 
 export { forceRerender, showModalSearch, showModalCrud, closeModalSearch };

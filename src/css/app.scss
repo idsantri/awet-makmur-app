@@ -2,83 +2,83 @@
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
 
 body {
-  font-family: "Ubuntu", sans-serif;
-  background-color: #e8f5e9;
-  color: #1b5e20;
+	font-family: "Ubuntu", sans-serif;
+	background-color: #e8f5e9;
+	color: #1b5e20;
 
-  .multi-line {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }
+	.multi-line {
+		white-space: pre-wrap;
+		word-wrap: break-word;
+	}
 }
 
 /**
 * datatables
 */
 #data-tables {
-  .nama-link {
-    color: rgb(17, 36, 77);
-    cursor: pointer;
-  }
+	.nama-link {
+		color: rgb(17, 36, 77);
+		cursor: pointer;
+	}
 
-  @media screen and (max-width: 480px) {
-    tbody > tr:nth-child(odd) > td {
-      padding: 4px;
-    }
-    tbody > tr:nth-child(even) > td {
-      padding: 4px;
-    }
-  }
+	@media screen and (max-width: 480px) {
+		tbody > tr:nth-child(odd) > td {
+			padding: 4px;
+		}
+		tbody > tr:nth-child(even) > td {
+			padding: 4px;
+		}
+	}
 }
 
 /**
 * vue uploader
 */
 .vicp-img {
-  max-width: unset !important;
+	max-width: unset !important;
 }
 
 @media (max-width: 640px) {
-  .vicp-wrap {
-    width: 100% !important;
-    max-width: 400px;
-    height: auto !important;
-    max-height: 450px;
-    border-radius: 5px !important;
-  }
+	.vicp-wrap {
+		width: 100% !important;
+		max-width: 400px;
+		height: auto !important;
+		max-height: 450px;
+		border-radius: 5px !important;
+	}
 
-  .vicp-step2 {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
+	.vicp-step2 {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
 
-  .vicp-crop {
-    margin-left: auto;
-    margin-right: auto;
-  }
+	.vicp-crop {
+		margin-left: auto;
+		margin-right: auto;
+	}
 
-  .vicp-crop-left {
-    display: block !important;
-    float: none !important;
-  }
+	.vicp-crop-left {
+		display: block !important;
+		float: none !important;
+	}
 
-  .vicp-crop-right {
-    display: block !important;
-    float: none !important;
-  }
+	.vicp-crop-right {
+		display: block !important;
+		float: none !important;
+	}
 
-  .vicp-preview {
-    height: auto !important;
-    display: flex;
-    justify-content: center;
-  }
+	.vicp-preview {
+		height: auto !important;
+		display: flex;
+		justify-content: center;
+	}
 
-  .vicp-preview-item {
-    display: inline-block;
-  }
+	.vicp-preview-item {
+		display: inline-block;
+	}
 
-  .vicp-close {
-    right: 5px !important;
-  }
+	.vicp-close {
+		right: 5px !important;
+	}
 }

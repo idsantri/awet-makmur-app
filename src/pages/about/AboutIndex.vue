@@ -31,6 +31,16 @@ import { resolveDirective } from 'vue'; import { resolveDirective } from 'vue';
 <script setup>
 const releases = [
 	{
+		ver: "1.1.2",
+		date: "Maret 2024",
+		release: {
+			"Order Detail (Transaksi)": [
+				"Tambah fitur edit order detail (pada transaksi)",
+			],
+			Lainnya: ["Tampilan pemisah ribuan pada input mata uang"],
+		},
+	},
+	{
 		ver: "1.1.1",
 		date: "Oktober 2023",
 		release: {

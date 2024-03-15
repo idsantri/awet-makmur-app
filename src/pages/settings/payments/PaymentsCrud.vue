@@ -1,25 +1,38 @@
 <template>
-  <q-card style="width: 700px; max-width: 90vw">
-    <q-form @submit.prevent="onSubmit">
-      <q-card-section class="bg-green-8 text-green-1 q-pa-sm q-mb-sm">
-        <div class="text-subtitle1">{{ title }}</div>
-      </q-card-section>
+	<q-card style="width: 700px; max-width: 90vw">
+		<q-form @submit.prevent="onSubmit">
+			<q-card-section class="bg-green-8 text-green-1 q-pa-sm q-mb-sm">
+				<div class="text-subtitle1">{{ title }}</div>
+			</q-card-section>
 
-      <q-card-section class="q-pa-sm q-gutter-sm bg-green-1">
-        <q-input outlined v-model="propsPayment.val" label="Metode Pembayaran" :rules="[val => !!val || 'Harus diisi!']"
-          error-color="red-6" />
-        <q-input outlined v-model="propsPayment.description" label="Deskripsi &sol; No. Rekening" />
-
-      </q-card-section>
-      <q-card-actions align="right" class="bg-green-7">
-        <q-btn v-if="propsPayment.id" color="negative" label="Hapus" @click="deleteList(propsPayment.id)" />
-        <q-space />
-        <q-btn color="green-10" label="Simpan" type="submit" />
-        <q-btn color="secondary" label="Gagal" v-close-popup />
-      </q-card-actions>
-    </q-form>
-    <!-- <pre>{{ propsCategory }}</pre> -->
-  </q-card>
+			<q-card-section class="q-pa-sm q-gutter-sm bg-green-1">
+				<q-input
+					outlined
+					v-model="propsPayment.val"
+					label="Metode Pembayaran"
+					:rules="[(val) => !!val || 'Harus diisi!']"
+					error-color="red-6"
+				/>
+				<q-input
+					outlined
+					v-model="propsPayment.description"
+					label="Deskripsi &sol; No. Rekening"
+				/>
+			</q-card-section>
+			<q-card-actions align="right" class="bg-green-7">
+				<q-btn
+					v-if="propsPayment.id"
+					color="negative"
+					label="Hapus"
+					@click="deleteList(propsPayment.id)"
+				/>
+				<q-space />
+				<q-btn color="green-10" label="Simpan" type="submit" />
+				<q-btn color="secondary" label="Gagal" v-close-popup />
+			</q-card-actions>
+		</q-form>
+		<!-- <pre>{{ propsCategory }}</pre> -->
+	</q-card>
 </template>
 <script setup>
 import { ref, reactive } from "vue";
@@ -30,63 +43,63 @@ import toArray from "src/utils/to-array";
 import { useQuasar } from "quasar";
 
 const props = defineProps({
-  isNew: { type: Boolean, default: false },
-  payment: { type: Object, default: null },
+	isNew: { type: Boolean, default: false },
+	payment: { type: Object, default: null },
 });
 const propsPayment = reactive({
-  id: null,
-  val: "",
-  description: "",
+	id: null,
+	val: "",
+	description: "",
 });
 Object.assign(propsPayment, props.payment);
 
 const title = ref("Pembayaran");
 if (props.isNew) {
-  title.value = "Tambah Pembayaran";
+	title.value = "Tambah Pembayaran";
 } else {
-  title.value = "Edit Pembayaran";
+	title.value = "Edit Pembayaran";
 }
 
 const onSubmit = async () => {
-  const data = {
-    var: "payment-method",
-    val: propsPayment.val,
-    description: propsPayment.description,
-  };
+	const data = {
+		var: "payment-method",
+		val: propsPayment.val,
+		description: propsPayment.description,
+	};
 
-  try {
-    let response = null
-    if (props.isNew) response = await apiTokened.post(`lists`, data);
-    else response = await apiTokened.put(`lists/${propsPayment.id}`, data);
-    notifySuccess(response.data.message);
-  } catch (error) {
-    toArray(error.response.data.message).forEach((message) => {
-      notifyError(message);
-    });
-  } finally {
-    forceRerender();
-  }
+	try {
+		let response = null;
+		if (props.isNew) response = await apiTokened.post(`lists`, data);
+		else response = await apiTokened.put(`lists/${propsPayment.id}`, data);
+		notifySuccess(response.data.message);
+	} catch (error) {
+		toArray(error.response.data.message).forEach((message) => {
+			notifyError(message);
+		});
+	} finally {
+		forceRerender();
+	}
 };
 
 const $q = useQuasar();
 const deleteList = async (id) => {
-  $q.dialog({
-    title: "Konfirmasi",
-    message: `<span style="color:'red'">Hapus metode pembayaran ini?</span>`,
-    cancel: true,
-    persistent: false,
-    html: true,
-  }).onOk(async () => {
-    try {
-      const response = await apiTokened.delete(`lists/${id}`);
-      notifySuccess(response.data.message);
-    } catch (error) {
-      toArray(error.response.data.message).forEach((message) => {
-        notifyError(message);
-      });
-    } finally {
-      forceRerender();
-    }
-  })
-}
+	$q.dialog({
+		title: "Konfirmasi",
+		message: `<span style="color:'red'">Hapus metode pembayaran ini?</span>`,
+		cancel: true,
+		persistent: false,
+		html: true,
+	}).onOk(async () => {
+		try {
+			const response = await apiTokened.delete(`lists/${id}`);
+			notifySuccess(response.data.message);
+		} catch (error) {
+			toArray(error.response.data.message).forEach((message) => {
+				notifyError(message);
+			});
+		} finally {
+			forceRerender();
+		}
+	});
+};
 </script>
