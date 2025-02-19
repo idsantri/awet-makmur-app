@@ -122,7 +122,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, onUnmounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import digitSeparator from "src/utils/digit-separator";
 import ordersStore from "src/stores/orders-store";
@@ -139,10 +139,52 @@ const params = ref(route.params);
 const products = ref([]);
 const url = ref("");
 
+let isThrottled = false;
+const saveScrollPosition = () => {
+	if (isThrottled) return;
+
+	isThrottled = true;
+	setTimeout(() => {
+		if (window.scrollY !== 0) {
+			sessionStorage.setItem(
+				"scrollPosition-" + params.value.category,
+				window.scrollY
+			);
+		}
+		isThrottled = false;
+	}, 200); // 200ms delay
+};
+
+const restoreScrollPosition = () => {
+	const scrollPosition = sessionStorage.getItem(
+		"scrollPosition-" + params.value.category
+	);
+	if (scrollPosition) {
+		// Gunakan nextTick untuk memastikan DOM sudah ter-render
+		nextTick(() => {
+			window.scrollTo({
+				top: parseInt(scrollPosition, 10), // Posisi scroll yang dituju
+				behavior: "smooth", // Scroll dengan animasi halus
+			});
+		});
+	}
+};
+
 onMounted(async () => {
 	url.value = `products/categories/${params.value.category}`;
 	const data = await fetchApi(url.value);
 	products.value = data.products;
+
+	// Tunggu rendering selesai
+	nextTick(() => {
+		restoreScrollPosition();
+	});
+
+	window.addEventListener("scroll", saveScrollPosition);
+});
+
+onUnmounted(() => {
+	window.removeEventListener("scroll", saveScrollPosition);
 });
 
 const addToCart = (product) => {
@@ -164,6 +206,7 @@ const addToCart = (product) => {
 .description {
 	overflow: hidden;
 	display: -webkit-box;
+	line-clamp: 5;
 	-webkit-line-clamp: 5;
 	-webkit-box-orient: vertical;
 }

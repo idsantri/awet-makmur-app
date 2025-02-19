@@ -31,6 +31,13 @@ import { resolveDirective } from 'vue'; import { resolveDirective } from 'vue';
 <script setup>
 const releases = [
 	{
+		ver: "1.1.3",
+		date: "Februari 2025",
+		release: {
+			"Save Scroll": ["Menyimpan posisi halaman produk ketika di scroll"],
+		},
+	},
+	{
 		ver: "1.1.2",
 		date: "Maret 2024",
 		release: {
