@@ -48,11 +48,13 @@
 		<q-card-section class="no-padding q-ma-md">
 			<q-markup-table flat dense>
 				<thead>
-					<th>Nama Produk</th>
-					<th>Harga</th>
-					<th>Qty</th>
-					<th>Diskon</th>
-					<th>Sub Total</th>
+					<tr>
+						<th>Nama Produk</th>
+						<th>Harga</th>
+						<th>Qty</th>
+						<th>Diskon</th>
+						<th>Sub Total</th>
+					</tr>
 				</thead>
 				<tbody>
 					<tr

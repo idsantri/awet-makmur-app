@@ -1,7 +1,10 @@
 <template>
 	<div style="margin-top: 50px">
-		<div class="text-subtitle1 text-center">Selamat Datang</div>
-		<div class="text-subtitle2 text-center">di Toko Awet Makmur</div>
+		<div class="text-subtitle1 text-center">Selamat Datang di</div>
+		<div class="text-subtitle2 text-center">
+			{{ constanta.APP_NAME_1 }}
+			<span class="text-uppercase">{{ constanta.APP_NAME_2 }}</span>
+		</div>
 	</div>
 	<div class="text-center" style="margin-top: 20px">
 		<q-avatar size="150px" square="">
@@ -29,6 +32,7 @@ import { onMounted, ref } from "vue";
 import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import authState from "src/stores/auth-store";
+import constanta from "src/config/constanta";
 
 const isAdmin = ref(false);
 const dataFetch = ref([]);

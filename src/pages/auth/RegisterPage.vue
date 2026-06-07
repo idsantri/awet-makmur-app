@@ -13,6 +13,9 @@
 					autocapitalize="none"
 					autocomplete="off"
 					autocorrect="off"
+					:rules="[(val) => !!val || 'Username wajib diisi']"
+					name="username"
+					type="text"
 				/>
 				<q-input
 					bg-color="green-1"
@@ -31,27 +34,47 @@
 					bg-color="green-1"
 					outlined
 					v-model="password"
-					type="password"
+					:type="isPwd ? 'password' : 'text'"
+					:rules="[(val) => !!val || 'Password wajib diisi']"
 					required
 					label="Password"
 					placeholder="Masukkan password!"
 					autocapitalize="none"
 					autocomplete="off"
 					autocorrect="off"
-				/>
+				>
+					<template v-slot:append>
+						<q-icon
+							:name="isPwd ? 'visibility_off' : 'visibility'"
+							class="cursor-pointer"
+							@click="isPwd = !isPwd"
+						/>
+					</template>
+				</q-input>
 				<q-input
 					bg-color="green-1"
 					round
 					outlined
 					v-model="password_confirm"
-					type="password"
+					:type="isPwd ? 'password' : 'text'"
+					:rules="[
+						(val) => !!val || 'Konfirmasi password wajib diisi',
+					]"
 					required
 					label="Konfirmasi Password"
 					placeholder="Ulangi password!"
 					autocapitalize="none"
 					autocomplete="off"
 					autocorrect="off"
-				/>
+				>
+					<template v-slot:append>
+						<q-icon
+							:name="isPwd ? 'visibility_off' : 'visibility'"
+							class="cursor-pointer"
+							@click="isPwd = !isPwd"
+						/>
+					</template>
+				</q-input>
 				<q-btn
 					type="submit"
 					class="full-width q-pa-sm text-green-10"
@@ -89,13 +112,14 @@ import { api } from "../../config/api";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import toArray from "../../utils/to-array";
-import { notifyAlert } from "src/utils/notify";
+import { notifyAlert, notifyError } from "src/utils/notify";
 
 const router = useRouter();
 const username = ref("");
 const email = ref("");
 const password = ref("");
 const password_confirm = ref("");
+const isPwd = ref(true);
 
 const emit = defineEmits(["title", "errors"]);
 emit("title", "Daftar");
@@ -116,6 +140,10 @@ const register = async () => {
 		await notification; // tunggu notifikasi ditutup
 		router.push({ name: "Login" });
 	} catch (error) {
+		if (!error.response) {
+			notifyError("Terjadi kesalahan jaringan. Silakan coba lagi nanti.");
+			return;
+		}
 		emit("errors", toArray(error.response.data.message));
 	} finally {
 		showSpinner.value = false;

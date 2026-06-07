@@ -1,0 +1,5 @@
+allowBuilds:
+  '[': true
+  \: true
+  core-js: true
+  vue-demi: true

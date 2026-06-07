@@ -24,22 +24,42 @@
 					bg-color="green-1"
 					outlined
 					v-model="password"
-					type="password"
+					:type="isPwd ? 'password' : 'text'"
+					:rules="[(val) => !!val || 'Password wajib diisi']"
 					required
 					label="Password"
 					placeholder="Masukkan password!"
 					autocomplete="off"
-				/>
+				>
+					<template v-slot:append>
+						<q-icon
+							:name="isPwd ? 'visibility_off' : 'visibility'"
+							class="cursor-pointer"
+							@click="isPwd = !isPwd"
+						/>
+					</template>
+				</q-input>
 				<q-input
 					bg-color="green-1"
 					outlined
 					v-model="password_confirm"
-					type="password"
+					:type="isPwd ? 'password' : 'text'"
+					:rules="[
+						(val) => !!val || 'Konfirmasi password wajib diisi',
+					]"
 					required
 					label="Konfirmasi Password"
 					placeholder="Ulangi password!"
 					autocomplete="off"
-				/>
+				>
+					<template v-slot:append>
+						<q-icon
+							:name="isPwd ? 'visibility_off' : 'visibility'"
+							class="cursor-pointer"
+							@click="isPwd = !isPwd"
+						/>
+					</template>
+				</q-input>
 				<q-btn
 					type="submit"
 					class="full-width q-pa-sm text-green-10"
@@ -63,13 +83,13 @@
 				</q-card>
 			</div>
 		</form>
+		<q-spinner-cube
+			v-show="showSpinner"
+			color="green-12"
+			size="14em"
+			class="absolute-center"
+		/>
 	</div>
-	<q-spinner-cube
-		v-show="showSpinner"
-		color="green-12"
-		size="14em"
-		class="absolute-center"
-	/>
 </template>
 
 <script setup>
@@ -77,7 +97,7 @@ import { api } from "../../config/api";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import toArray from "../../utils/to-array";
-import { notifyAlert } from "src/utils/notify";
+import { notifyAlert, notifyError } from "src/utils/notify";
 
 const showSpinner = ref(false);
 const router = useRouter();
@@ -85,6 +105,7 @@ const token = ref("");
 const email = ref("");
 const password = ref("");
 const password_confirm = ref("");
+const isPwd = ref(true);
 
 const emit = defineEmits(["title", "errors"]);
 emit("title", "Reset Password");
@@ -104,6 +125,10 @@ const reset = async () => {
 		await notification; // tunggu notifikasi ditutup
 		router.push({ name: "Login" });
 	} catch (error) {
+		if (!error.response) {
+			notifyError("Terjadi kesalahan jaringan. Silakan coba lagi nanti.");
+			return;
+		}
 		emit("errors", toArray(error.response.data.message));
 	} finally {
 		showSpinner.value = false;

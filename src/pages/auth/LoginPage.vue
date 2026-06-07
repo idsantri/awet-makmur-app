@@ -10,17 +10,33 @@
 					label="Login"
 					placeholder="Masukkan username atau email Anda!"
 					autocomplete=""
+					autocapitalize="none"
+					autocorrect="off"
+					:rules="[(val) => !!val || 'Username wajib diisi']"
+					name="username"
+					type="text"
 				/>
 				<q-input
 					bg-color="green-1"
 					outlined
 					v-model="password"
-					type="password"
+					:type="isPwd ? 'password' : 'text'"
 					required
 					label="Password"
+					name="password"
 					placeholder="Masukkan password!"
-					autocomplete=""
-				/>
+					autocomplete="off"
+					autocapitalize="off"
+					:rules="[(val) => !!val || 'Password wajib diisi']"
+				>
+					<template v-slot:append>
+						<q-icon
+							:name="isPwd ? 'visibility_off' : 'visibility'"
+							class="cursor-pointer"
+							@click="isPwd = !isPwd"
+						/>
+					</template>
+				</q-input>
 				<q-btn
 					type="submit"
 					class="full-width q-pa-sm text-green-10"
@@ -52,13 +68,13 @@
 				</q-card>
 			</div>
 		</form>
+		<q-spinner-cube
+			v-show="showSpinner"
+			color="green-12"
+			size="14em"
+			class="absolute-center"
+		/>
 	</div>
-	<q-spinner-cube
-		v-show="showSpinner"
-		color="green-12"
-		size="14em"
-		class="absolute-center"
-	/>
 </template>
 
 <script setup>
@@ -67,12 +83,13 @@ import { useRouter } from "vue-router";
 import { onUpdated, ref } from "vue";
 import toArray from "../../utils/to-array";
 import authState from "../../stores/auth-store";
-import { notifyAlert, notifySuccess } from "src/utils/notify";
+import { notifyAlert, notifySuccess, notifyError } from "src/utils/notify";
 
 const router = useRouter();
 const username = ref("");
 const password = ref("");
 const showSpinner = ref(false);
+const isPwd = ref(true);
 
 const emit = defineEmits(["title", "errors"]);
 emit("title", "Login");
@@ -96,6 +113,10 @@ const login = async () => {
 		notifySuccess(response.data.message);
 		router.push("/home");
 	} catch (error) {
+		if (!error.response) {
+			notifyError("Terjadi kesalahan jaringan. Silakan coba lagi nanti.");
+			return;
+		}
 		emit("errors", toArray(error.response.data.message));
 	} finally {
 		showSpinner.value = false;
@@ -117,6 +138,12 @@ onUpdated(() => {
 			const notification = notifyAlert(response.data.message, 0);
 			await notification; // tunggu notifikasi ditutup
 		} catch (error) {
+			if (!error.response) {
+				notifyError(
+					"Terjadi kesalahan jaringan. Silakan coba lagi nanti."
+				);
+				return;
+			}
 			emit("errors", toArray(error.response.data.message));
 		} finally {
 			showSpinner.value = false;

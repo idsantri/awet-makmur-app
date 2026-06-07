@@ -7,13 +7,13 @@
 			<q-card-section class="q-pa-sm q-gutter-sm bg-green-1">
 				<q-input
 					outlined
-					v-model="orderDetail.product_name"
+					v-model="order_detail.product_name"
 					label="Nama Produk"
 					disable
 				/>
 				<q-input
 					outlined
-					v-model="orderDetail.quantity"
+					v-model="order_detail.quantity"
 					label="Jumlah/Qty"
 					type="number"
 					:rules="[
@@ -23,12 +23,12 @@
 				/>
 				<currency-input
 					outlined
-					v-model="orderDetail.cost"
+					v-model="order_detail.cost"
 					label="Biaya"
 				/>
 				<currency-input
 					outlined
-					v-model="orderDetail.discount"
+					v-model="order_detail.discount"
 					label="Diskon"
 				/>
 			</q-card-section>
@@ -61,21 +61,21 @@ const props = defineProps({
 	orderDetail: { type: Object, default: null },
 });
 
-const orderDetail = reactive({});
+const order_detail = reactive({});
 
 onMounted(() => {
-	Object.assign(orderDetail, props.orderDetail);
+	Object.assign(order_detail, props.orderDetail);
 });
 
 const onSubmit = async () => {
 	const data = {
-		cost: orderDetail.cost,
-		discount: orderDetail.discount,
-		quantity: orderDetail.quantity,
+		cost: order_detail.cost,
+		discount: order_detail.discount,
+		quantity: order_detail.quantity,
 	};
 	try {
 		const response = await apiTokened.put(
-			`orders-detail/${orderDetail.id}`,
+			`orders-detail/${order_detail.id}`,
 			data
 		);
 		notifySuccess(response.data.message);

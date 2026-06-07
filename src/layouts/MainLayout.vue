@@ -9,10 +9,11 @@
 					icon="menu"
 					aria-label="Menu"
 					@click="toggleLeftDrawer"
+					color="green-11"
 				/>
 
-				<q-toolbar-title class="text-green-1">
-					Toko Awet Makmur
+				<q-toolbar-title class="text-green-11">
+					{{ constanta.APP_NAME_1 }} {{ constanta.APP_NAME_2 }}
 				</q-toolbar-title>
 
 				<q-btn
@@ -20,7 +21,7 @@
 					flat
 					dense
 					icon="shopping_cart_checkout"
-					color="green-1"
+					color="green-11"
 					to="/orders/current"
 				>
 					<q-badge v-if="badge" floating color="green-13" rounded />
@@ -32,7 +33,7 @@
 					dense
 					dropdown-icon="more_vert"
 					class="q-pl-md"
-					color="green-1"
+					color="green-11"
 				>
 					<q-list>
 						<q-item
@@ -107,7 +108,7 @@
 		<q-footer bordered class="bg-green-6 text-green-12">
 			<p class="text-center no-margin q-pa-xs">
 				by idsantri &mdash; v.
-				{{ app.version }}
+				{{ lastRelease?.ver }}
 			</p>
 		</q-footer>
 	</q-layout>
@@ -117,7 +118,10 @@
 import { ref, watchEffect, onMounted, computed } from "vue";
 import SideBar from "src/components/SideBar.vue";
 import ordersStore from "src/stores/orders-store";
-import app from "../../package.json";
+import releases from "src/config/releases";
+import constanta from "src/config/constanta";
+
+const lastRelease = releases[0];
 
 const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => (leftDrawerOpen.value = !leftDrawerOpen.value);

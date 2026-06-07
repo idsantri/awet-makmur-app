@@ -55,13 +55,13 @@
 				</q-card>
 			</div>
 		</form>
+		<q-spinner-cube
+			v-show="showSpinner"
+			color="green-12"
+			size="14em"
+			class="absolute-center"
+		/>
 	</div>
-	<q-spinner-cube
-		v-show="showSpinner"
-		color="green-12"
-		size="14em"
-		class="absolute-center"
-	/>
 </template>
 
 <script setup>
@@ -90,6 +90,10 @@ const reset = async () => {
 		await notification; // tunggu notifikasi ditutup
 		router.push("/reset");
 	} catch (error) {
+		if (!error.response) {
+			notifyError("Terjadi kesalahan jaringan. Silakan coba lagi nanti.");
+			return;
+		}
 		emit("errors", toArray(error.response.data.message));
 	} finally {
 		showSpinner.value = false;
