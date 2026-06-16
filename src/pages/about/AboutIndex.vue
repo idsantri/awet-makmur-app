@@ -19,7 +19,10 @@ import { resolveDirective } from 'vue'; import { resolveDirective } from 'vue';
 						<q-item-section>
 							<q-item-label>{{ index }}</q-item-label>
 							<q-item-label caption>
-								<ul class="q-ma-none q-pl-md">
+								<ul
+									class="q-ma-none q-pl-md"
+									style="list-style-type: disc; color: #555"
+								>
 									<li v-for="(i, x) in item" :key="x">
 										{{ i }}
 									</li>
