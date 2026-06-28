@@ -31,7 +31,7 @@ import fetchApi from "src/api/fetchApi";
 import { onMounted, ref } from "vue";
 import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import authState from "src/stores/auth-store";
+import { useAuthStore } from "src/stores/auth-store";
 import constanta from "src/config/constanta";
 
 const isAdmin = ref(false);
@@ -86,7 +86,7 @@ function chart(data) {
 }
 
 onMounted(async () => {
-	isAdmin.value = authState().groups.admin;
+	isAdmin.value = useAuthStore().groups.admin;
 
 	const { transactions } = await fetchApi(
 		"reports/transactions/by-month",

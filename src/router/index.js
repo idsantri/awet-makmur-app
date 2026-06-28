@@ -7,7 +7,7 @@ import {
 } from "vue-router";
 import routes from "./routes";
 import { nextTick } from "vue";
-import authStore from "../stores/auth-store";
+import { useAuthStore } from "../stores/auth-store";
 import constanta from "src/config/constanta";
 
 /*
@@ -43,7 +43,7 @@ export default route(function (/* { store, ssrContext } */) {
 			return next("/home");
 		}
 
-		const store = authStore();
+		const store = useAuthStore();
 		const authRoutes = ["Register", "Login", "Forgot", "Reset"];
 		const toAuthRoutes = authRoutes.includes(to.name);
 		const isAuthenticate = store.getToken && store.getToken.length > 0;

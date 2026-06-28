@@ -82,7 +82,7 @@ import { api, apiTokened } from "../../config/api";
 import { useRouter } from "vue-router";
 import { onUpdated, ref } from "vue";
 import toArray from "../../utils/to-array";
-import authState from "../../stores/auth-store";
+import { useAuthStore } from "../../stores/auth-store";
 import { notifyAlert, notifySuccess, notifyError } from "src/utils/notify";
 
 const router = useRouter();
@@ -103,12 +103,12 @@ const login = async () => {
 			login: username.value,
 			password: password.value,
 		});
-		authState().token = response.data.data.token;
-		authState().user = response.data.data.user;
-		authState().groups = response.data.data.groups;
+		useAuthStore().token = response.data.data.token;
+		useAuthStore().user = response.data.data.user;
+		useAuthStore().groups = response.data.data.groups;
 
 		apiTokened.defaults.headers.common["Authorization"] =
-			"Bearer " + authState().getToken;
+			"Bearer " + useAuthStore().getToken;
 
 		notifySuccess(response.data.message);
 		router.push("/home");

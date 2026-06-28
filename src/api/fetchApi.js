@@ -1,7 +1,7 @@
 import { apiTokened } from "src/config/api";
 import { notifyError, notifyWarningExpired } from "src/utils/notify";
 import toArray from "src/utils/to-array";
-import auth from "src/stores/auth-store";
+import { useAuthStore } from "src/stores/auth-store";
 
 async function fetchApi(url, notificationMessage = true) {
 	try {
@@ -31,7 +31,7 @@ async function fetchApi(url, notificationMessage = true) {
 			arrMessage.forEach((msg) => {
 				notifyWarningExpired(msg);
 			});
-			auth().$reset();
+			useAuthStore().$reset();
 		} else if (message && notificationMessage) {
 			arrMessage.forEach((msg) => {
 				notifyError(msg);

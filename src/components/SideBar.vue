@@ -168,7 +168,7 @@
 <script setup>
 import { apiTokened } from "src/config/api";
 import { onMounted, reactive, ref } from "vue";
-import authState from "src/stores/auth-store";
+import { useAuthStore } from "src/stores/auth-store";
 
 const isAdmin = ref(false);
 const storeList = reactive([]);
@@ -176,7 +176,7 @@ const categoryList = reactive([]);
 
 onMounted(async () => {
 	await getData();
-	isAdmin.value = authState().groups.admin;
+	isAdmin.value = useAuthStore().groups.admin;
 });
 
 async function getData() {

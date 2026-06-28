@@ -28,4 +28,4 @@ const useAuthStore = defineStore("auth", {
 	persist: true,
 });
 
-export default useAuthStore;
+export { useAuthStore };
