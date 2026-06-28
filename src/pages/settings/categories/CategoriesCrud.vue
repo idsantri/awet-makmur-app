@@ -59,12 +59,11 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue";
-import { notifySuccess, notifyError } from "src/utils/notify";
+import { notifySuccess } from "src/utils/notify";
 import { forceRerender } from "src/utils/buttons-click";
-import { apiTokened } from "src/config/api";
-import toArray from "src/utils/to-array";
 import slugify from "src/utils/slugify.js";
 import { useQuasar } from "quasar";
+import Category from "src/models/Category";
 
 const props = defineProps({
 	isNew: { type: Boolean, default: false },
@@ -96,43 +95,21 @@ const onSubmit = async () => {
 		icon: propsCategory.icon,
 	};
 
-	try {
-		let response = null;
-		if (props.isNew) response = await apiTokened.post(`categories`, data);
-		else
-			response = await apiTokened.put(
-				`categories/${propsCategory.id}`,
-				data
-			);
-		notifySuccess(response.data.message);
-	} catch (error) {
-		toArray(error.response.data.message).forEach((message) => {
-			notifyError(message);
-		});
-	} finally {
-		forceRerender();
+	let response = null;
+	if (props.isNew) response = await Category.create({ data });
+	else response = await Category.update({ id: propsCategory.id, data });
+	if (response) {
+		notifySuccess(response.message);
 	}
+	forceRerender();
 };
 
 const $q = useQuasar();
 const deleteCategory = async (id) => {
-	$q.dialog({
-		title: "Konfirmasi",
-		message: `<span style="color:'red'">Hapus kategori produk?</span>`,
-		cancel: true,
-		persistent: false,
-		html: true,
-	}).onOk(async () => {
-		try {
-			const response = await apiTokened.delete(`categories/${id}`);
-			notifySuccess(response.data.message);
-		} catch (error) {
-			toArray(error.response.data.message).forEach((message) => {
-				notifyError(message);
-			});
-		} finally {
-			forceRerender();
-		}
-	});
+	const response = await Category.remove({ id });
+	if (response) {
+		notifySuccess(response.message);
+	}
+	forceRerender();
 };
 </script>

@@ -45,11 +45,9 @@
 </template>
 <script setup>
 import { ref, reactive } from "vue";
-import { notifySuccess, notifyError } from "src/utils/notify";
+import { notifySuccess } from "src/utils/notify";
 import { forceRerender } from "src/utils/buttons-click";
-import { apiTokened } from "src/config/api";
-import toArray from "src/utils/to-array";
-import { useQuasar } from "quasar";
+import Store from "src/models/Store";
 
 const props = defineProps({
 	isNew: { type: Boolean, default: false },
@@ -77,39 +75,20 @@ const onSubmit = async () => {
 		address_full: propsStore.address_full,
 	};
 
-	try {
-		let response = null;
-		if (props.isNew) response = await apiTokened.post(`stores`, data);
-		else response = await apiTokened.put(`stores/${propsStore.id}`, data);
-		notifySuccess(response.data.message);
-	} catch (error) {
-		toArray(error.response.data.message).forEach((message) => {
-			notifyError(message);
-		});
-	} finally {
-		forceRerender();
+	let response = null;
+	if (props.isNew) response = await Store.create({ data });
+	else response = await Store.update({ id: propsStore.id, data });
+	if (response) {
+		notifySuccess(response.message);
 	}
+	forceRerender();
 };
 
-const $q = useQuasar();
 const deleteStore = async (id) => {
-	$q.dialog({
-		title: "Konfirmasi",
-		message: `<span style="color:'red'">Hapus toko ini?</span>`,
-		cancel: true,
-		persistent: false,
-		html: true,
-	}).onOk(async () => {
-		try {
-			const response = await apiTokened.delete(`stores/${id}`);
-			notifySuccess(response.data.message);
-		} catch (error) {
-			toArray(error.response.data.message).forEach((message) => {
-				notifyError(message);
-			});
-		} finally {
-			forceRerender();
-		}
-	});
+	const response = await Store.remove({ id });
+	if (response) {
+		notifySuccess(response.message);
+	}
+	forceRerender();
 };
 </script>

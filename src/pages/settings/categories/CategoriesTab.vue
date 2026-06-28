@@ -51,9 +51,9 @@
 	<!-- <pre>{{ categories }}</pre> -->
 </template>
 <script setup>
-import { apiTokened } from "src/config/api";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import CategoriesCrud from "./CategoriesCrud.vue";
+import Category from "src/models/Category.js";
 
 const showModal = ref(false);
 const newCategory = ref(false);
@@ -66,10 +66,11 @@ const crud = (isNew, cat = {}) => {
 };
 
 const categories = reactive([]);
-try {
-	const response = await apiTokened.get(`categories`);
-	Object.assign(categories, response.data.data.categories);
-} catch (error) {
-	console.log("Not Found: categories -> list", error.response);
+async function fetchData() {
+	const response = await Category.getAll();
+	if (response) {
+		Object.assign(categories, response.data.categories);
+	}
 }
+onMounted(() => fetchData());
 </script>

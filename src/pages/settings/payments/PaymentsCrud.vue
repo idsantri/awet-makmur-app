@@ -71,7 +71,7 @@ const onSubmit = async () => {
 	let response = null;
 	if (props.isNew) response = await List.create({ data });
 	else response = await List.update({ id: propsPayment.id, data });
-	if (response.success) {
+	if (response) {
 		notifySuccess(response.message);
 	}
 	forceRerender();
@@ -79,7 +79,7 @@ const onSubmit = async () => {
 
 const deleteList = async (id) => {
 	const response = await List.remove({ id });
-	if (response.success) {
+	if (response) {
 		notifySuccess(response.message);
 	}
 	forceRerender();

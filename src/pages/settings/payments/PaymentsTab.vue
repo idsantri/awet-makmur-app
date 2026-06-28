@@ -66,7 +66,9 @@ const payments = reactive([]);
 
 async function fetchData() {
 	const response = await List.getAll({ var: "payment-method" });
-	Object.assign(payments, response.data["payment-method"]);
+	if (response) {
+		Object.assign(payments, response.data["payment-method"]);
+	}
 }
 
 onMounted(async () => {

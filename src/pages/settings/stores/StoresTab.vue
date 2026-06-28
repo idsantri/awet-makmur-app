@@ -51,9 +51,9 @@
 	<!-- <pre>{{ categories }}</pre> -->
 </template>
 <script setup>
-import { apiTokened } from "src/config/api";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import StoresCrud from "./StoresCrud.vue";
+import Store from "src/models/Store.js";
 
 const showModal = ref(false);
 const newStore = ref(false);
@@ -66,10 +66,12 @@ const crud = (isNew, st = {}) => {
 };
 
 const stores = reactive([]);
-try {
-	const response = await apiTokened.get(`stores`);
-	Object.assign(stores, response.data.data.stores);
-} catch (error) {
-	console.log("Not Found: Stores -> list", error.response);
+
+async function fetchData() {
+	const response = await Store.getAll();
+	if (response) {
+		Object.assign(stores, response.data.stores);
+	}
 }
+onMounted(() => fetchData());
 </script>

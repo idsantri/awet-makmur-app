@@ -175,7 +175,7 @@ const storeList = reactive([]);
 const categoryList = reactive([]);
 
 onMounted(async () => {
-	// await getData();
+	await getData();
 	isAdmin.value = useAuthStore().groups.admin;
 });
 
