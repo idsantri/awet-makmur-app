@@ -65,26 +65,48 @@
 						</div>
 					</q-item-section>
 				</q-item>
-				<q-card-section horizontal class="q-ma-sm">
-					<div v-if="product.image_last">
+				<!-- Gunakan items-start agar kontainer teks bebas memanjang ke bawah secara mandiri -->
+				<q-card-section horizontal class="q-ma-sm items-stretch">
+					<div v-if="product.image_url" class="col-3">
 						<q-img
-							class="flex flex-center col-4 q-mr-sm img"
-							:src="product.image_url + product.image_last"
+							class="flex flex-center img"
+							:src="product.image_url"
 						/>
 					</div>
-					<div v-else>
+					<div v-else class="col-3">
 						<q-img
-							class="flex flex-center col-4 q-mr-sm img"
-							src="https://picsum.photos/100/100.webp"
+							class="flex flex-center img"
+							src="/no-image.png"
 						/>
 					</div>
-					<div>
-						<div class="text-caption text-green-9">
+
+					<div class="col-9 flex column justify-between q-pl-sm">
+						<div
+							class="text-caption text-green-9 text-ellipsis-3-lines"
+						>
 							<span
 								v-html="product.description"
 								class="description"
-							></span>
-							<pre>{{ product.stocks }}</pre>
+							>
+							</span>
+						</div>
+						<div
+							class="stock q-mt-md q-mt-auto text-caption q-pa-xs"
+						>
+							<q-separator
+								color="green-13"
+								size="1px"
+								class="q-mt-md"
+							/>
+							<div
+								v-for="(stock, index) in product.stocks"
+								:key="index"
+							>
+								Stok di {{ stock.store_name }}:
+								<span class="text-bold">
+									{{ stock.stock }}
+								</span>
+							</div>
 						</div>
 					</div>
 				</q-card-section>
@@ -93,7 +115,7 @@
 			<q-card-actions class="bg-green-6 q-pa-xs">
 				<div class="text-caption q-ml-xs text-green-11">
 					Tersisa:
-					{{ product.total_stock ? product.total_stock : 0 }} item
+					{{ totalStock(product.id) }} item
 				</div>
 				<q-space />
 				<q-btn
@@ -122,7 +144,7 @@
 </template>
 
 <script setup>
-import { nextTick, onBeforeUnmount, onMounted, onUnmounted, ref } from "vue";
+import { nextTick, onMounted, onUnmounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import digitSeparator from "src/utils/digit-separator";
 import ordersStore from "src/stores/orders-store";
@@ -130,16 +152,27 @@ import ModalProduct from "./ModalProduct.vue";
 import ModalSearch from "./ProductSearch.vue";
 import BannerTitle from "src/components/BannerTitle.vue";
 import titleCase from "src/utils/tittle-case";
-import fetchApi from "src/api/fetchApi";
+import Product from "src/models/Product.js";
 
 const showModalProduct = ref(false);
 const showModalSearch = ref(false);
 const route = useRoute();
 const params = ref(route.params);
 const products = ref([]);
-const url = ref("");
-
 let isThrottled = false;
+
+const totalStock = (productId) => {
+	const product = products.value.find((p) => p.id === productId);
+	if (!product?.stocks?.length) {
+		return 0;
+	} else {
+		return product.stocks.reduce(
+			(total, productStock) => total + productStock.stock,
+			0
+		);
+	}
+};
+
 const saveScrollPosition = () => {
 	if (isThrottled) return;
 
@@ -169,13 +202,16 @@ const restoreScrollPosition = () => {
 		});
 	}
 };
-
+async function fetchProduct() {
+	const response = await Product.getAll({
+		category_slug: params.value.category,
+	});
+	if (response) {
+		products.value = response.data.products;
+	}
+}
 onMounted(async () => {
-	url.value = `products/categories/${params.value.category}`;
-	const data = await fetchApi(url.value);
-	products.value = data.products;
-
-	// Tunggu rendering selesai
+	await fetchProduct();
 	nextTick(() => {
 		restoreScrollPosition();
 	});
@@ -209,5 +245,12 @@ const addToCart = (product) => {
 	line-clamp: 5;
 	-webkit-line-clamp: 5;
 	-webkit-box-orient: vertical;
+}
+.text-ellipsis-3-lines {
+	display: -webkit-box;
+	-webkit-line-clamp: 3; /* Ubah angka ini sesuai jumlah baris yg diinginkan */
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 </style>
