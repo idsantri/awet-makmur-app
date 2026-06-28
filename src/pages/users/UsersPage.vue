@@ -27,16 +27,21 @@
 					>
 						<q-item-section>
 							<q-item-label overline>{{
-								user.username
+								user.name
 							}}</q-item-label>
-							<q-item-label>{{ user.email }}</q-item-label>
-							<q-item-label caption class="text-italic"
-								>Akses:
-								{{
-									Object.keys(user.group)
-										.filter((key) => user.group[key])
-										.join(", ") || "-"
-								}}
+							<q-item-label>
+								{{ user.email }} ({{ user.username }})
+							</q-item-label>
+							<q-item-label caption class="text-italic">
+								Akses:
+								<span v-if="!user.groups?.length">-</span>
+								<span v-else>
+									{{
+										user.groups
+											.map((group) => group.title)
+											.join(", ")
+									}}
+								</span>
 							</q-item-label>
 						</q-item-section>
 					</q-item>
@@ -48,19 +53,15 @@
 </template>
 <script setup>
 import BannerTitle from "src/components/BannerTitle.vue";
-import { apiTokened } from "src/config/api";
-import { notifyError } from "src/utils/notify";
-import toArray from "src/utils/to-array";
-import { reactive } from "vue";
+import User from "src/models/User";
+import { onMounted, reactive } from "vue";
 
 const users = reactive([]);
-
-try {
-	const response = await apiTokened.get(`users`);
-	Object.assign(users, response.data.data.users);
-} catch (error) {
-	toArray(error.response.data.message).forEach((message) => {
-		notifyError(message);
-	});
+async function fetchUsers() {
+	const response = await User.getAll();
+	if (response) {
+		Object.assign(users, response.data.users);
+	}
 }
+onMounted(async () => await fetchUsers());
 </script>
