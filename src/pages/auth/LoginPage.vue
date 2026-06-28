@@ -1,5 +1,11 @@
 <template>
 	<div class="q-pa-xs">
+		<q-btn
+			v-if="showBtnVerify"
+			@click="resendEmail"
+			class="q-btn full-width q-pa-sm q-my-md bg-primary no-caps"
+			>Kirim ulang email verifikasi</q-btn
+		>
 		<form @submit.prevent="login">
 			<div class="q-gutter-y-md column">
 				<q-input
@@ -78,19 +84,19 @@
 </template>
 
 <script setup>
-import { api, apiTokened } from "../../config/api";
 import { useRouter } from "vue-router";
-import { onUpdated, ref } from "vue";
+import { ref } from "vue";
 import toArray from "../../utils/to-array";
 import { useAuthStore } from "../../stores/auth-store";
-import { notifyAlert, notifySuccess, notifyError } from "src/utils/notify";
+import { notifySuccess } from "src/utils/notify";
+import Auth from "src/models/Auth";
 
 const router = useRouter();
 const username = ref("");
 const password = ref("");
 const showSpinner = ref(false);
 const isPwd = ref(true);
-
+const showBtnVerify = ref(false);
 const emit = defineEmits(["title", "errors"]);
 emit("title", "Login");
 emit("errors", []);
@@ -99,57 +105,59 @@ const login = async () => {
 	emit("errors", []);
 	try {
 		showSpinner.value = true;
-		const response = await api.post("login", {
+		const response = await Auth.login({
 			login: username.value,
 			password: password.value,
 		});
-		useAuthStore().token = response.data.data.token;
-		useAuthStore().user = response.data.data.user;
-		useAuthStore().groups = response.data.data.groups;
+		useAuthStore().token = response.data.token;
+		notifySuccess(response.message);
 
-		apiTokened.defaults.headers.common["Authorization"] =
-			"Bearer " + useAuthStore().getToken;
+		await getProfile();
 
-		notifySuccess(response.data.message);
 		router.push("/home");
 	} catch (error) {
-		if (!error.response) {
-			notifyError("Terjadi kesalahan jaringan. Silakan coba lagi nanti.");
-			return;
+		const res = error.response.data;
+		if (res?.data?.code == "EMAIL_NOT_VERIFIED") {
+			// alert("Email belum diverifikasi. Silakan verifikasi email Anda.");
+			showBtnVerify.value = true;
 		}
-		emit("errors", toArray(error.response.data.message));
+
+		emit("errors", toArray(res.message));
 	} finally {
 		showSpinner.value = false;
 	}
 };
 
-onUpdated(() => {
-	const resend = document.querySelector("ul > li > span > a");
-	if (!resend) return;
-	resend.addEventListener("click", async (e) => {
-		console.log("anchor clicked");
+const getProfile = async () => {
+	try {
+		const response = await Auth.getProfile();
+		useAuthStore().user = response.data.user;
+		useAuthStore().roles = response.data.roles;
+		useAuthStore().groups = response.data.groups;
+	} catch (error) {
+		const res = error.response.data;
+		emit("errors", toArray(res.message));
+	}
+};
+
+const resendEmail = async () => {
+	try {
 		emit("errors", []);
-		e.preventDefault();
-		const href = resend.href.replace("%2540", "@");
-		// console.log(href);
-		try {
-			showSpinner.value = true;
-			const response = await api.get(href);
-			const notification = notifyAlert(response.data.message, 0);
-			await notification; // tunggu notifikasi ditutup
-		} catch (error) {
-			if (!error.response) {
-				notifyError(
-					"Terjadi kesalahan jaringan. Silakan coba lagi nanti."
-				);
-				return;
-			}
-			emit("errors", toArray(error.response.data.message));
-		} finally {
-			showSpinner.value = false;
-		}
-	});
-});
+		showSpinner.value = true;
+		const response = await Auth.resendEmail({
+			login: username.value,
+		});
+
+		notifySuccess(response.message);
+
+		showBtnVerify.value = false;
+	} catch (error) {
+		const res = error.response.data;
+		emit("errors", toArray(res.message));
+	} finally {
+		showSpinner.value = false;
+	}
+};
 </script>
 
 <style scoped lang="scss"></style>

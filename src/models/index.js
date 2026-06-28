@@ -4,7 +4,7 @@ import { notifyError } from "src/utils/notify";
 
 const api = axios.create({
 	baseURL: process.env.BASE_URL_API,
-	withCredentials: true,
+	// withCredentials: true, // no need to send cookies, stateless
 });
 
 api.interceptors.request.use((config) => {
@@ -34,7 +34,6 @@ api.interceptors.response.use(
 			notifyError("Tidak dapat terhubung ke server");
 		} else {
 			//  'code' => 'TOKEN_EXPIRED',
-			//  'code' => 'EMAIL_NOT_VERIFIED',
 
 			// Teruskan kesalahan lain ke blok catch berikutnya
 			return Promise.reject(error);

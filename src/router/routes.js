@@ -29,7 +29,7 @@ const routes = [
 				meta: { title: "Lupa Password" },
 			},
 			{
-				path: "reset",
+				path: "reset-password",
 				name: "Reset",
 				component: () => import("../pages/auth/ResetPage.vue"),
 				meta: { title: "Ganti Password" },

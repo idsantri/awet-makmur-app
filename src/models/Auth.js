@@ -5,36 +5,53 @@ class Auth extends BaseModel {
 		super("auth");
 	}
 
-	async register({ data }) {
-		return await api.post(`${this._path}/register`, data);
+	async register(data) {
+		const response = await this.api.post(`${this._path}/register`, data);
+		return response.data;
 	}
 
-	async login({ data }) {
-		return await api.post(`${this._path}/login`, data);
+	async login(data) {
+		const response = await this.api.post(`${this._path}/login`, data);
+		return response.data;
 	}
 
 	async logout() {
-		return await api.post(`${this._path}/logout`);
+		const response = await this.api.post(`${this._path}/logout`);
+		return response.data;
 	}
 
-	async forgotPassword({ data }) {
-		return await api.post(`${this._path}/password-forgot`, data);
+	async forgotPassword(data) {
+		const response = await this.api.post(
+			`${this._path}/password/forgot`,
+			data
+		);
+		return response.data;
 	}
 
-	async resetPassword({ data }) {
-		return await api.post(`${this._path}/password-reset`, data);
+	async resetPassword(data) {
+		const response = await this.api.post(
+			`${this._path}/password/reset`,
+			data
+		);
+		return response.data;
 	}
 
-	async resendEmail({ data }) {
-		return await api.post(`${this._path}/email-resend`, data);
+	async resendEmail(data) {
+		const response = await this.api.post(
+			`${this._path}/email/resend`,
+			data
+		);
+		return response.data;
 	}
 
-	async profile() {
-		return await api.get(`${this._path}/profile`);
+	async getProfile() {
+		const response = await this.api.get(`${this._path}/profile`);
+		return response.data;
 	}
 
 	async updateProfile({ data }) {
-		return await api.update(`${this._path}/profile`, data);
+		const response = await this.api.update(`${this._path}/profile`, data);
+		return response.data;
 	}
 }
 export default new Auth();

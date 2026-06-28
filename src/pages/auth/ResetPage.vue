@@ -93,16 +93,18 @@
 </template>
 
 <script setup>
-import { api } from "../../config/api";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { ref } from "vue";
 import toArray from "../../utils/to-array";
-import { notifyAlert, notifyError } from "src/utils/notify";
+import { notifyAlert } from "src/utils/notify";
+import Auth from "src/models/Auth";
+
+const { query } = useRoute();
+const router = useRouter();
 
 const showSpinner = ref(false);
-const router = useRouter();
-const token = ref("");
-const email = ref("");
+const token = ref(query.token);
+const email = ref(query.email);
 const password = ref("");
 const password_confirm = ref("");
 const isPwd = ref(true);
@@ -113,22 +115,21 @@ emit("errors", []);
 
 const reset = async () => {
 	emit("errors", []);
+	if (password.value !== password_confirm.value) {
+		emit("errors", ["Password dan konfirmasi password tidak sama."]);
+		return;
+	}
 	try {
 		showSpinner.value = true;
-		const response = await api.post("reset-password", {
+		const response = await Auth.resetPassword({
 			token: token.value,
 			email: email.value,
 			password: password.value,
-			password_confirm: password_confirm.value,
 		});
-		const notification = notifyAlert(response.data.message, 0);
+		const notification = notifyAlert(response.message, 0);
 		await notification; // tunggu notifikasi ditutup
 		router.push({ name: "Login" });
 	} catch (error) {
-		if (!error.response) {
-			notifyError("Terjadi kesalahan jaringan. Silakan coba lagi nanti.");
-			return;
-		}
 		emit("errors", toArray(error.response.data.message));
 	} finally {
 		showSpinner.value = false;

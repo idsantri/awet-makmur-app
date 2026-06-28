@@ -5,16 +5,13 @@
 				<q-input
 					bg-color="green-1"
 					outlined
-					v-model="username"
+					v-model="name"
 					minlength="5"
 					required
-					label="Username"
-					placeholder="Masukkan username!"
-					autocapitalize="none"
-					autocomplete="off"
-					autocorrect="off"
-					:rules="[(val) => !!val || 'Username wajib diisi']"
-					name="username"
+					label="Nama"
+					placeholder="Masukkan nama Anda!"
+					:rules="[(val) => !!val || 'Nama wajib diisi']"
+					name="name"
 					type="text"
 				/>
 				<q-input
@@ -108,14 +105,14 @@
 </template>
 
 <script setup>
-import { api } from "../../config/api";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import toArray from "../../utils/to-array";
-import { notifyAlert, notifyError } from "src/utils/notify";
+import { notifyAlert } from "src/utils/notify";
+import Auth from "src/models/Auth";
 
 const router = useRouter();
-const username = ref("");
+const name = ref("");
 const email = ref("");
 const password = ref("");
 const password_confirm = ref("");
@@ -128,23 +125,23 @@ const showSpinner = ref(false);
 
 const register = async () => {
 	emit("errors", []);
+
+	if (password.value !== password_confirm.value) {
+		emit("errors", ["Password dan konfirmasi password tidak sama."]);
+		return;
+	}
 	try {
 		showSpinner.value = true;
-		const response = await api.post("register", {
-			username: username.value.toLowerCase(),
+		const response = await Auth.register({
+			name: name.value,
 			email: email.value.toLowerCase(),
 			password: password.value,
-			password_confirm: password_confirm.value,
 		});
-		const notification = notifyAlert(response.data.message, 0);
+		const notification = notifyAlert(response.message, 0);
 		await notification; // tunggu notifikasi ditutup
 		router.push({ name: "Login" });
 	} catch (error) {
-		if (!error.response) {
-			notifyError("Terjadi kesalahan jaringan. Silakan coba lagi nanti.");
-			return;
-		}
-		emit("errors", toArray(error.response.data.message));
+		emit("errors", toArray(error.response.message));
 	} finally {
 		showSpinner.value = false;
 	}

@@ -5,11 +5,13 @@ const useAuthStore = defineStore("auth", {
 		token: null,
 		user: null,
 		groups: null,
+		roles: null,
 	}),
 	getters: {
 		getUser: (state) => state.user,
 		getToken: (state) => state.token,
 		getGroup: (state) => state.groups,
+		getGroup: (state) => state.roles,
 	},
 	actions: {
 		setUser(payload) {
@@ -23,6 +25,7 @@ const useAuthStore = defineStore("auth", {
 			this.groups = null;
 			this.user = null;
 			this.token = null;
+			this.roles = null;
 		},
 	},
 	persist: true,
