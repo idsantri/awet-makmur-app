@@ -12,6 +12,7 @@ const useAuthStore = defineStore("auth", {
 		getToken: (state) => state.token,
 		getGroup: (state) => state.groups,
 		getGroup: (state) => state.roles,
+		isAdmin: (state) => state.roles.includes("admin"),
 	},
 	actions: {
 		setUser(payload) {

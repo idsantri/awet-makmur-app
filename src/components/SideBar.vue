@@ -166,23 +166,20 @@
 </template>
 
 <script setup>
-import { apiTokened } from "src/config/api";
 import { onMounted, reactive, ref } from "vue";
 import { useAuthStore } from "src/stores/auth-store";
+import Store from "src/models/Store";
+import Category from "src/models/Category";
 
-const isAdmin = ref(false);
 const storeList = reactive([]);
 const categoryList = reactive([]);
+const authStore = useAuthStore();
+const isAdmin = ref(authStore.isAdmin);
 
-onMounted(async () => {
-	await getData();
-	isAdmin.value = useAuthStore().groups.admin;
-});
-
-async function getData() {
-	try {
-		const responseStore = await apiTokened.get(`stores`);
-		responseStore.data.data.stores.forEach((store) => {
+async function getStores() {
+	const response = await Store.getAll();
+	if (response) {
+		response.data.stores.forEach((store) => {
 			storeList.push({
 				name: store.name,
 				caption: store.address,
@@ -202,9 +199,13 @@ async function getData() {
 				},
 			});
 		});
+	}
+}
 
-		const responseCategory = await apiTokened.get(`categories`);
-		responseCategory.data.data.categories.forEach((category) => {
+async function getCategories() {
+	const response = await Category.getAll();
+	if (response) {
+		response.data.categories.forEach((category) => {
 			categoryList.push({
 				name: category.name,
 				caption: category.description,
@@ -212,8 +213,11 @@ async function getData() {
 				link: `/products/categories/${category.slug}`,
 			});
 		});
-	} catch (error) {
-		console.log("Not Found: store -> list", error.response);
 	}
 }
+
+onMounted(async () => {
+	await getCategories();
+	await getStores();
+});
 </script>
