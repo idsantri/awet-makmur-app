@@ -1,4 +1,4 @@
-import BaseModel from "./baseModel";
+import BaseModel from "./BaseModel";
 
 class Order extends BaseModel {
 	constructor() {

@@ -41,6 +41,7 @@ import { forceRerender } from "src/utils/buttons-click";
 import { apiTokened } from "src/config/api";
 import toArray from "src/utils/to-array";
 import { useQuasar } from "quasar";
+import List from "src/models/List";
 
 const props = defineProps({
 	isNew: { type: Boolean, default: false },
@@ -67,39 +68,20 @@ const onSubmit = async () => {
 		description: propsPayment.description,
 	};
 
-	try {
-		let response = null;
-		if (props.isNew) response = await apiTokened.post(`lists`, data);
-		else response = await apiTokened.put(`lists/${propsPayment.id}`, data);
-		notifySuccess(response.data.message);
-	} catch (error) {
-		toArray(error.response.data.message).forEach((message) => {
-			notifyError(message);
-		});
-	} finally {
-		forceRerender();
+	let response = null;
+	if (props.isNew) response = await List.create({ data });
+	else response = await List.update({ id: propsPayment.id, data });
+	if (response.success) {
+		notifySuccess(response.message);
 	}
+	forceRerender();
 };
 
-const $q = useQuasar();
 const deleteList = async (id) => {
-	$q.dialog({
-		title: "Konfirmasi",
-		message: `<span style="color:'red'">Hapus metode pembayaran ini?</span>`,
-		cancel: true,
-		persistent: false,
-		html: true,
-	}).onOk(async () => {
-		try {
-			const response = await apiTokened.delete(`lists/${id}`);
-			notifySuccess(response.data.message);
-		} catch (error) {
-			toArray(error.response.data.message).forEach((message) => {
-				notifyError(message);
-			});
-		} finally {
-			forceRerender();
-		}
-	});
+	const response = await List.remove({ id });
+	if (response.success) {
+		notifySuccess(response.message);
+	}
+	forceRerender();
 };
 </script>

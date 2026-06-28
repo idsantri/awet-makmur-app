@@ -48,9 +48,9 @@
 	<!-- <pre>{{ categories }}</pre> -->
 </template>
 <script setup>
-import { apiTokened } from "src/config/api";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import PaymentsCrud from "./PaymentsCrud.vue";
+import List from "src/models/List.js";
 
 const showModal = ref(false);
 const newPayment = ref(false);
@@ -63,10 +63,13 @@ const crud = (isNew, py = {}) => {
 };
 
 const payments = reactive([]);
-try {
-	const response = await apiTokened.get(`lists/payment-method`);
-	Object.assign(payments, response.data.data.lists);
-} catch (error) {
-	console.log("Not Found: Stores -> list", error.response);
+
+async function fetchData() {
+	const response = await List.getAll({ var: "payment-method" });
+	Object.assign(payments, response.data["payment-method"]);
 }
+
+onMounted(async () => {
+	await fetchData();
+});
 </script>

@@ -1,21 +1,35 @@
-import { notifyConfirm } from "src/utils/notify";
+import { notifyConfirm, notifyError } from "src/utils/notify";
 import api from ".";
 
 export default class BaseModel {
 	constructor(path) {
 		this._path = path;
-		this.api = api;
+		this._api = api;
 	}
 
-	async getAll({ params = {} }) {
-		return await api.get(this._path, { params });
+	async getAll(params = {}) {
+		try {
+			const response = await this._api.get(this._path, { params });
+			return response.data;
+		} catch (error) {
+			notifyError(error.response.data.message);
+			return false;
+		}
 	}
 
 	async getById({ id, params = {} }) {
-		return await api.get(`${this._path}/${id}`, { params });
+		try {
+			const response = await this._api.get(`${this._path}/${id}`, {
+				params,
+			});
+			return response.data;
+		} catch (error) {
+			notifyError(error.response.data.message);
+			return false;
+		}
 	}
 
-	async create({ data, params = {}, confirm = false, message = "" }) {
+	async create({ data, confirm = false, message = "" }) {
 		if (message || confirm) {
 			const isConfirmed = await notifyConfirm(
 				message || "Simpan data ini?"
@@ -24,12 +38,18 @@ export default class BaseModel {
 				return false;
 			}
 		}
-		return await api.post(this._path, data, { params });
+		try {
+			const response = await this._api.post(this._path, data);
+			return response.data;
+		} catch (error) {
+			notifyError(error.response.data.message);
+			return false;
+		}
 	}
 
 	async update({ id, data, params = {}, confirm = false, message = "" }) {
 		if (message || confirm) {
-			const isConfirmed = await this._notifyConfirm(
+			const isConfirmed = await notifyConfirm(
 				message || "Update data ini?"
 			);
 
@@ -37,12 +57,20 @@ export default class BaseModel {
 				return false;
 			}
 		}
-		return await api.update(`${this._path}/${id}`, data, { params });
+		try {
+			const response = await this._api.put(`${this._path}/${id}`, data, {
+				params,
+			});
+			return response.data;
+		} catch (error) {
+			notifyError(error.response.data.message);
+			return false;
+		}
 	}
 
 	async remove({ id, params = {}, confirm = true, message = "" }) {
 		if (message || confirm) {
-			const isConfirmed = await this._notifyConfirm(
+			const isConfirmed = await notifyConfirm(
 				message || '<span style="color: red">Hapus data ini?</span>'
 			);
 
@@ -50,6 +78,14 @@ export default class BaseModel {
 				return false;
 			}
 		}
-		return await api.delete(`${this._path}/${id}`, { params });
+		try {
+			const response = await this._api.delete(`${this._path}/${id}`, {
+				params,
+			});
+			return response.data;
+		} catch (error) {
+			notifyError(error.response.data.message);
+			return false;
+		}
 	}
 }

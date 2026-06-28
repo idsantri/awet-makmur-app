@@ -1,4 +1,4 @@
-import BaseModel from "./baseModel";
+import BaseModel from "./BaseModel";
 
 class OrderDetail extends BaseModel {
 	constructor() {
@@ -7,7 +7,7 @@ class OrderDetail extends BaseModel {
 	}
 
 	async getAll({ orderId, params = {} }) {
-		return await this.api.get(`${this._path}/${orderId}/${endPoint}`, {
+		return await this._api.get(`${this._path}/${orderId}/${endPoint}`, {
 			params,
 		});
 	}

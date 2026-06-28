@@ -1,28 +1,29 @@
-import BaseModel from "./baseModel";
+import api from ".";
 
-class Auth extends BaseModel {
+class Auth {
 	constructor() {
-		super("auth");
+		this.path = "auth";
+		this.api = api;
 	}
 
 	async register(data) {
-		const response = await this.api.post(`${this._path}/register`, data);
+		const response = await this.api.post(`${this.path}/register`, data);
 		return response.data;
 	}
 
 	async login(data) {
-		const response = await this.api.post(`${this._path}/login`, data);
+		const response = await this.api.post(`${this.path}/login`, data);
 		return response.data;
 	}
 
 	async logout() {
-		const response = await this.api.post(`${this._path}/logout`);
+		const response = await this.api.post(`${this.path}/logout`);
 		return response.data;
 	}
 
 	async forgotPassword(data) {
 		const response = await this.api.post(
-			`${this._path}/password/forgot`,
+			`${this.path}/password/forgot`,
 			data
 		);
 		return response.data;
@@ -30,27 +31,24 @@ class Auth extends BaseModel {
 
 	async resetPassword(data) {
 		const response = await this.api.post(
-			`${this._path}/password/reset`,
+			`${this.path}/password/reset`,
 			data
 		);
 		return response.data;
 	}
 
 	async resendEmail(data) {
-		const response = await this.api.post(
-			`${this._path}/email/resend`,
-			data
-		);
+		const response = await this.api.post(`${this.path}/email/resend`, data);
 		return response.data;
 	}
 
 	async getProfile() {
-		const response = await this.api.get(`${this._path}/profile`);
+		const response = await this.api.get(`${this.path}/profile`);
 		return response.data;
 	}
 
 	async updateProfile({ data }) {
-		const response = await this.api.update(`${this._path}/profile`, data);
+		const response = await this.api.update(`${this.path}/profile`, data);
 		return response.data;
 	}
 }
