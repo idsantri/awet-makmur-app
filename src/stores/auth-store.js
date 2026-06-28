@@ -21,7 +21,7 @@ const useAuthStore = defineStore("auth", {
 			if (payload.token) this.token = payload.token;
 		},
 
-		clearUser() {
+		logout() {
 			this.groups = null;
 			this.user = null;
 			this.token = null;

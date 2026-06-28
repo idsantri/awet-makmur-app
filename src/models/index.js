@@ -1,16 +1,17 @@
 import axios from "axios";
 import { useAuthStore } from "src/stores/auth-store";
 import { notifyError } from "src/utils/notify";
+import { routerInstance } from "src/router/index";
 
 const api = axios.create({
 	baseURL: process.env.BASE_URL_API,
 	// withCredentials: true, // no need to send cookies, stateless
 });
 
-api.interceptors.request.use((config) => {
-	const authStore = useAuthStore();
-	const token = authStore.getToken;
+const authStore = useAuthStore();
 
+api.interceptors.request.use((config) => {
+	const token = authStore.getToken;
 	if (token) {
 		config.headers.Authorization = `Bearer ${token}`;
 	}
@@ -34,9 +35,20 @@ api.interceptors.response.use(
 			notifyError("Tidak dapat terhubung ke server");
 		} else {
 			//  'code' => 'TOKEN_EXPIRED',
-
-			// Teruskan kesalahan lain ke blok catch berikutnya
-			return Promise.reject(error);
+			if (error?.response?.data?.data?.code == "TOKEN_EXPIRED") {
+				notifyError(
+					error?.response?.data?.message ||
+						"Masa berlaku token telah habis."
+				);
+				authStore.logout();
+				setTimeout(() => {
+					routerInstance.push({ name: "Login" });
+				}, 2500);
+				return;
+			} else {
+				// Teruskan kesalahan lain ke blok catch berikutnya
+				return Promise.reject(error);
+			}
 		}
 	}
 );
