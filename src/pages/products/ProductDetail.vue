@@ -1,10 +1,11 @@
 <template>
 	<q-card class="q-ma-sm">
 		<q-card-section class="no-padding">
-			<div v-if="product.image_last">
+			<div v-if="product.image_url">
 				<q-img
+					class="img"
 					style="height: 30vh"
-					:src="product.image_url + product.image_last"
+					:src="product.image_url"
 				>
 				</q-img>
 				<q-btn
@@ -18,10 +19,7 @@
 				/>
 			</div>
 			<div v-else>
-				<q-img
-					style="max-height: 30vh"
-					src="https://picsum.photos/400/300.webp"
-				>
+				<q-img class="img" style="max-height: 30vh" src="/no-image.png">
 					<q-btn
 						push
 						round
@@ -43,7 +41,8 @@
 					</div>
 					<div class="text-caption">
 						Tersisa:
-						{{ product.total_stock ? product.total_stock : 0 }} item
+						{{ totalStock }}
+						item
 					</div>
 				</template>
 				<template #buttons>
@@ -102,7 +101,7 @@
 					<tr>
 						<td class="text-left">Nama</td>
 						<td class="text-left multi-line">
-							{{ product.name.toUpperCase() }}
+							{{ product?.name?.toUpperCase() }}
 						</td>
 					</tr>
 					<tr>
@@ -128,7 +127,12 @@
 					<tr>
 						<td class="text-left">Keuntungan</td>
 						<td class="text-right">
-							Rp{{ digitSeparator(margin) }}
+							Rp{{
+								digitSeparator(
+									parseInt(product.selling_price) -
+										parseInt(product.base_price)
+								)
+							}}
 						</td>
 					</tr>
 				</tbody>
@@ -152,7 +156,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="(stock, index) in stocks" :key="index">
+					<tr v-for="(stock, index) in product.stocks" :key="index">
 						<td class="text-left">{{ stock.store_name }}</td>
 						<td class="text-left">{{ stock.stock }}</td>
 						<td class="text-right">
@@ -203,7 +207,6 @@
 		:url="urlUpload"
 		:params="paramsImage"
 		:headers="headers"
-		withCredentials
 		img-format="png"
 	></my-upload>
 	<!-- <img :src="imgDataUrl"> -->
@@ -225,53 +228,45 @@
 
 <script setup>
 import digitSeparator from "../../utils/digit-separator";
-import { apiTokened } from "../../config/api";
-import { reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
-import toArray from "../../utils/to-array";
 import ModalDescription from "./ModalDescription.vue";
 import ModalProduct from "./ModalProduct.vue";
 import ModalStock from "./ModalStock.vue";
-import { notifyError, notifySuccess } from "src/utils/notify";
+import { notifySuccess } from "src/utils/notify";
 import { forceRerender } from "src/utils/buttons-click";
 import myUpload from "vue-image-crop-upload";
 import ordersStore from "src/stores/orders-store";
 import ModalSearch from "./ProductSearch.vue";
 import BannerTitle from "src/components/BannerTitle.vue";
-import { useQuasar } from "quasar";
+import Product from "src/models/Product";
+import api from "src/models";
+import { useAuthStore } from "src/stores/auth-store";
+import Stock from "src/models/Stock";
 
 const route = useRoute();
 const params = ref(route.params);
 const product = reactive({});
-const stocks = reactive([]);
-const images = reactive([]);
-const margin = ref(0);
 const showModalDescription = ref(false);
 const showModalProduct = ref(false);
 const showModalStock = ref(false);
 const showModalSearch = ref(false);
+const authStore = useAuthStore();
 
-const $q = useQuasar();
 const deleteStock = async (id, store) => {
-	$q.dialog({
-		title: "Konfirmasi",
-		message: `<span style="color:'red'">Hapus stok produk di toko ${store}?</span>`,
-		cancel: true,
-		persistent: false,
-		html: true,
-	}).onOk(async () => {
-		try {
-			const response = await apiTokened.delete(`stocks/${id}`);
-			notifySuccess(response.data.message);
-		} catch (error) {
-			toArray(error.response.data.message).forEach((message) => {
-				notifyError(message);
-			});
-		} finally {
-			forceRerender();
-		}
-	});
+	const message = `<span style="color:red">Hapus stok produk di toko ${store}?</span>`;
+
+	const response = await Stock.remove({ id, message });
+	if (response) {
+		notifySuccess(response.message);
+		forceRerender();
+	}
 };
+
+const totalStock = computed(() => {
+	if (!product?.stocks?.length) return 0;
+	return product.stocks.reduce((total, stock) => total + stock.stock, 0);
+});
 
 const addToCart = () => {
 	ordersStore().addOrder(product);
@@ -296,12 +291,14 @@ const translate = {
 		lowestPx: "Ukuran gambar terlalu rendah. Setidaknya diharapkan: ",
 	},
 };
+
 const showUploader = ref(false);
 const imgDataUrl = ref("");
-const urlUpload = `${apiTokened.defaults.baseURL}/products/${params.value.id}/image`;
+const urlUpload = `${api.defaults.baseURL}/products/${params.value.id}/image`;
 const headers = {
-	Authorization: apiTokened.defaults.headers.common.Authorization,
+	Authorization: `Bearer ${authStore.getToken}`,
 };
+
 const paramsImage = {};
 const cropSuccess = (imgData, field) => {
 	imgDataUrl.value = imgData;
@@ -327,18 +324,19 @@ const cropUploadFail = (status, field) => {
 	console.log("field: " + field);
 };
 
-try {
-	const response = await apiTokened.get(`products/${params.value.id}`);
-	Object.assign(product, response.data.data.product);
-	Object.assign(stocks, response.data.data.stocks);
-	Object.assign(images, response.data.data.images);
-	if (response.data.data.stocks.length == 0) showModalStock.value = true;
-} catch (error) {
-	toArray(error.response.data.message).forEach((message) => {
-		notifyError(message);
+async function fetchProduct() {
+	const response = await Product.getById({
+		id: params.value.id,
 	});
+	if (response) {
+		Object.assign(product, response.data.product);
+		if (response.data.product.stocks.length == 0)
+			showModalStock.value = true;
+	}
 }
-margin.value = product.selling_price - product.base_price;
+onMounted(async () => {
+	await fetchProduct();
+});
 </script>
 <style lang="scss" scoped>
 .data {

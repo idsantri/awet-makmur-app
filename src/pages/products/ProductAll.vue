@@ -67,18 +67,20 @@
 				</q-item>
 				<!-- Gunakan items-start agar kontainer teks bebas memanjang ke bawah secara mandiri -->
 				<q-card-section horizontal class="q-ma-sm items-stretch">
-					<div v-if="product.image_url" class="col-3">
-						<q-img
-							class="flex flex-center img"
-							:src="product.image_url"
-						/>
-					</div>
-					<div v-else class="col-3">
-						<q-img
-							class="flex flex-center img"
-							src="/no-image.png"
-						/>
-					</div>
+					<router-link :to="/products/ + product.id">
+						<div v-if="product.image_url" class="col-3">
+							<q-img
+								class="flex flex-center img"
+								:src="product.image_url"
+							/>
+						</div>
+						<div v-else class="col-3">
+							<q-img
+								class="flex flex-center img"
+								src="/no-image.png"
+							/>
+						</div>
+					</router-link>
 
 					<div class="col-9 flex column justify-between q-pl-sm">
 						<div
@@ -248,7 +250,6 @@ const addToCart = (product) => {
 }
 .text-ellipsis-3-lines {
 	display: -webkit-box;
-	-webkit-line-clamp: 3; /* Ubah angka ini sesuai jumlah baris yg diinginkan */
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;

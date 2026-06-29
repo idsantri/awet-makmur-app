@@ -16,10 +16,8 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { notifySuccess, notifyError } from "../../utils/notify";
 import { forceRerender } from "../../utils/buttons-click";
-import { apiTokened } from "../../config/api";
-import toArray from "../../utils/to-array";
+import Product from "src/models/Product";
 
 const props = defineProps({
 	productDescription: { type: String, default: "" },
@@ -29,19 +27,11 @@ const props = defineProps({
 const textDescription = ref(props.productDescription);
 const id = ref(props.productId);
 const saveDescription = async () => {
-	try {
-		const response = await apiTokened.put(`products/${id.value}`, {
-			description: textDescription.value,
-		});
-		// console.log(response);
-		notifySuccess(response.data.message);
-	} catch (error) {
-		// console.log(error);
-		toArray(error.response.data.message).forEach((message) => {
-			notifyError(message);
-		});
-	} finally {
-		forceRerender();
-	}
+	await Product.update({
+		id: id.value,
+		data: { description: textDescription.value },
+	});
+
+	forceRerender();
 };
 </script>

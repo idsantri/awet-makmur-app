@@ -59,14 +59,13 @@
 	</q-card>
 </template>
 <script setup>
-import { ref, toRefs, reactive } from "vue";
-import { notifySuccess, notifyError } from "../../utils/notify";
+import { ref, toRefs, reactive, onMounted } from "vue";
+import { notifySuccess } from "../../utils/notify";
 import { forceRerender } from "../../utils/buttons-click";
-import { apiTokened } from "../../config/api";
-import toArray from "../../utils/to-array";
 import { useRouter } from "vue-router";
-import { useQuasar } from "quasar";
 import CurrencyInput from "src/components/CurrencyInput.vue";
+import Category from "src/models/Category";
+import Product from "src/models/Product";
 
 const router = useRouter();
 const props = defineProps({
@@ -103,12 +102,15 @@ if (props.isNew) {
 }
 
 const listCategories = reactive([]);
-try {
-	const response = await apiTokened.get(`categories`);
-	Object.assign(listCategories, response.data.data.categories);
-} catch (error) {
-	console.log("Not Found: categories -> list", error.response);
+async function fetchCategories() {
+	const response = await Category.getAll();
+	if (response) {
+		Object.assign(listCategories, response.data.categories);
+	}
 }
+onMounted(async () => {
+	await fetchCategories();
+});
 
 const onSubmit = async () => {
 	const data = {
@@ -121,49 +123,25 @@ const onSubmit = async () => {
 		category_id: category_id.value,
 	};
 	if (props.isNew) {
-		try {
-			const response = await apiTokened.post(`products`, data);
-			const id = response.data.data.product.id;
-			notifySuccess(response.data.message);
-			router.push(`/products/${id}`);
-		} catch (error) {
-			toArray(error.response.data.message).forEach((message) => {
-				notifyError(message);
-			});
-		}
+		const response = await Product.create({ data });
+		if (!response) return;
+		const id = response.data.product.id;
+		notifySuccess(response.message);
+		router.push(`/products/${id}`);
 	}
 
 	if (!props.isNew) {
-		try {
-			const response = await apiTokened.put(`products/${id.value}`, data);
-			notifySuccess(response.data.message);
-			forceRerender();
-		} catch (error) {
-			toArray(error.response.data.message).forEach((message) => {
-				notifyError(message);
-			});
-		}
+		const response = await Product.update({ id: id.value, data });
+		if (!response) return;
+		notifySuccess(response.message);
+		forceRerender();
 	}
 };
 
-const $q = useQuasar();
 const deleteProduct = async (id) => {
-	$q.dialog({
-		title: "Konfirmasi",
-		message: `<span style="color:'red'">Hapus produk?</span>`,
-		cancel: true,
-		persistent: false,
-		html: true,
-	}).onOk(async () => {
-		try {
-			const response = await apiTokened.delete(`products/${id}`);
-			notifySuccess(response.data.message);
-			router.go(-1);
-		} catch (error) {
-			toArray(error.response.data.message).forEach((message) => {
-				notifyError(message);
-			});
-		}
-	});
+	const response = await Product.remove({ id });
+	if (!response) return;
+	notifySuccess(response.message);
+	router.go(-1);
 };
 </script>

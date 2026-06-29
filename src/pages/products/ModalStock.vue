@@ -36,11 +36,13 @@
 </template>
 
 <script setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { notifySuccess, notifyError } from "../../utils/notify";
 import { forceRerender } from "../../utils/buttons-click";
 import { apiTokened } from "../../config/api";
 import toArray from "../../utils/to-array";
+import Store from "src/models/Store";
+import Stock from "src/models/Stock";
 
 const props = defineProps({
 	productId: { type: Number, default: 0 },
@@ -50,30 +52,25 @@ const store_id = ref();
 const stock = ref();
 const listStores = reactive([]);
 
-try {
-	const response = await apiTokened.get(`stores`);
-	Object.assign(listStores, response.data.data.stores);
-} catch (error) {
-	console.log("Not Found: stores -> list", error.response);
+async function fetchStores() {
+	const response = await Store.getAll();
+	if (response) {
+		Object.assign(listStores, response.data.stores);
+	}
 }
 
+onMounted(() => fetchStores());
+
 const onSubmit = async () => {
-	if (isNaN(store_id.value)) return notifyError("Tentukan Toko");
-	try {
-		const response = await apiTokened.post(`stocks`, {
-			product_id: props.productId,
-			store_id: store_id.value,
-			stock: stock.value,
-		});
-		// console.log(response);
-		notifySuccess(response.data.message);
-	} catch (error) {
-		// console.log(error);
-		toArray(error.response.data.message).forEach((message) => {
-			notifyError(message);
-		});
-	} finally {
-		forceRerender();
+	const data = {
+		product_id: props.productId,
+		store_id: store_id.value,
+		stock: stock.value,
+	};
+	const response = await Stock.create({ data });
+	if (response) {
+		notifySuccess(response.message);
 	}
+	forceRerender();
 };
 </script>
