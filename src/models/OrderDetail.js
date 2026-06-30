@@ -1,21 +1,36 @@
+import { notifyError } from "src/utils/notify";
 import BaseModel from "./BaseModel";
 
 class OrderDetail extends BaseModel {
+	endPoint = "items";
 	constructor() {
 		super("orders");
-		endPoint = "items";
 	}
 
 	async getAll({ orderId, params = {} }) {
-		return await this._api.get(`${this._path}/${orderId}/${endPoint}`, {
-			params,
-		});
+		try {
+			const response = await this._api.get(
+				`${this._path}/${orderId}/${this.endPoint}`,
+				{ params }
+			);
+			return response.data;
+		} catch (error) {
+			notifyError(error.response.data.message);
+			return false;
+		}
 	}
 
 	async getById({ orderId, id, params = {} }) {
-		return await api.get(`${this._path}/${orderId}/${endPoint}/${id}`, {
-			params,
-		});
+		try {
+			const response = await this._api.get(
+				`${this._path}/${orderId}/${this.endPoint}/${id}`,
+				{ params }
+			);
+			return response.data;
+		} catch (error) {
+			notifyError(error.response.data.message);
+			return false;
+		}
 	}
 
 	async create({ orderId, data, confirm = false, message = "" }) {
@@ -27,7 +42,17 @@ class OrderDetail extends BaseModel {
 				return false;
 			}
 		}
-		return await api.post(`${this._path}/${orderId}/${endPoint}`, data, {});
+		try {
+			const response = await this._api.post(
+				`${this._path}/${orderId}/${this.endPoint}`,
+				data,
+				{}
+			);
+			return response.data;
+		} catch (error) {
+			notifyError(error.response.data.message);
+			return false;
+		}
 	}
 
 	async update({ orderId, id, data, confirm = false, message = "" }) {
@@ -40,11 +65,17 @@ class OrderDetail extends BaseModel {
 				return false;
 			}
 		}
-		return await api.update(
-			`${this._path}/${orderId}/${endPoint}/${id}`,
-			data,
-			{}
-		);
+		try {
+			const response = await this._api.put(
+				`${this._path}/${orderId}/${this.endPoint}/${id}`,
+				data,
+				{}
+			);
+			return response.data;
+		} catch (error) {
+			notifyError(error.response.data.message);
+			return false;
+		}
 	}
 
 	async remove({ orderId, id, confirm = true, message = "" }) {
@@ -57,7 +88,16 @@ class OrderDetail extends BaseModel {
 				return false;
 			}
 		}
-		return await api.delete(`${this._path}/${orderId}/${endPoint}/${id}`);
+
+		try {
+			const response = await this._api.remove(
+				`${this._path}/${orderId}/${this.endPoint}/${id}`
+			);
+			return response.data;
+		} catch (error) {
+			notifyError(error.response.data.message);
+			return false;
+		}
 	}
 }
 export default new OrderDetail();

@@ -51,11 +51,10 @@
 </template>
 <script setup>
 import { reactive, onMounted } from "vue";
-import { notifySuccess, notifyError } from "../../utils/notify";
+import { notifySuccess } from "../../utils/notify";
 import { forceRerender } from "../../utils/buttons-click";
-import { apiTokened } from "../../config/api";
-import toArray from "../../utils/to-array";
 import CurrencyInput from "src/components/CurrencyInput.vue";
+import OrderDetail from "src/models/OrderDetail";
 
 const props = defineProps({
 	orderDetail: { type: Object, default: null },
@@ -65,6 +64,7 @@ const order_detail = reactive({});
 
 onMounted(() => {
 	Object.assign(order_detail, props.orderDetail);
+	// console.log("🚀 ~ order_detail:", order_detail);
 });
 
 const onSubmit = async () => {
@@ -73,17 +73,13 @@ const onSubmit = async () => {
 		discount: order_detail.discount,
 		quantity: order_detail.quantity,
 	};
-	try {
-		const response = await apiTokened.put(
-			`orders-detail/${order_detail.id}`,
-			data
-		);
-		notifySuccess(response.data.message);
-		forceRerender();
-	} catch (error) {
-		toArray(error.response.data.message).forEach((message) => {
-			notifyError(message);
-		});
-	}
+
+	const response = await OrderDetail.update({
+		orderId: order_detail.order_id,
+		id: order_detail.id,
+		data,
+	});
+	notifySuccess(response.message);
+	forceRerender();
 };
 </script>

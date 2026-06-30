@@ -71,10 +71,7 @@
 					<q-item-label header overline class="q-py-sm"
 						>Data Produk</q-item-label
 					>
-					<q-item
-						v-for="(detail, index) in order.order_detail"
-						:key="index"
-					>
+					<q-item v-for="(detail, index) in order.items" :key="index">
 						<q-item-section>
 							<q-item-label class="flex items-center">
 								<q-btn
@@ -151,7 +148,7 @@
 											<td class="text-right text-bold">
 												Rp{{
 													digitSeparator(
-														detail.price_amount
+														subTotal(detail)
 													)
 												}}
 											</td>
@@ -191,10 +188,8 @@
 </template>
 
 <script setup>
-import { apiTokened } from "src/config/api";
 import { notifyError, notifySuccess } from "src/utils/notify";
-import toArray from "src/utils/to-array";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { fullDate } from "src/utils/format-date";
 import digitSeparator from "src/utils/digit-separator";
@@ -206,6 +201,7 @@ import { useQuasar } from "quasar";
 import getInitials from "src/utils/initial";
 import OrderModal from "./OrderModal.vue";
 import OrderDetailModal from "./OrderDetailModal.vue";
+import Order from "src/models/Order.js";
 
 const order = reactive({});
 const params = ref(useRoute().params);
@@ -219,14 +215,22 @@ function editOrderDetail(order) {
 	showModalOrderDetail.value = true;
 }
 
-try {
-	const response = await apiTokened.get(`orders/${params.value.id}`);
-	Object.assign(order, response.data.data.order);
-	// console.log(order);
-} catch (error) {
-	toArray(error.response.data.message).forEach((message) => {
-		notifyError(message);
-	});
+async function fetchOrder() {
+	const response = await Order.getById({ id: params.value.id });
+	if (response) {
+		Object.assign(order, response.data.order);
+	}
+}
+onMounted(async () => {
+	await fetchOrder();
+});
+
+function subTotal(item) {
+	return (
+		Number(item.product_selling_price) * Number(item.quantity) -
+		Number(item.discount) +
+		Number(item.cost)
+	);
 }
 
 const router = useRouter();
@@ -286,22 +290,10 @@ const createInvoice = async () => {
 };
 
 const deleteOrder = async () => {
-	$q.dialog({
-		title: "Konfirmasi",
-		message: `<span style="color:'red'">Hapus transaksi ini?</span><br/><br/><hr/><em>Stok akan dikembalikan ke semula!</em><hr/>`,
-		cancel: true,
-		persistent: false,
-		html: true,
-	}).onOk(async () => {
-		try {
-			const response = await apiTokened.delete(`orders/${order.id}`);
-			notifySuccess(response.data.message);
-			router.go(-1);
-		} catch (error) {
-			toArray(error.response.data.message).forEach((message) => {
-				notifyError(message);
-			});
-		}
-	});
+	const message = `<span style="color:red">Hapus transaksi ini?</span><br/><br/><hr/><em>Stok akan dikembalikan ke semula!</em><hr/>`;
+	const response = await Order.remove({ id: order.id, message });
+	if (!response) return;
+	notifySuccess(response.message);
+	router.go(-1);
 };
 </script>

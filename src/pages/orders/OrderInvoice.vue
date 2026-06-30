@@ -57,10 +57,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr
-						v-for="(detail, index) in order.order_detail"
-						:key="index"
-					>
+					<tr v-for="(detail, index) in order.items" :key="index">
 						<td>
 							{{ detail.product_name }}
 							{{
@@ -82,7 +79,7 @@
 							Rp{{ digitSeparator(detail.discount) }}
 						</td>
 						<td class="text-right text-bold">
-							Rp{{ digitSeparator(detail.price_amount) }}
+							Rp{{ digitSeparator(subTotal(detail)) }}
 						</td>
 					</tr>
 				</tbody>
@@ -100,4 +97,11 @@ const props = defineProps({
 	order: { type: Object },
 });
 const order = reactive(props.order);
+function subTotal(item) {
+	return (
+		Number(item.product_selling_price) * Number(item.quantity) -
+		Number(item.discount) +
+		Number(item.cost)
+	);
+}
 </script>

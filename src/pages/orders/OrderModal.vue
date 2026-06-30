@@ -70,13 +70,13 @@
 	</q-card>
 </template>
 <script setup>
-import { ref, toRefs, reactive } from "vue";
-import { notifySuccess, notifyError } from "../../utils/notify";
+import { reactive, onMounted } from "vue";
+import { notifySuccess } from "../../utils/notify";
 import { forceRerender } from "../../utils/buttons-click";
-import { apiTokened } from "../../config/api";
-import toArray from "../../utils/to-array";
 import { useRouter } from "vue-router";
-import { useQuasar } from "quasar";
+import List from "src/models/List";
+import Store from "src/models/Store";
+import Order from "src/models/Order";
 
 const router = useRouter();
 const props = defineProps({
@@ -85,17 +85,27 @@ const props = defineProps({
 
 const listStores = reactive([]);
 const listPayment = reactive([]);
-try {
-	const responsePayment = await apiTokened.get(`lists/payment-method`);
-	Object.assign(listPayment, responsePayment.data.data.lists);
-	const responseStore = await apiTokened.get(`stores`);
-	Object.assign(listStores, responseStore.data.data.stores);
-} catch (error) {
-	console.log("Not Found: list ", error.response);
-}
 
 const copyOrder = reactive({});
 Object.assign(copyOrder, props.order);
+
+async function fetchStores() {
+	const response = await Store.getAll();
+	if (response) {
+		Object.assign(listStores, response.data.stores);
+	}
+}
+
+async function fetchPayments() {
+	const response = await List.getAll({ var: "payment-method" });
+	if (response) {
+		Object.assign(listPayment, response.data["payment-method"]);
+	}
+}
+onMounted(async () => {
+	await fetchStores();
+	await fetchPayments();
+});
 const onSubmit = async () => {
 	const {
 		id,
@@ -114,15 +124,8 @@ const onSubmit = async () => {
 		payment,
 		note,
 	};
-	//return  console.log(data);
-	try {
-		const response = await apiTokened.put(`orders/${id}`, data);
-		notifySuccess(response.data.message);
-		forceRerender();
-	} catch (error) {
-		toArray(error.response.data.message).forEach((message) => {
-			notifyError(message);
-		});
-	}
+	const response = await Order.update({ id, data });
+	if (response) notifySuccess(response.message);
+	forceRerender();
 };
 </script>

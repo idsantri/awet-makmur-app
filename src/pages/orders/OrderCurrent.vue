@@ -113,7 +113,9 @@
 														>
 															~Stok:
 															{{
-																product.total_stock
+																totalStock(
+																	product
+																)
 															}}
 														</span>
 													</td>
@@ -315,7 +317,7 @@
 
 <script setup>
 import ordersStore from "src/stores/orders-store";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { apiTokened } from "../../config/api";
 import digitSeparator from "src/utils/digit-separator";
 import toArray from "src/utils/to-array";
@@ -323,6 +325,8 @@ import { notifyError, notifySuccess } from "src/utils/notify";
 import BannerTitle from "src/components/BannerTitle.vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
+import List from "src/models/List";
+import Store from "src/models/Store";
 
 const listStores = reactive([]);
 const listPayment = reactive([]);
@@ -334,14 +338,30 @@ const store_id = ref(null);
 const payment = ref("");
 const router = useRouter();
 
-try {
-	const responsePayment = await apiTokened.get(`lists/payment-method`);
-	Object.assign(listPayment, responsePayment.data.data.lists);
-	const responseStore = await apiTokened.get(`stores`);
-	Object.assign(listStores, responseStore.data.data.stores);
-} catch (error) {
-	console.log("Not Found: list ", error.response);
+async function fetchPayments() {
+	const response = await List.getAll({ var: "payment-method" });
+	if (response) {
+		Object.assign(listPayment, response.data["payment-method"]);
+	}
 }
+
+async function fetchStores() {
+	const response = await Store.getAll();
+	if (response) {
+		Object.assign(listStores, response.data.stores);
+	}
+}
+const totalStock = (order) => {
+	let total = 0;
+	order.stocks.forEach(function (item) {
+		total += item.stock;
+	});
+	return total;
+};
+onMounted(async () => {
+	await fetchStores();
+	await fetchPayments();
+});
 
 const products = reactive(ordersStore().getOrders);
 // console.log('p', products);
