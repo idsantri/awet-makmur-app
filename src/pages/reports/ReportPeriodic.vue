@@ -10,6 +10,7 @@
 						:options="yearOptions"
 						label="Pilih Tahun"
 						clearable=""
+						:loading="loadingYear"
 					/>
 					<q-select
 						class="col-6 q-pa-sm"
@@ -94,6 +95,7 @@ import { onMounted, ref } from "vue";
 import BannerTitle from "src/components/BannerTitle.vue";
 import * as utils from "src/pages/reports/report-utils";
 import { notifyError } from "src/utils/notify";
+import Order from "src/models/Order";
 
 const dataFetch = ref({});
 const yearOptions = ref([]);
@@ -101,6 +103,8 @@ const monthOptions = ref(utils.monthOptions());
 const yearModel = ref("");
 const monthModel = ref("");
 const filter = ref("");
+const loadingYear = ref(false);
+
 function process() {
 	let period = "";
 	if (!yearModel.value) {
@@ -155,8 +159,17 @@ function process() {
 }
 
 onMounted(async () => {
-	const { lists_year } = await fetchApi("orders/lists-year");
-	yearOptions.value = lists_year;
+	await fetchYears();
 });
+
+async function fetchYears() {
+	try {
+		loadingYear.value = true;
+		const response = await Order.listYear();
+		yearOptions.value = response.data.years;
+	} finally {
+		loadingYear.value = false;
+	}
+}
 </script>
 <style lang=""></style>

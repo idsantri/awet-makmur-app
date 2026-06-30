@@ -11,14 +11,25 @@
 	<q-card class="q-ma-sm">
 		<q-card-section class="q-pa-sm">
 			<q-table
-				:rows="dataFetch"
+				:rows="pivot"
 				separator="cell"
 				:filter="filter"
-				@row-click="(event, row, index) => clickRow(event, row, index)"
-				:columns="dataColumn"
+				@row-click="
+					(event, row, index) =>
+						$router.push(`/products/${row.product_id}`)
+				"
+				:columns="columns"
+				:loading="loading"
 			>
 				<template v-slot:top>
-					<q-input debounce="500" v-model="filter" placeholder="Cari">
+					<q-input
+						debounce="500"
+						v-model="filter"
+						placeholder="Cari"
+						outlined
+						dense
+						class="full-width q-pa-none"
+					>
 						<template v-slot:append>
 							<q-icon name="search" />
 						</template>
@@ -29,54 +40,60 @@
 	</q-card>
 </template>
 <script setup>
-import fetchApi from "src/api/fetchApi";
 import { onMounted, ref } from "vue";
 import BannerTitle from "src/components/BannerTitle.vue";
 import digitSeparator from "src/utils/digit-separator";
-import { useRouter } from "vue-router";
+import Stock from "src/models/Stock";
 
-const dataFetch = ref([]);
+const pivot = ref([]);
 const filter = ref("");
-const dataColumn = ref([]);
+const loading = ref(false);
 
 onMounted(async () => {
-	const { products_stock } = await fetchApi("reports/products-stock");
-	dataFetch.value = products_stock;
-	dataColumn.value = [
-		{
-			field: "name",
-			label: "Produk",
-			align: "left",
-			name: "product",
-			sortable: true,
-		},
-		{
-			field: "brand",
-			label: "Merek",
-			align: "left",
-			name: "brand",
-			sortable: true,
-		},
-		{ field: "store_all", label: "Total" },
-		{ field: "store_1", label: "Toko 1" },
-		{ field: "store_2", label: "Toko 2" },
-		{
-			field: "base_price",
-			label: "Harga Dasar",
-			format: (val, row) => `${digitSeparator(val)}`,
-		},
-		{
-			field: "selling_price",
-			label: "Harga Jual",
-			format: (val, row) => `${digitSeparator(val)}`,
-		},
-	];
+	await fetchPivot();
 });
 
-const router = useRouter();
-function clickRow(e, row, i) {
-	// console.log(row);
-	router.push(`/products/${row.product_id}`);
+async function fetchPivot() {
+	try {
+		loading.value = true;
+		const response = await Stock.getPivot();
+		if (!response) return;
+		pivot.value = response.data.pivot;
+	} catch (error) {
+		console.error(error);
+	} finally {
+		loading.value = false;
+	}
 }
+
+const columns = [
+	{
+		field: "product_name",
+		label: "Produk",
+		align: "left",
+		name: "product",
+		sortable: true,
+	},
+	{
+		field: "product_brand",
+		label: "Merek",
+		align: "left",
+		name: "brand",
+		sortable: true,
+	},
+	{ field: "store_all", label: "Total" },
+	{ field: "store_1", label: "Toko 1" },
+	{ field: "store_2", label: "Toko 2" },
+	{
+		field: "product_base_price",
+		label: "Harga Dasar",
+		format: (val, row) => `${digitSeparator(val)}`,
+	},
+	{
+		field: "product_selling_price",
+		label: "Harga Jual",
+		format: (val, row) => `${digitSeparator(val)}`,
+	},
+];
 </script>
 <style lang=""></style>
