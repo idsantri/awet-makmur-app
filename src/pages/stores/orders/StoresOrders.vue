@@ -17,7 +17,14 @@
 				class="text-green-10"
 			>
 				<template v-slot:top>
-					<q-input debounce="500" v-model="filter" placeholder="Cari">
+					<q-input
+						debounce="500"
+						v-model="filter"
+						placeholder="Cari"
+						outlined
+						dense
+						class="full-width q-pa-none"
+					>
 						<template v-slot:append>
 							<q-icon name="search" />
 						</template>
@@ -87,7 +94,7 @@ const storeName = ref("");
 
 try {
 	const responseOrder = await apiTokened.get(
-		`stores/${params.value.id}/orders`
+		`orders?store_id=${params.value.id}`
 	);
 	Object.assign(orders, responseOrder.data.data.orders);
 	if (orders.length > 0) storeName.value = orders[0].store_name;

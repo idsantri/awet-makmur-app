@@ -23,6 +23,9 @@
 							debounce="500"
 							v-model="filter"
 							placeholder="Cari"
+							outlined
+							dense
+							class="full-width q-pa-none"
 						>
 							<template v-slot:append>
 								<q-icon name="search" />
@@ -35,11 +38,11 @@
 						class="text-body1 text-green-11 text-center text-italic q-pb-none"
 					>
 						<p class="no-margin">
-							Total Stok: {{ digitSeparator(getItems()) }} item,
+							Total Stok: {{ digitSeparator(totalItems) }} item,
 							<br />
 							dengan nilai:
 							<span class="text-bold"
-								>Rp{{ digitSeparator(getTotal()) }}</span
+								>Rp{{ digitSeparator(totalPrice) }}</span
 							>
 						</p>
 					</q-card-section>
@@ -65,7 +68,7 @@
 	</div>
 	<q-dialog v-model="showModalZakat">
 		<ModalZakat
-			:asset="getTotal()"
+			:asset="totalPrice"
 			@close-modal="() => (showModalZakat = false)"
 		>
 			<template v-slot:store> Toko {{ storeName }} </template>
@@ -75,50 +78,69 @@
 	<!-- <pre>{{ stocks }}</pre> -->
 </template>
 <script setup>
-import { apiTokened } from "src/config/api";
 import digitSeparator from "src/utils/digit-separator";
-import { notifyError } from "src/utils/notify";
-import toArray from "src/utils/to-array";
-import { reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import ModalZakat from "./ModalZakat.vue";
 import BannerTitle from "src/components/BannerTitle.vue";
+import Stock from "src/models/Stock";
 
 const stocks = reactive([]);
-const params = ref(useRoute().params);
+const { params } = useRoute();
 const filter = ref("");
 const storeName = ref("");
 const showModalZakat = ref(false);
 
-try {
-	const responseStock = await apiTokened.get(
-		`stores/${params.value.id}/stocks`
-	);
-	Object.assign(stocks, responseStock.data.data.stocks);
-	if (stocks.length > 0) storeName.value = stocks[0].store_name;
-} catch (error) {
-	console.log(error);
-	toArray(error.response.data.message).forEach((message) => {
-		notifyError(message);
+async function fetchStocks() {
+	const response = await Stock.getAll({
+		store_id: params.id,
 	});
+	if (response) {
+		Object.assign(stocks, response.data.stocks);
+		if (stocks?.length > 0) storeName.value = stocks[0].store_name;
+	}
 }
 
-const getTotal = () =>
-	stocks.reduce((acc, stock) => acc + Number(stock.product_worth), 0);
-const getItems = () =>
-	stocks.reduce((acc, stock) => acc + Number(stock.stock), 0);
+onMounted(async () => {
+	await fetchStocks();
+});
+
+const agetTotal = () => {
+	stocks.reduce(
+		(acc, stock) =>
+			acc + Number(stock.product_base_price) * Number(stock.stock),
+		0
+	);
+};
+const totalPrice = computed(() => {
+	if (!stocks?.length) return 0;
+	return stocks.reduce(
+		(acc, stock) =>
+			acc + Number(stock.product_base_price) * Number(stock.stock),
+		0
+	);
+});
+
+const totalItems = computed(() => {
+	if (!stocks?.length) return 0;
+	return stocks.reduce((acc, stock) => acc + Number(stock.stock), 0);
+});
+
 const columns = [
 	{
 		name: "product",
 		field: (row) =>
-			row.name + (row.brand.length > 1 ? " (" + row.brand + ")" : ""),
+			row.product_name +
+			(row.product_brand.length > 1
+				? " (" + row.product_brand + ")"
+				: ""),
 		label: "Nama",
 		align: "left",
 		sortable: true,
 	},
 	{
-		name: "base_price",
-		field: "base_price",
+		name: "product_base_price",
+		field: "product_base_price",
 		label: "Harga Dasar",
 		align: "right",
 		format: (val, row) => `Rp${digitSeparator(val)}`,
@@ -135,7 +157,7 @@ const columns = [
 	},
 	{
 		name: "product_worth",
-		field: "product_worth",
+		field: (row) => Number(row.product_base_price) * Number(row.stock),
 		label: "Harga x Stok",
 		align: "right",
 		format: (val, row) => `Rp${digitSeparator(val)}`,
