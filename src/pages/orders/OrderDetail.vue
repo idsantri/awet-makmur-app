@@ -281,8 +281,6 @@ const createInvoice = async () => {
 		cancel: true,
 		persistent: false,
 		html: true,
-		ok: "Ya",
-		cancel: "Tidak",
 	}).onOk(async () => {
 		redirectToWA();
 	});

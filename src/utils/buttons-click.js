@@ -13,7 +13,7 @@ const forceRerender = () => {
 // };
 
 const showModalSearch = (param = {}) => {
-	crudState(param);
+	// crudState(param);
 	document.getElementById("btn-show-modal-search").click();
 };
 
@@ -22,7 +22,7 @@ const closeModalSearch = () => {
 };
 
 const showModalCrud = (reset = true) => {
-	if (reset) crudState();
+	// if (reset) crudState();
 	document.getElementById("btn-show-modal-crud").click();
 };
 

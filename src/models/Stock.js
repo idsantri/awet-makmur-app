@@ -1,3 +1,4 @@
+import { notifyError } from "src/utils/notify";
 import BaseModel from "./BaseModel";
 
 class Stock extends BaseModel {
