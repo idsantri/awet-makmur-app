@@ -11,8 +11,11 @@
 				<q-btn
 					push
 					round
-					color="green"
-					icon="edit"
+					glossy
+					unelevated
+					color="green-8"
+					text-color="green-11"
+					icon="camera_alt"
 					class="absolute all-pointer-events"
 					style="bottom: 8px; right: 8px"
 					@click="showUploader = true"
@@ -23,8 +26,11 @@
 					<q-btn
 						push
 						round
-						color="green"
-						icon="edit"
+						glossy
+						unelevated
+						color="green-8"
+						text-color="green-11"
+						icon="camera_alt"
 						class="absolute all-pointer-events"
 						style="bottom: 8px; right: 8px"
 						@click="showUploader = true"

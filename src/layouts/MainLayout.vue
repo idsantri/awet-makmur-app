@@ -85,17 +85,18 @@
 			</suspense>
 		</q-drawer>
 
+		<q-ajax-bar position="top" color="green-12" size="2px" />
 		<q-page-container :key="componentKey">
-			<suspense>
+			<router-view :key="$route.fullPath" />
+			<!-- <suspense>
 				<template #default>
-					<router-view :key="$route.fullPath" />
 				</template>
 				<template #fallback>
 					<div class="spinner">
 						<q-spinner-cube color="green-8" size="8em" />
 					</div>
 				</template>
-			</suspense>
+			</suspense> -->
 		</q-page-container>
 
 		<!-- hidden elements -->

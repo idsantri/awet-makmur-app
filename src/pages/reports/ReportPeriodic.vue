@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="bg-green-11">
 		<q-card-section class="no-padding">
 			<q-banner class="no-padding">
@@ -63,24 +63,31 @@
 					:filter="index == 'products_out' ? filter : null"
 				>
 					<template v-slot:top>
-						<div>
-							<h3 class="text-body1 no-margin">
-								{{ item.title }}
-							</h3>
-							<h4 class="text-caption no-margin text-italic">
-								{{ item.subTitle }}
-							</h4>
-						</div>
-						<div v-if="index == 'products_out'">
-							<q-input
-								debounce="500"
-								v-model="filter"
-								placeholder="Cari"
-							>
-								<template v-slot:append>
-									<q-icon name="search" />
-								</template>
-							</q-input>
+						<div
+							class="full-width row justify-between items-center"
+						>
+							<div style="overflow: hidden">
+								<h3 class="text-body1 no-margin">
+									{{ item.title }}
+								</h3>
+								<h4 class="text-caption no-margin text-italic">
+									{{ item.subTitle }}
+								</h4>
+							</div>
+							<div v-if="index == 'products_out'" class="">
+								<q-input
+									debounce="500"
+									v-model="filter"
+									placeholder="Cari"
+									outlined
+									dense
+									class="full-width q-pa-none"
+								>
+									<template v-slot:append>
+										<q-icon name="search" />
+									</template>
+								</q-input>
+							</div>
 						</div>
 					</template>
 				</q-table>
