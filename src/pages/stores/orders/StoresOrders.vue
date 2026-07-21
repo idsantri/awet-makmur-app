@@ -39,18 +39,17 @@
 				</div>
 			</q-banner>
 		</div>
+		<InnerLoading :loading="loading" />
 	</div>
-	<!-- <pre>{{ orders }}</pre> -->
 </template>
 <script setup>
 import digitSeparator from "src/utils/digit-separator";
-import { notifyError } from "src/utils/notify";
-import toArray from "src/utils/to-array";
 import { onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import { simpleDate } from "src/utils/format-date";
 import BannerTitle from "src/components/BannerTitle.vue";
 import Order from "src/models/Order";
+import InnerLoading from "src/components/InnerLoading.vue";
 
 const columns = [
 	{
@@ -91,16 +90,16 @@ const orders = reactive([]);
 const params = ref(useRoute().params);
 const filter = ref("");
 const storeName = ref("");
+const loading = ref(false);
 
 async function fetchOrders() {
 	try {
+		loading.value = true;
 		const response = await Order.getAll({ store_id: params.value.id });
 		Object.assign(orders, response.data.orders);
 		if (orders.length > 0) storeName.value = orders[0].store_name;
-	} catch (error) {
-		toArray(error.response.data.message).forEach((message) => {
-			notifyError(message);
-		});
+	} finally {
+		loading.value = false;
 	}
 }
 

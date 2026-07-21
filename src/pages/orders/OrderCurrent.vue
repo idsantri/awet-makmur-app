@@ -311,22 +311,22 @@
 				</q-card>
 			</q-form>
 		</div>
-		<!-- <pre>{{ products }}</pre> -->
+		<InnerLoading :loading="loading" />
 	</div>
 </template>
 
 <script setup>
 import ordersStore from "src/stores/orders-store";
 import { onMounted, reactive, ref } from "vue";
-import { apiTokened } from "../../config/api";
 import digitSeparator from "src/utils/digit-separator";
-import toArray from "src/utils/to-array";
-import { notifyError, notifySuccess } from "src/utils/notify";
+import { notifySuccess } from "src/utils/notify";
 import BannerTitle from "src/components/BannerTitle.vue";
 import { useRouter } from "vue-router";
 import { useQuasar } from "quasar";
 import List from "src/models/List";
 import Store from "src/models/Store";
+import InnerLoading from "src/components/InnerLoading.vue";
+import Order from "src/models/Order";
 
 const listStores = reactive([]);
 const listPayment = reactive([]);
@@ -337,6 +337,7 @@ const note = ref("");
 const store_id = ref(null);
 const payment = ref("");
 const router = useRouter();
+const loading = ref(false);
 
 async function fetchPayments() {
 	const response = await List.getAll({ var: "payment-method" });
@@ -406,16 +407,15 @@ const submitOrder = async () => {
 	};
 
 	try {
-		const response = await apiTokened.post(`orders`, data);
-		// console.log(response.data.data.order.id);
-		notifySuccess(response.data.message);
-		ordersStore().clearOrders();
-		router.push(`/orders/${response.data.data.order.id}`);
-	} catch (error) {
-		// console.log(error.response.data.message);
-		toArray(error.response.data.message).forEach((message) => {
-			notifyError(message);
-		});
+		loading.value = true;
+		const response = await Order.create({ data });
+		if (response) {
+			notifySuccess(response.message);
+			ordersStore().clearOrders();
+			router.push(`/orders/${response.data.order.id}`);
+		}
+	} finally {
+		loading.value = false;
 	}
 };
 </script>

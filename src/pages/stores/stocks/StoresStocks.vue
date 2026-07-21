@@ -65,17 +65,17 @@
 				</q-banner>
 			</div>
 		</div>
-	</div>
-	<q-dialog v-model="showModalZakat">
-		<ModalZakat
-			:asset="totalPrice"
-			@close-modal="() => (showModalZakat = false)"
-		>
-			<template v-slot:store> Toko {{ storeName }} </template>
-		</ModalZakat>
-	</q-dialog>
+		<q-dialog v-model="showModalZakat">
+			<ModalZakat
+				:asset="totalPrice"
+				@close-modal="() => (showModalZakat = false)"
+			>
+				<template v-slot:store> Toko {{ storeName }} </template>
+			</ModalZakat>
+		</q-dialog>
 
-	<!-- <pre>{{ stocks }}</pre> -->
+		<InnerLoading :loading="loading" />
+	</div>
 </template>
 <script setup>
 import digitSeparator from "src/utils/digit-separator";
@@ -84,20 +84,27 @@ import { useRoute } from "vue-router";
 import ModalZakat from "./ModalZakat.vue";
 import BannerTitle from "src/components/BannerTitle.vue";
 import Stock from "src/models/Stock";
+import InnerLoading from "src/components/InnerLoading.vue";
 
 const stocks = reactive([]);
 const { params } = useRoute();
 const filter = ref("");
 const storeName = ref("");
 const showModalZakat = ref(false);
+const loading = ref(false);
 
 async function fetchStocks() {
-	const response = await Stock.getAll({
-		store_id: params.id,
-	});
-	if (response) {
-		Object.assign(stocks, response.data.stocks);
-		if (stocks?.length > 0) storeName.value = stocks[0].store_name;
+	try {
+		loading.value = true;
+		const response = await Stock.getAll({
+			store_id: params.id,
+		});
+		if (response) {
+			Object.assign(stocks, response.data.stocks);
+			if (stocks?.length > 0) storeName.value = stocks[0].store_name;
+		}
+	} finally {
+		loading.value = false;
 	}
 }
 

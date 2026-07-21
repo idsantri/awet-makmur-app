@@ -170,21 +170,20 @@
 				/>
 			</q-card-actions>
 		</q-card>
+		<q-dialog v-model="showModalInvoice">
+			<OrderInvoice :order="order" />
+		</q-dialog>
+
+		<q-dialog v-model="showModalOrder">
+			<OrderModal :order="order" />
+		</q-dialog>
+
+		<q-dialog v-model="showModalOrderDetail">
+			<OrderDetailModal :order-detail="orderDetail" />
+		</q-dialog>
+
+		<InnerLoading :loading="loading" />
 	</div>
-
-	<q-dialog v-model="showModalInvoice">
-		<OrderInvoice :order="order" />
-	</q-dialog>
-
-	<q-dialog v-model="showModalOrder">
-		<OrderModal :order="order" />
-	</q-dialog>
-
-	<q-dialog v-model="showModalOrderDetail">
-		<OrderDetailModal :order-detail="orderDetail" />
-	</q-dialog>
-
-	<!-- <pre>{{ order.order_detail }}</pre> -->
 </template>
 
 <script setup>
@@ -202,6 +201,7 @@ import getInitials from "src/utils/initial";
 import OrderModal from "./OrderModal.vue";
 import OrderDetailModal from "./OrderDetailModal.vue";
 import Order from "src/models/Order.js";
+import InnerLoading from "src/components/InnerLoading.vue";
 
 const order = reactive({});
 const params = ref(useRoute().params);
@@ -209,6 +209,7 @@ const showModalInvoice = ref(false);
 const showModalOrder = ref(false);
 const showModalOrderDetail = ref(false);
 const orderDetail = ref({});
+const loading = ref(false);
 
 function editOrderDetail(order) {
 	orderDetail.value = order;
@@ -216,11 +217,17 @@ function editOrderDetail(order) {
 }
 
 async function fetchOrder() {
-	const response = await Order.getById({ id: params.value.id });
-	if (response) {
-		Object.assign(order, response.data.order);
+	try {
+		loading.value = true;
+		const response = await Order.getById({ id: params.value.id });
+		if (response) {
+			Object.assign(order, response.data.order);
+		}
+	} finally {
+		loading.value = false;
 	}
 }
+
 onMounted(async () => {
 	await fetchOrder();
 });

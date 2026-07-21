@@ -179,57 +179,56 @@
 				</tbody>
 			</q-markup-table>
 		</q-card-section>
+		<q-dialog v-model="showModalDescription">
+			<modal-description
+				:product-description="product.description"
+				:product-id="parseInt(product.id)"
+			/>
+		</q-dialog>
+
+		<q-dialog v-model="showModalStock">
+			<modal-stock
+				:product-id="parseInt(product.id)"
+				:product-name="product.name"
+			/>
+		</q-dialog>
+
+		<q-dialog v-model="showModalProduct">
+			<modal-product :is-new="false" :product="product" />
+		</q-dialog>
+
+		<my-upload
+			field="image"
+			langType="en"
+			:langExt="translate"
+			no-circle
+			@crop-success="cropSuccess"
+			@crop-upload-success="cropUploadSuccess"
+			@crop-upload-fail="cropUploadFail"
+			v-model="showUploader"
+			:width="500"
+			:height="500"
+			:url="urlUpload"
+			:params="paramsImage"
+			:headers="headers"
+			img-format="png"
+		></my-upload>
+
+		<div class="flex fixed-bottom-right q-mr-md q-mb-xl q-gutter-md">
+			<q-btn
+				push
+				color="green"
+				round
+				icon="search"
+				@click="showModalSearch = true"
+			/>
+		</div>
+
+		<q-dialog v-model="showModalSearch">
+			<ModalSearch />
+		</q-dialog>
+		<InnerLoading :loading="loading" />
 	</q-card>
-
-	<q-dialog v-model="showModalDescription">
-		<modal-description
-			:product-description="product.description"
-			:product-id="parseInt(product.id)"
-		/>
-	</q-dialog>
-
-	<q-dialog v-model="showModalStock">
-		<modal-stock
-			:product-id="parseInt(product.id)"
-			:product-name="product.name"
-		/>
-	</q-dialog>
-
-	<q-dialog v-model="showModalProduct">
-		<modal-product :is-new="false" :product="product" />
-	</q-dialog>
-
-	<my-upload
-		field="image"
-		langType="en"
-		:langExt="translate"
-		no-circle
-		@crop-success="cropSuccess"
-		@crop-upload-success="cropUploadSuccess"
-		@crop-upload-fail="cropUploadFail"
-		v-model="showUploader"
-		:width="500"
-		:height="500"
-		:url="urlUpload"
-		:params="paramsImage"
-		:headers="headers"
-		img-format="png"
-	></my-upload>
-	<!-- <img :src="imgDataUrl"> -->
-
-	<div class="flex fixed-bottom-right q-mr-md q-mb-xl q-gutter-md">
-		<q-btn
-			push
-			color="green"
-			round
-			icon="search"
-			@click="showModalSearch = true"
-		/>
-	</div>
-
-	<q-dialog v-model="showModalSearch">
-		<ModalSearch />
-	</q-dialog>
 </template>
 
 <script setup>
@@ -249,6 +248,7 @@ import Product from "src/models/Product";
 import api from "src/models";
 import { useAuthStore } from "src/stores/auth-store";
 import Stock from "src/models/Stock";
+import InnerLoading from "src/components/InnerLoading.vue";
 
 const route = useRoute();
 const params = ref(route.params);
@@ -258,6 +258,7 @@ const showModalProduct = ref(false);
 const showModalStock = ref(false);
 const showModalSearch = ref(false);
 const authStore = useAuthStore();
+const loading = ref(false);
 
 const deleteStock = async (id, store) => {
 	const message = `<span style="color:red">Hapus stok produk di toko ${store}?</span>`;
@@ -331,13 +332,18 @@ const cropUploadFail = (status, field) => {
 };
 
 async function fetchProduct() {
-	const response = await Product.getById({
-		id: params.value.id,
-	});
-	if (response) {
-		Object.assign(product, response.data.product);
-		if (response.data.product.stocks.length == 0)
-			showModalStock.value = true;
+	try {
+		loading.value = true;
+		const response = await Product.getById({
+			id: params.value.id,
+		});
+		if (response) {
+			Object.assign(product, response.data.product);
+			if (response.data.product.stocks.length == 0)
+				showModalStock.value = true;
+		}
+	} finally {
+		loading.value = false;
 	}
 }
 onMounted(async () => {

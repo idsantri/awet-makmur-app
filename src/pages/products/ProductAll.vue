@@ -130,19 +130,17 @@
 				/>
 			</q-card-actions>
 		</q-card>
+
+		<InnerLoading :loading="loading" />
+
+		<q-dialog v-model="showModalProduct">
+			<ModalProduct :is-new="true" />
+		</q-dialog>
+
+		<q-dialog v-model="showModalSearch">
+			<ModalSearch />
+		</q-dialog>
 	</div>
-	<!-- <div class="q-mr-md q-mb-xl q-gutter-md text-right">
-    <q-btn push color="green" round icon="add" @click="showModalProduct = true" />
-    <q-btn push color="green" round icon="search" @click="showModalSearch = true" />
-  </div> -->
-
-	<q-dialog v-model="showModalProduct">
-		<ModalProduct :is-new="true" />
-	</q-dialog>
-
-	<q-dialog v-model="showModalSearch">
-		<ModalSearch />
-	</q-dialog>
 </template>
 
 <script setup>
@@ -155,6 +153,7 @@ import ModalSearch from "./ProductSearch.vue";
 import BannerTitle from "src/components/BannerTitle.vue";
 import titleCase from "src/utils/tittle-case";
 import Product from "src/models/Product.js";
+import InnerLoading from "src/components/InnerLoading.vue";
 
 const showModalProduct = ref(false);
 const showModalSearch = ref(false);
@@ -162,6 +161,7 @@ const route = useRoute();
 const params = ref(route.params);
 const products = ref([]);
 let isThrottled = false;
+const loading = ref(false);
 
 const totalStock = (productId) => {
 	const product = products.value.find((p) => p.id === productId);
@@ -205,11 +205,16 @@ const restoreScrollPosition = () => {
 	}
 };
 async function fetchProduct() {
-	const response = await Product.getAll({
-		category_slug: params.value.category,
-	});
-	if (response) {
-		products.value = response.data.products;
+	try {
+		loading.value = true;
+		const response = await Product.getAll({
+			category_slug: params.value.category,
+		});
+		if (response) {
+			products.value = response.data.products;
+		}
+	} finally {
+		loading.value = false;
 	}
 }
 onMounted(async () => {

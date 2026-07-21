@@ -37,10 +37,8 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { notifySuccess, notifyError } from "../../utils/notify";
+import { notifySuccess } from "../../utils/notify";
 import { forceRerender } from "../../utils/buttons-click";
-import { apiTokened } from "../../config/api";
-import toArray from "../../utils/to-array";
 import Store from "src/models/Store";
 import Stock from "src/models/Stock";
 

@@ -48,19 +48,27 @@
 				</q-list>
 			</q-card-section>
 		</q-card>
+		<InnerLoading :loading="loading" />
 		<!-- <pre>{{ users }}</pre> -->
 	</div>
 </template>
 <script setup>
 import BannerTitle from "src/components/BannerTitle.vue";
+import InnerLoading from "src/components/InnerLoading.vue";
 import User from "src/models/User";
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 
 const users = reactive([]);
+const loading = ref(false);
 async function fetchUsers() {
-	const response = await User.getAll();
-	if (response) {
-		Object.assign(users, response.data.users);
+	try {
+		loading.value = true;
+		const response = await User.getAll();
+		if (response) {
+			Object.assign(users, response.data.users);
+		}
+	} finally {
+		loading.value = false;
 	}
 }
 onMounted(async () => await fetchUsers());

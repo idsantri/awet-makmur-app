@@ -55,37 +55,40 @@
 					@click="deleteUser(user.id)"
 				/>
 			</q-card-actions>
+			<InnerLoading :loading="loading" />
 		</q-card>
-		<!-- <pre>{{ user }}</pre>
-    <pre>{{ groups }}</pre> -->
 	</div>
 </template>
 <script setup>
-import { useQuasar } from "quasar";
 import BannerTitle from "src/components/BannerTitle.vue";
+import InnerLoading from "src/components/InnerLoading.vue";
 import User from "src/models/User";
 import UserGroup from "src/models/UserGroup";
 import { forceRerender } from "src/utils/buttons-click";
-import { notifyConfirm, notifyError, notifySuccess } from "src/utils/notify";
-import toArray from "src/utils/to-array";
-import { onMounted, reactive } from "vue";
+import { notifySuccess } from "src/utils/notify";
+import { onMounted, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const user = reactive({});
-// const group = reactive({});
 const groups = reactive([]);
 const route = useRoute();
 const userId = route.params.id;
+const loading = ref(false);
+
 async function fetchUser() {
-	const response = await User.getById({ id: userId });
-	if (!response) return;
-	Object.assign(user, response.data.user);
-	Object.assign(groups, response.data.groups);
+	try {
+		loading.value = true;
+		const response = await User.getById({ id: userId });
+		if (!response) return;
+		Object.assign(user, response.data.user);
+		Object.assign(groups, response.data.groups);
+	} finally {
+		loading.value = false;
+	}
 }
 onMounted(async () => await fetchUser());
 
 const router = useRouter();
-const $q = useQuasar();
 const setGroup = async (group, title, value) => {
 	let message = null;
 	if (value) message = `Tetapkan sebagai <strong>${title}</strong>?`;
@@ -110,9 +113,14 @@ const setGroup = async (group, title, value) => {
 };
 
 const deleteUser = async (id) => {
-	const response = await User.remove({ id });
-	if (!response) return;
-	notifySuccess(response.message);
-	router.go(-1);
+	try {
+		loading.value = true;
+		const response = await User.remove({ id });
+		if (!response) return;
+		notifySuccess(response.message);
+		router.go(-1);
+	} finally {
+		loading.value = false;
+	}
 };
 </script>
