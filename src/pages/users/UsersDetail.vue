@@ -63,7 +63,6 @@
 <script setup>
 import { useQuasar } from "quasar";
 import BannerTitle from "src/components/BannerTitle.vue";
-import { apiTokened } from "src/config/api";
 import User from "src/models/User";
 import UserGroup from "src/models/UserGroup";
 import { forceRerender } from "src/utils/buttons-click";

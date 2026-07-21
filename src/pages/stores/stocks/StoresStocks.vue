@@ -105,7 +105,7 @@ onMounted(async () => {
 	await fetchStocks();
 });
 
-const agetTotal = () => {
+const getTotal = () => {
 	stocks.reduce(
 		(acc, stock) =>
 			acc + Number(stock.product_base_price) * Number(stock.stock),

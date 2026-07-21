@@ -116,6 +116,11 @@ const routes = [
 				component: () => import("src/pages/about/AboutIndex.vue"),
 				meta: { title: "Tentang Aplikasi" },
 			},
+			{
+				path: "profile",
+				component: () => import("src/pages/profile/UserPage.vue"),
+				meta: { title: "Tentang Saya" },
+			},
 		],
 	},
 

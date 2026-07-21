@@ -38,7 +38,6 @@
 import { ref, reactive } from "vue";
 import { notifySuccess, notifyError } from "src/utils/notify";
 import { forceRerender } from "src/utils/buttons-click";
-import { apiTokened } from "src/config/api";
 import toArray from "src/utils/to-array";
 import { useQuasar } from "quasar";
 import List from "src/models/List";

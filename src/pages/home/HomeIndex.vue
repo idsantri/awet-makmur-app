@@ -12,7 +12,7 @@
 		</q-avatar>
 	</div>
 
-	<q-card class="q-pa-sm q-ma-sm q-mt-lg bg-green-11" v-if="isAdmin">
+	<q-card v-if="isAdmin" class="q-pa-sm q-ma-sm q-mt-lg bg-green-11">
 		<q-card-section class="no-padding">
 			<h2 class="text-h6 text-center no-margin">Laporan Transaksi</h2>
 			<p class="text-subtitle1 text-center no-margin q-pb-sm">
@@ -20,7 +20,10 @@
 			</p>
 		</q-card-section>
 		<q-card-section class="no-padding">
-			<canvas id="chart-transactions" class="q-card q-pa-sm" />
+			<canvas
+				id="chart-transactions"
+				class="q-card q-pa-sm full-width full-height"
+			/>
 		</q-card-section>
 	</q-card>
 
@@ -87,6 +90,7 @@ function chart(data) {
 
 onMounted(async () => {
 	isAdmin.value = useAuthStore().isAdmin;
+	if (!isAdmin.value) return;
 
 	const { transactions } = await fetchApi(
 		"reports/transactions/by-month",

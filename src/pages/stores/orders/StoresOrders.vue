@@ -43,14 +43,14 @@
 	<!-- <pre>{{ orders }}</pre> -->
 </template>
 <script setup>
-import { apiTokened } from "src/config/api";
 import digitSeparator from "src/utils/digit-separator";
 import { notifyError } from "src/utils/notify";
 import toArray from "src/utils/to-array";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import { simpleDate } from "src/utils/format-date";
 import BannerTitle from "src/components/BannerTitle.vue";
+import Order from "src/models/Order";
 
 const columns = [
 	{
@@ -92,15 +92,19 @@ const params = ref(useRoute().params);
 const filter = ref("");
 const storeName = ref("");
 
-try {
-	const responseOrder = await apiTokened.get(
-		`orders?store_id=${params.value.id}`
-	);
-	Object.assign(orders, responseOrder.data.data.orders);
-	if (orders.length > 0) storeName.value = orders[0].store_name;
-} catch (error) {
-	toArray(error.response.data.message).forEach((message) => {
-		notifyError(message);
-	});
+async function fetchOrders() {
+	try {
+		const response = await Order.getAll({ store_id: params.value.id });
+		Object.assign(orders, response.data.orders);
+		if (orders.length > 0) storeName.value = orders[0].store_name;
+	} catch (error) {
+		toArray(error.response.data.message).forEach((message) => {
+			notifyError(message);
+		});
+	}
 }
+
+onMounted(() => {
+	fetchOrders();
+});
 </script>

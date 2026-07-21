@@ -1,3 +1,4 @@
+import { notifyError } from "src/utils/notify";
 import api from ".";
 
 class Auth {
@@ -43,13 +44,24 @@ class Auth {
 	}
 
 	async getProfile() {
-		const response = await this.api.get(`${this.path}/profile`);
-		return response.data;
+		try {
+			const response = await this.api.get(`${this.path}/profile`);
+			return response.data;
+		} catch (error) {
+			notifyError(error.response.data.message);
+			return false;
+		}
 	}
 
-	async updateProfile({ data }) {
-		const response = await this.api.update(`${this.path}/profile`, data);
-		return response.data;
+	async updateProfile(data) {
+		try {
+			const response = await this.api.put(`${this.path}/profile`, data);
+			return response.data;
+		} catch (error) {
+			console.log(error);
+			notifyError(error.response.data.message);
+			return false;
+		}
 	}
 }
 export default new Auth();
