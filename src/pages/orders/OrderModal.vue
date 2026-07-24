@@ -125,7 +125,8 @@ const onSubmit = async () => {
 		note,
 	};
 	const response = await Order.update({ id, data });
-	if (response) notifySuccess(response.message);
+	if (!response) return;
+	notifySuccess(response.message);
 	forceRerender();
 };
 </script>

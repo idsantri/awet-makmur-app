@@ -79,6 +79,7 @@ const onSubmit = async () => {
 		id: order_detail.id,
 		data,
 	});
+	if (!response) return;
 	notifySuccess(response.message);
 	forceRerender();
 };
