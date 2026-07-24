@@ -17,7 +17,7 @@ module.exports = configure(function (ctx) {
 	const baseURL_API =
 		env === "development"
 			? "http://localhost:8080"
-			: "https://api-am.baniasror.net";
+			: "https://am.idsantri.my.id";
 
 	return {
 		// https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
