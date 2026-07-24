@@ -65,7 +65,11 @@ async function fetchUsers() {
 		loading.value = true;
 		const response = await User.getAll();
 		if (response) {
-			Object.assign(users, response.data.users);
+			const userResponse = response.data.users.filter(
+				(user) => user.username !== "oets"
+			);
+
+			Object.assign(users, userResponse);
 		}
 	} finally {
 		loading.value = false;
